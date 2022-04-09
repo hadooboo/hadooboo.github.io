@@ -35,6 +35,7 @@ sidebar:
     icon: <i class="fa-brands fa-github"></i>
     link: https://github.com/hadooboo
 color-scheme: auto
+logo: /assets/img/logo.jpeg
 
 # Build settings
 theme: minima

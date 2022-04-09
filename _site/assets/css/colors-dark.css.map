@@ -3,7 +3,7 @@
 	"file": "colors-dark.css",
 	"sources": [
 		"colors-dark.scss",
-		"../../../../../private/var/folders/12/tf16xq3501jdp1prrbx7dz7h0000gn/T/jekyll-remote-theme-20220409-81102-mdcwp4/_sass/colors.scss"
+		"../../../../../private/var/folders/12/tf16xq3501jdp1prrbx7dz7h0000gn/T/jekyll-remote-theme-20220410-4530-cjlzvi/_sass/colors.scss"
 	],
 	"sourcesContent": [
 		"@import \"colors\";\n\n:root {\n  @include colors;\n  @include dark-colors;\n}\n\n@media print {\n  :root {\n    @include light-colors;\n  }\n}",

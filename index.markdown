@@ -5,3 +5,134 @@
 layout: default
 title: "Jaeho Nam"
 ---
+
+# Experience
+
+### Samjung Data Service Co., Ltd.
+
+2021\. 04\. - now
+
+Software Engineer. Developing backend service related to blockchain network.
+
+### NAVER Corp. 동영상클라우드 3 개발
+
+2020\. 12\. - 2021\. 02\.
+
+Intern. Developing the user dashboard page of PRISM Live Studio.
+
+PRISM Live Studio 사용자들로부터 수집된 실제 로그 데이터를 이용하여 실시간 방송 기록 및 통계 정보를 확인할 수 있는 대시보드 서비스를 만들었습니다. 저는 로그 데이터 전처리, 분석, 제공 단계에 걸친 데이터 파이프라인을 구축하는 역할을 담당했습니다.
+
+### Seoul National University
+
+2020\. 09\. - 2020\. 12\.
+
+TA. Basic Computing: First Adventures in Computing
+
+프로그래밍을 처음 접하는 비전공생을 대상으로 프로그래밍 기초를 알려주는 수업의 조교를 맡았습니다.
+
+### NAVER Corp. Glace CIC. Map Service Platform
+
+2020\. 07\. - 2020\. 08\.
+
+Intern. Developing new pathfinding engine on Seoul metropolitan subway network.
+
+실시간 운행 정보 변경에 대응할 수 있는 새로운 길찾기 알고리즘을 개발 및 구현하고 수도권 지하철 네트워크에 적용해보는 실험적 프로젝트였습니다. 저는 데이터베이스에 저장된 지하철 시간표를 불러와 전처리하고 길찾기 알고리즘에서 사용하는 자료구조로 변환하는 역할을 수행하였습니다.
+
+---
+
+# Education
+
+### Seoul National University, 2017 - now
+
+> #### Major. Computer Science & Engineering
+
+* <details>
+  <summary>My Courses</summary>
+
+  <div markdown="1">
+
+    - Programming Practice(A+)
+    - Data Structures(A+)
+    - Logic Design(B+)
+    - Computer Programming(A0)
+    - Electrical and Electronic Circuits(A+)
+    - Discrete Mathematics(A+)
+    - Introduction to Data Mining(A0)
+    - Introduction to Web Programming(A-)
+    - Human-Computer Interaction(A0)
+    - Algorithms(A+)
+    - Computer Architecture(A-)
+    - Theory and Lab of Cyber Security and Blockchain(A+)
+    - Principles and Practices of Software Development(A0)
+    - Programming Language(A+)
+    - Introduction to Quantum Computing and Information(A+)
+    - Creative Integrated Design 2(A+)
+    - Hardware System Design(A-)
+    - System Programming(A0)
+    - Information Visualization and Visual Analytics(A+)
+    - Creative Integrated Design 1(B0)
+
+  </div>
+  </details>
+
+> #### Minor. Civil & Environmental Engineering
+
+* <details>
+  <summary>My Courses</summary>
+
+  <div markdown="1">
+
+    - Introduction to Civil and Environmental Engineering(A+)
+    - Traffic Engineering and Lab.(A-)
+    - Transportation Planning and Lab.(A+)
+
+  </div>
+  </details>
+
+### Yongsan High School, 2014 - 2017
+
+### Books for Developer
+
+* <details>
+  <summary>Books Read</summary>
+
+  <div markdown="1">
+
+    - *스프링 부트 시작하기: 차근차근 따라하는 단계별 실습*, 인사이트, 2019
+    - *러닝 스파크: 번개같이 빠른 데이터 분석(Learning Spark: Lightning-Fast Big Data Analysis)*, 제이펍, 2015
+    - *실용주의 프로그래머(The Pragmatic Programmer)*, 인사이트, 2014
+    - *실무로 배우는 빅데이터 기술: 데이터 수집, 적재, 처리, 분석, 머신러닝까지*, 위키북스, 2020
+    - *엔터프라이즈 빅데이터 레이크: 효율적인 데이터 레이크 도입과 모범 사례(The Enterprise Big Data Lake: Delivering the Promise of Big Data and Data Science)*, 에이콘출판, 2020
+    - *Go 언어를 활용한 네트워크 프로그래밍: 보안에 강하고 신뢰할 수 있는 네트워크 서비스 구현법(Network Programming with Go: Code Secure and Reliable Network Services from Scratch)*, 제이펍, 2022
+    - *만들면서 배우는 클린 아키텍처: 자바 코드로 구현하는 클린 웹 애플리케이션(Get Your Hands Dirty on Clean Architecture)*, 위키북스, 2021
+    - *클린 코드: 애자일 소프트웨어 장인 정신(Clean Code: A Handbook of Agile Software Craftsmanship)*, 인사이트, 2013
+    - *월스트리트저널 인포그래픽 가이드: 데이터, 사실, 수치를 표현할 때 지켜야 할 기본 원칙(The Wall Street Journal Guide to Information Graphics)*, 인사이트, 2014
+
+  </div>
+  </details>
+
+---
+
+# Skills
+
+### I have learned & used
+
+| Category | Skills |
+| --- | --- |
+| PL | **Go**, **Java**, Kotlin, Python, C, Javascript |
+| Framework & Library | Spring Boot, Vue.js, D3.js, Django, Flutter, Android SDK |
+| Database | **MySQL**, MongoDB |
+| Data processing | Apache HDFS, Apache Spark, Apache Druid, Keras |
+| Blockchain | **Bitcoin Network** |
+| Devops | Docker |
+| Communication Tool | Slack, Zoom, Notion |
+
+### I want to learn
+
+| Category | Skills |
+| --- | --- |
+| PL | Rust, Scala |
+| Database | GraphQL |
+| Data processing | Hadoop Ecosystem, BigQuery |
+| Devops | Kubernetes |
+| Communication Tool | Jira |
