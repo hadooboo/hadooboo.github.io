@@ -110,6 +110,7 @@ Intern. Developing new pathfinding engine on Seoul metropolitan subway network.
     - *클린 코드: 애자일 소프트웨어 장인 정신(Clean Code: A Handbook of Agile Software Craftsmanship)*, 인사이트, 2013
     - *월스트리트저널 인포그래픽 가이드: 데이터, 사실, 수치를 표현할 때 지켜야 할 기본 원칙(The Wall Street Journal Guide to Information Graphics)*, 인사이트, 2014
     - [*데이터 중심 애플리케이션 설계: 신뢰할 수 있고 확장 가능하며 유지보수하기 쉬운 시스템을 지탱하는 핵심(Designing Data-Intensive Applications)*, 위키북스, 2018](https://hadooboo.notion.site/def1915776d54ef48abc13c8df421c86){:target="_blank"}
+    - [*구글 엔지니어는 이렇게 일한다(Software Engineering at Google)*, 한빛미디어, 2022](/books/software-engineering-at-google)
 
   </div>
   </details>
