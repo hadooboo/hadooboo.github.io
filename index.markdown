@@ -135,7 +135,6 @@ Intern. Developing new pathfinding engine on Seoul metropolitan subway network.
     - [*실용주의 프로그래머(The Pragmatic Programmer)*, 인사이트, 2014](https://hadooboo.notion.site/The-Pragmatic-Programmer-effd4dc886d948d3a2cbccfcd80aaf48){:target="_blank"}
     - *실무로 배우는 빅데이터 기술: 데이터 수집, 적재, 처리, 분석, 머신러닝까지*, 위키북스, 2020
     - [*엔터프라이즈 빅데이터 레이크: 효율적인 데이터 레이크 도입과 모범 사례(The Enterprise Big Data Lake: Delivering the Promise of Big Data and Data Science)*, 에이콘출판, 2020](https://hadooboo.notion.site/The-Enterprise-Big-Data-Lake-ff2fdf3f583845afb3d99de71f777bd6){:target="_blank"}
-    - *Go 언어를 활용한 네트워크 프로그래밍: 보안에 강하고 신뢰할 수 있는 네트워크 서비스 구현법(Network Programming with Go: Code Secure and Reliable Network Services from Scratch)*, 제이펍, 2022
     - *만들면서 배우는 클린 아키텍처: 자바 코드로 구현하는 클린 웹 애플리케이션(Get Your Hands Dirty on Clean Architecture)*, 위키북스, 2021
     - *클린 코드: 애자일 소프트웨어 장인 정신(Clean Code: A Handbook of Agile Software Craftsmanship)*, 인사이트, 2013
     - *월스트리트저널 인포그래픽 가이드: 데이터, 사실, 수치를 표현할 때 지켜야 할 기본 원칙(The Wall Street Journal Guide to Information Graphics)*, 인사이트, 2014
@@ -153,10 +152,10 @@ Intern. Developing new pathfinding engine on Seoul metropolitan subway network.
 
 | Category | Skills |
 | --- | --- |
-| PL | **Go**, Java, Kotlin, Python, C, C++, Javascript |
-| Framework & Library | Spring Boot, Vue.js, D3.js, Django |
+| PL | **Go**, Java, Kotlin, Python, C, C++, Javascript, Swift |
+| Framework & Library | Spring Boot, Vue.js, D3.js, Django, Nuxt.js |
 | App | Flutter, Android SDK, iOS SDK |
-| Database | **MySQL**, MongoDB |
+| Database | MySQL, PostgreSQL, MongoDB |
 | Data processing | Apache HDFS, Apache Spark, Apache Druid, Keras |
 | Blockchain | Bitcoin Network, Ethereum Network |
 | Devops | Docker |
