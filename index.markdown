@@ -68,6 +68,16 @@ Intern. Developing new pathfinding engine on Seoul metropolitan subway network.
   </div>
   </details>
 
+### Most: 세상의 모든 스탯, 2022
+
+![most](/assets/img/most.gif)
+
+- 유튜브에서 데이터 시각화 영상을 우연히 보고 그래프들을 자유롭게 서핑할 수 있는 사이트가 있으면 어떨까하는 생각으로 만들기 시작한 사이트
+
+- [demo](https://most.hadooboo.kro.kr){:target="_blank"}
+
+- [github](https://github.com/hadooboo/most){:target="_blank"}
+
 ---
 
 # Education
