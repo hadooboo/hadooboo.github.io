@@ -68,15 +68,39 @@ Intern. Developing new pathfinding engine on Seoul metropolitan subway network.
   </div>
   </details>
 
+### Lmnop: My Next Optimum Problem, 2022
+
+* <details>
+  <summary>내용 보기</summary>
+
+  <div markdown="1">
+
+    ![lmnop](/assets/img/lmnop.gif)
+
+    - 백준 온라인 저지 사이트에서 다음으로 어떤 문제를 풀지 자동으로 고르기 위해 만든 앱
+
+    - [github](https://github.com/hadooboo/lmnop){:target="_blank"}
+
+  </div>
+  </details>
+
 ### Most: 세상의 모든 스탯, 2022
 
-![most](/assets/img/most.gif)
+* <details>
+  <summary>내용 보기</summary>
 
-- 유튜브에서 데이터 시각화 영상을 우연히 보고 그래프들을 자유롭게 서핑할 수 있는 사이트가 있으면 어떨까하는 생각으로 만들기 시작한 사이트
+  <div markdown="1">
 
-- [demo](https://most.hadooboo.kro.kr){:target="_blank"}
+    ![most](/assets/img/most.gif)
 
-- [github](https://github.com/hadooboo/most){:target="_blank"}
+    - 유튜브에서 데이터 시각화 영상을 우연히 보고 그래프들을 자유롭게 서핑할 수 있는 사이트가 있으면 어떨까하는 생각으로 만들기 시작한 사이트
+
+    - [demo](https://most.hadooboo.kro.kr){:target="_blank"}
+
+    - [github](https://github.com/hadooboo/most){:target="_blank"}
+
+  </div>
+  </details>
 
 ---
 
