@@ -40,6 +40,36 @@ Intern. Developing new pathfinding engine on Seoul metropolitan subway network.
 
 ---
 
+# Personal Projects
+
+### MIL: Monthly I Learned, 2021 - now
+
+* <details>
+  <summary>내용 보기</summary>
+
+  <div markdown="1">
+
+    - [Testflight와 심사(2022\. 07\.)](/mils/202207)
+    - [iOS SDK(2022\. 06\.)](/mils/202206)
+    - [Asterisk와 새로운 프로토콜(2022\. 05\.)](/mils/202205)
+    - [CRUD 작업에서 의미 찾기: DDD(2022\. 04\.)](/mils/202204)
+    - [안드로이드 SDK(2022\. 03\.)](/mils/202203)
+    - [legacy 코드 다루기(2022\. 02\.)](/mils/202202)
+    - [프론트엔드 경험에 대하여(2022\. 01\.)](/mils/202201)
+    - [좋은 개발 문화(2021\. 12\.)](/mils/202112)
+    - [우리 입맛대로 블록체인 다루기(2021\. 11\.)](/mils/202111)
+    - [프로토타입(2021\. 10\.)](/mils/202110)
+    - [외부 API와 함께 작업하기(2021\. 09\.)](/mils/202109)
+    - [가장 최신 기술을 알아간다는 것(2021\. 08\.)](/mils/202108)
+    - [답이 없는 상황(2021\. 07\.)](/mils/202107)
+    - [Standalone to multiuser service(2021\. 06\.)](/mils/202106)
+    - [Spring 세계가 깨어지는 경험(2021\. 05\.)](/mils/202105)
+
+  </div>
+  </details>
+
+---
+
 # Education
 
 ### Seoul National University, 2017 - now
