@@ -12,7 +12,11 @@ title: "Jaeho Nam"
 
 2021\. 04\. - now
 
-Software Engineer. Developing backend service related to blockchain network.
+Software Engineer. Developing backend service for new business items.
+
+- 기존에 존재하던 사내 시스템 A를 서비스형 소프트웨어로 업그레이드하여 사용자 한 명당 vm을 한 대씩 할당해주던 구조에서 vm 한 대로 모든 요청을 처리할 수 있도록 하였습니다. 저는 아키텍처를 새로 설계하고 기존 standalone 모델을 이용하여 재공학하는 역할을 맡았습니다.
+- 공증이 필요한 상황에서 공증 내용을 블록체인에 기록하여 적은 비용, 빠른 속도, 높은 신뢰도로 무결성을 확인할 수 있도록 돕는 모듈을 개발하고 여러 도메인에 적용해보았습니다. 저는 비트코인 네트워크에 데이터를 삽입하는 역할을 맡아 P2SH를 이용한 Data Drop 방식으로 개발하였습니다.
+- Asterisk PBX를 이용하여 사내에서 인력으로 해결하고 있던 업무를 ARS로 자동화하였습니다. 저는 websocket과 REST를 이용하여 Asterisk와 상호작용하는 코드를 작성하고 ARS 시나리오를 구성하는 역할을 맡았습니다.
 
 ### NAVER Corp. 동영상클라우드 3 개발
 
@@ -173,7 +177,6 @@ Intern. Developing new pathfinding engine on Seoul metropolitan subway network.
     - *클린 코드: 애자일 소프트웨어 장인 정신(Clean Code: A Handbook of Agile Software Craftsmanship)*, 인사이트, 2013
     - *월스트리트저널 인포그래픽 가이드: 데이터, 사실, 수치를 표현할 때 지켜야 할 기본 원칙(The Wall Street Journal Guide to Information Graphics)*, 인사이트, 2014
     - [*데이터 중심 애플리케이션 설계: 신뢰할 수 있고 확장 가능하며 유지보수하기 쉬운 시스템을 지탱하는 핵심(Designing Data-Intensive Applications)*, 위키북스, 2018](https://hadooboo.notion.site/def1915776d54ef48abc13c8df421c86){:target="_blank"}
-    - [*구글 엔지니어는 이렇게 일한다(Software Engineering at Google)*, 한빛미디어, 2022](/books/software-engineering-at-google)
 
   </div>
   </details>
