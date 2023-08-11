@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="en" dir="auto">
+
+<head><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="robots" content="index, follow">
+<title>Hadooboo Dev Log</title>
+<meta name="keywords" content="">
+<meta name="description" content="Experience Samjung Data Service Co., Ltd. 2021. 04. - now
+Software Engineer. Developing backend service for new business items.
+기존에 존재하던 사내 시스템 A를 서비스형 소프트웨어로 업그레이드하여 사용자 한 명당 vm을 한 대씩 할당해주던 구조에서 vm 한 대로 모든 요청을 처리할 수 있도록 하였습니다. 저는 아키텍처를 새로 설계하고 기존 standalone 모델을 이용하여 재공학하는 역할을 맡았습니다. 공증이 필요한 상황에서 공증 내용을 블록체인에 기록하여 적은 비용, 빠른 속도, 높은 신뢰도로 무결성을 확인할 수 있도록 돕는 모듈을 개발하고 여러 도메인에 적용해보았습니다.">
+<meta name="author" content="">
+<link rel="canonical" href="https://hadooboo.github.io/about/">
+<link crossorigin="anonymous" href="/assets/css/stylesheet.3613efbd0b1772781e8f49935e973cae632a7f61471c05b17be155505ccf87b5.css" integrity="sha256-NhPvvQsXcngej0mTXpc8rmMqf2FHHAWxe&#43;FVUFzPh7U=" rel="preload stylesheet" as="style">
+<script defer crossorigin="anonymous" src="/assets/js/highlight.f413e19d0714851f6474e7ee9632408e58ac146fbdbe62747134bea2fa3415e0.js" integrity="sha256-9BPhnQcUhR9kdOfuljJAjlisFG&#43;9vmJ0cTS&#43;ovo0FeA="
+    onload="hljs.initHighlightingOnLoad();"></script>
+<link rel="icon" href="https://hadooboo.github.io/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="https://hadooboo.github.io/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="https://hadooboo.github.io/favicon-32x32.png">
+<link rel="apple-touch-icon" href="https://hadooboo.github.io/apple-touch-icon.png">
+<link rel="mask-icon" href="https://hadooboo.github.io/safari-pinned-tab.svg">
+<meta name="theme-color" content="#2e2e33">
+<meta name="msapplication-TileColor" content="#2e2e33">
+<noscript>
+    <style>
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
+
+    </style>
+    <style>
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --theme: rgb(29, 30, 32);
+                --entry: rgb(46, 46, 51);
+                --primary: rgb(218, 218, 219);
+                --secondary: rgb(155, 156, 157);
+                --tertiary: rgb(65, 66, 68);
+                --content: rgb(196, 196, 197);
+                --hljs-bg: rgb(46, 46, 51);
+                --code-bg: rgb(55, 56, 62);
+                --border: rgb(51, 51, 51);
+            }
+
+            .list {
+                background: var(--theme);
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-track {
+                background: 0 0;
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-thumb {
+                border-color: var(--theme);
+            }
+        }
+
+    </style>
+</noscript><meta property="og:title" content="" />
+<meta property="og:description" content="Experience Samjung Data Service Co., Ltd. 2021. 04. - now
+Software Engineer. Developing backend service for new business items.
+기존에 존재하던 사내 시스템 A를 서비스형 소프트웨어로 업그레이드하여 사용자 한 명당 vm을 한 대씩 할당해주던 구조에서 vm 한 대로 모든 요청을 처리할 수 있도록 하였습니다. 저는 아키텍처를 새로 설계하고 기존 standalone 모델을 이용하여 재공학하는 역할을 맡았습니다. 공증이 필요한 상황에서 공증 내용을 블록체인에 기록하여 적은 비용, 빠른 속도, 높은 신뢰도로 무결성을 확인할 수 있도록 돕는 모듈을 개발하고 여러 도메인에 적용해보았습니다." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://hadooboo.github.io/about/" /><meta property="article:section" content="" />
+
+
+
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content=""/>
+<meta name="twitter:description" content="Experience Samjung Data Service Co., Ltd. 2021. 04. - now
+Software Engineer. Developing backend service for new business items.
+기존에 존재하던 사내 시스템 A를 서비스형 소프트웨어로 업그레이드하여 사용자 한 명당 vm을 한 대씩 할당해주던 구조에서 vm 한 대로 모든 요청을 처리할 수 있도록 하였습니다. 저는 아키텍처를 새로 설계하고 기존 standalone 모델을 이용하여 재공학하는 역할을 맡았습니다. 공증이 필요한 상황에서 공증 내용을 블록체인에 기록하여 적은 비용, 빠른 속도, 높은 신뢰도로 무결성을 확인할 수 있도록 돕는 모듈을 개발하고 여러 도메인에 적용해보았습니다."/>
+
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position":  1 ,
+      "name": "",
+      "item": "https://hadooboo.github.io/about/"
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "",
+  "name": "",
+  "description": "Experience Samjung Data Service Co., Ltd. 2021. 04. - now\nSoftware Engineer. Developing backend service for new business items.\n기존에 존재하던 사내 시스템 A를 서비스형 소프트웨어로 업그레이드하여 사용자 한 명당 vm을 한 대씩 할당해주던 구조에서 vm 한 대로 모든 요청을 처리할 수 있도록 하였습니다. 저는 아키텍처를 새로 설계하고 기존 standalone 모델을 이용하여 재공학하는 역할을 맡았습니다. 공증이 필요한 상황에서 공증 내용을 블록체인에 기록하여 적은 비용, 빠른 속도, 높은 신뢰도로 무결성을 확인할 수 있도록 돕는 모듈을 개발하고 여러 도메인에 적용해보았습니다.",
+  "keywords": [
+    
+  ],
+  "articleBody": "Experience Samjung Data Service Co., Ltd. 2021. 04. - now\nSoftware Engineer. Developing backend service for new business items.\n기존에 존재하던 사내 시스템 A를 서비스형 소프트웨어로 업그레이드하여 사용자 한 명당 vm을 한 대씩 할당해주던 구조에서 vm 한 대로 모든 요청을 처리할 수 있도록 하였습니다. 저는 아키텍처를 새로 설계하고 기존 standalone 모델을 이용하여 재공학하는 역할을 맡았습니다. 공증이 필요한 상황에서 공증 내용을 블록체인에 기록하여 적은 비용, 빠른 속도, 높은 신뢰도로 무결성을 확인할 수 있도록 돕는 모듈을 개발하고 여러 도메인에 적용해보았습니다. 저는 비트코인 네트워크에 데이터를 삽입하는 역할을 맡아 P2SH를 이용한 Data Drop 방식으로 개발하였습니다. Asterisk PBX를 이용하여 사내에서 인력으로 해결하고 있던 업무를 ARS로 자동화하였습니다. 저는 websocket과 REST를 이용하여 Asterisk와 상호작용하는 코드를 작성하고 ARS 시나리오를 구성하는 역할을 맡았습니다. NAVER Corp. 동영상클라우드 3 개발 2020. 12. - 2021. 02.\nIntern. Developing the user dashboard page of PRISM Live Studio.\nPRISM Live Studio 사용자들로부터 수집된 실제 로그 데이터를 이용하여 실시간 방송 기록 및 통계 정보를 확인할 수 있는 대시보드 서비스를 만들었습니다. 저는 로그 데이터 전처리, 분석, 제공 단계에 걸친 데이터 파이프라인을 구축하는 역할을 담당했습니다.\nSeoul National University 2020. 09. - 2020. 12.\nTA. Basic Computing: First Adventures in Computing\n프로그래밍을 처음 접하는 비전공생을 대상으로 프로그래밍 기초를 알려주는 수업의 조교를 맡았습니다.\nNAVER Corp. Glace CIC. Map Service Platform 2020. 07. - 2020. 08.\nIntern. Developing new pathfinding engine on Seoul metropolitan subway network.\n실시간 운행 정보 변경에 대응할 수 있는 새로운 길찾기 알고리즘을 개발 및 구현하고 수도권 지하철 네트워크에 적용해보는 실험적 프로젝트였습니다. 저는 데이터베이스에 저장된 지하철 시간표를 불러와 전처리하고 길찾기 알고리즘에서 사용하는 자료구조로 변환하는 역할을 수행하였습니다.\nPersonal Projects TODO Education Seoul National University, 2017 - now Major. Computer Science \u0026 Engineering Minor. Civil \u0026 Environmental Engineering Yongsan High School, 2014 - 2017 Skills I have learned \u0026 used Category Skills PL Go, Java, Kotlin, Python, C, C++, Javascript, Swift Framework \u0026 Library Spring Boot, Vue.js, D3.js, Django, Nuxt.js App Flutter, Android SDK, iOS SDK Database MySQL, PostgreSQL, MongoDB Data processing Apache HDFS, Apache Spark, Apache Druid, Keras Blockchain Bitcoin Network, Ethereum Network Devops Docker Communication Tool Slack, Zoom, Notion Etc Asterisk PBX I want to learn Category Skills PL Rust, Scala Database GraphQL Data processing Hadoop Ecosystem, BigQuery Devops Kubernetes, Prometheus Communication Tool Jira ",
+  "wordCount" : "357",
+  "inLanguage": "en",
+  "datePublished": "0001-01-01T00:00:00Z",
+  "dateModified": "0001-01-01T00:00:00Z",
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://hadooboo.github.io/about/"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "Hadooboo Dev Log",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://hadooboo.github.io/favicon.ico"
+    }
+  }
+}
+</script>
+</head>
+
+<body class="" id="top">
+<script>
+    if (localStorage.getItem("pref-theme") === "dark") {
+        document.body.classList.add('dark');
+    } else if (localStorage.getItem("pref-theme") === "light") {
+        document.body.classList.remove('dark')
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.body.classList.add('dark');
+    }
+
+</script>
+
+<header class="header">
+    <nav class="nav">
+        <div class="logo">
+            <a href="https://hadooboo.github.io/" accesskey="h" title="Hadooboo Dev Log (Alt + H)">Hadooboo Dev Log</a>
+            <div class="logo-switches">
+                <button id="theme-toggle" accesskey="t" title="(Alt + T)">
+                    <svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                    <svg id="sun" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                </button>
+            </div>
+        </div>
+        <ul id="menu">
+            <li>
+                <a href="https://hadooboo.github.io/about/" title="About">
+                    <span class="active">About</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://hadooboo.github.io/tag/" title="Tag">
+                    <span>Tag</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</header>
+<main class="main">
+
+<article class="post-single">
+  <header class="post-header">
+    
+    <h1 class="post-title">
+      
+    </h1>
+    <div class="post-meta">
+
+</div>
+  </header> 
+  <div class="post-content"><h1 id="experience">Experience<a hidden class="anchor" aria-hidden="true" href="#experience">#</a></h1>
+<h3 id="samjung-data-service-co-ltd">Samjung Data Service Co., Ltd.<a hidden class="anchor" aria-hidden="true" href="#samjung-data-service-co-ltd">#</a></h3>
+<p>2021. 04. - now</p>
+<p>Software Engineer. Developing backend service for new business items.</p>
+<ul>
+<li>기존에 존재하던 사내 시스템 A를 서비스형 소프트웨어로 업그레이드하여 사용자 한 명당 vm을 한 대씩 할당해주던 구조에서 vm 한 대로 모든 요청을 처리할 수 있도록 하였습니다. 저는 아키텍처를 새로 설계하고 기존 standalone 모델을 이용하여 재공학하는 역할을 맡았습니다.</li>
+<li>공증이 필요한 상황에서 공증 내용을 블록체인에 기록하여 적은 비용, 빠른 속도, 높은 신뢰도로 무결성을 확인할 수 있도록 돕는 모듈을 개발하고 여러 도메인에 적용해보았습니다. 저는 비트코인 네트워크에 데이터를 삽입하는 역할을 맡아 P2SH를 이용한 Data Drop 방식으로 개발하였습니다.</li>
+<li>Asterisk PBX를 이용하여 사내에서 인력으로 해결하고 있던 업무를 ARS로 자동화하였습니다. 저는 websocket과 REST를 이용하여 Asterisk와 상호작용하는 코드를 작성하고 ARS 시나리오를 구성하는 역할을 맡았습니다.</li>
+</ul>
+<h3 id="naver-corp-동영상클라우드-3-개발">NAVER Corp. 동영상클라우드 3 개발<a hidden class="anchor" aria-hidden="true" href="#naver-corp-동영상클라우드-3-개발">#</a></h3>
+<p>2020. 12. - 2021. 02.</p>
+<p>Intern. Developing the user dashboard page of PRISM Live Studio.</p>
+<p>PRISM Live Studio 사용자들로부터 수집된 실제 로그 데이터를 이용하여 실시간 방송 기록 및 통계 정보를 확인할 수 있는 대시보드 서비스를 만들었습니다. 저는 로그 데이터 전처리, 분석, 제공 단계에 걸친 데이터 파이프라인을 구축하는 역할을 담당했습니다.</p>
+<h3 id="seoul-national-university">Seoul National University<a hidden class="anchor" aria-hidden="true" href="#seoul-national-university">#</a></h3>
+<p>2020. 09. - 2020. 12.</p>
+<p>TA. Basic Computing: First Adventures in Computing</p>
+<p>프로그래밍을 처음 접하는 비전공생을 대상으로 프로그래밍 기초를 알려주는 수업의 조교를 맡았습니다.</p>
+<h3 id="naver-corp-glace-cic-map-service-platform">NAVER Corp. Glace CIC. Map Service Platform<a hidden class="anchor" aria-hidden="true" href="#naver-corp-glace-cic-map-service-platform">#</a></h3>
+<p>2020. 07. - 2020. 08.</p>
+<p>Intern. Developing new pathfinding engine on Seoul metropolitan subway network.</p>
+<p>실시간 운행 정보 변경에 대응할 수 있는 새로운 길찾기 알고리즘을 개발 및 구현하고 수도권 지하철 네트워크에 적용해보는 실험적 프로젝트였습니다. 저는 데이터베이스에 저장된 지하철 시간표를 불러와 전처리하고 길찾기 알고리즘에서 사용하는 자료구조로 변환하는 역할을 수행하였습니다.</p>
+<hr>
+<h1 id="personal-projects">Personal Projects<a hidden class="anchor" aria-hidden="true" href="#personal-projects">#</a></h1>
+<h3 id="todo">TODO<a hidden class="anchor" aria-hidden="true" href="#todo">#</a></h3>
+<hr>
+<h1 id="education">Education<a hidden class="anchor" aria-hidden="true" href="#education">#</a></h1>
+<h3 id="seoul-national-university-2017---now">Seoul National University, 2017 - now<a hidden class="anchor" aria-hidden="true" href="#seoul-national-university-2017---now">#</a></h3>
+<blockquote>
+<h4 id="major-computer-science--engineering">Major. Computer Science &amp; Engineering<a hidden class="anchor" aria-hidden="true" href="#major-computer-science--engineering">#</a></h4>
+</blockquote>
+<blockquote>
+<h4 id="minor-civil--environmental-engineering">Minor. Civil &amp; Environmental Engineering<a hidden class="anchor" aria-hidden="true" href="#minor-civil--environmental-engineering">#</a></h4>
+</blockquote>
+<h3 id="yongsan-high-school-2014---2017">Yongsan High School, 2014 - 2017<a hidden class="anchor" aria-hidden="true" href="#yongsan-high-school-2014---2017">#</a></h3>
+<hr>
+<h1 id="skills">Skills<a hidden class="anchor" aria-hidden="true" href="#skills">#</a></h1>
+<h3 id="i-have-learned--used">I have learned &amp; used<a hidden class="anchor" aria-hidden="true" href="#i-have-learned--used">#</a></h3>
+<table>
+<thead>
+<tr>
+<th>Category</th>
+<th>Skills</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>PL</td>
+<td><strong>Go</strong>, Java, Kotlin, Python, C, C++, Javascript, Swift</td>
+</tr>
+<tr>
+<td>Framework &amp; Library</td>
+<td>Spring Boot, Vue.js, D3.js, Django, Nuxt.js</td>
+</tr>
+<tr>
+<td>App</td>
+<td>Flutter, Android SDK, iOS SDK</td>
+</tr>
+<tr>
+<td>Database</td>
+<td>MySQL, PostgreSQL, MongoDB</td>
+</tr>
+<tr>
+<td>Data processing</td>
+<td>Apache HDFS, Apache Spark, Apache Druid, Keras</td>
+</tr>
+<tr>
+<td>Blockchain</td>
+<td>Bitcoin Network, Ethereum Network</td>
+</tr>
+<tr>
+<td>Devops</td>
+<td>Docker</td>
+</tr>
+<tr>
+<td>Communication Tool</td>
+<td>Slack, Zoom, Notion</td>
+</tr>
+<tr>
+<td>Etc</td>
+<td>Asterisk PBX</td>
+</tr>
+</tbody>
+</table>
+<h3 id="i-want-to-learn">I want to learn<a hidden class="anchor" aria-hidden="true" href="#i-want-to-learn">#</a></h3>
+<table>
+<thead>
+<tr>
+<th>Category</th>
+<th>Skills</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>PL</td>
+<td>Rust, Scala</td>
+</tr>
+<tr>
+<td>Database</td>
+<td>GraphQL</td>
+</tr>
+<tr>
+<td>Data processing</td>
+<td>Hadoop Ecosystem, BigQuery</td>
+</tr>
+<tr>
+<td>Devops</td>
+<td>Kubernetes, Prometheus</td>
+</tr>
+<tr>
+<td>Communication Tool</td>
+<td>Jira</td>
+</tr>
+</tbody>
+</table>
+
+
+  </div>
+
+  <footer class="post-footer">
+    <ul class="post-tags">
+    </ul>
+  </footer>
+</article>
+    </main>
+    
+<footer class="footer">
+    <span>&copy; 2023 <a href="https://hadooboo.github.io/">Hadooboo Dev Log</a></span>
+    <span>
+        Powered by
+        <a href="https://gohugo.io/" rel="noopener noreferrer" target="_blank">Hugo</a> &
+        <a href="https://github.com/adityatelange/hugo-PaperMod/" rel="noopener" target="_blank">PaperMod</a>
+    </span>
+</footer>
+<a href="#top" aria-label="go to top" title="Go to Top (Alt + G)" class="top-link" id="top-link" accesskey="g">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6" fill="currentColor">
+        <path d="M12 6H0l6-6z" />
+    </svg>
+</a>
+
+<script>
+    let menu = document.getElementById('menu')
+    if (menu) {
+        menu.scrollLeft = localStorage.getItem("menu-scroll-position");
+        menu.onscroll = function () {
+            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+        }
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            var id = this.getAttribute("href").substr(1);
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
+                    behavior: "smooth"
+                });
+            } else {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
+            }
+            if (id === "top") {
+                history.replaceState(null, null, " ");
+            } else {
+                history.pushState(null, null, `#${id}`);
+            }
+        });
+    });
+
+</script>
+<script>
+    var mybutton = document.getElementById("top-link");
+    window.onscroll = function () {
+        if (document.body.scrollTop > 800 || document.documentElement.scrollTop > 800) {
+            mybutton.style.visibility = "visible";
+            mybutton.style.opacity = "1";
+        } else {
+            mybutton.style.visibility = "hidden";
+            mybutton.style.opacity = "0";
+        }
+    };
+
+</script>
+<script>
+    document.getElementById("theme-toggle").addEventListener("click", () => {
+        if (document.body.className.includes("dark")) {
+            document.body.classList.remove('dark');
+            localStorage.setItem("pref-theme", 'light');
+        } else {
+            document.body.classList.add('dark');
+            localStorage.setItem("pref-theme", 'dark');
+        }
+    })
+
+</script>
+</body>
+
+</html>
