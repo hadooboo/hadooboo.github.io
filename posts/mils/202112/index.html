@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="en" dir="auto">
+
+<head><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="robots" content="index, follow">
+<title>202112 | 좋은 개발 문화 | Hadooboo Dev Log</title>
+<meta name="keywords" content="">
+<meta name="description" content="회사에 들어오고 난 뒤 처음으로 연말이 찾아왔고, 올 한 해 동안의 회사에서의 업무를 되돌아보기 좋은 시간이었다. 또한, 회사 생활에 점차 적응해나가니 우리 팀에서 부족한 점이 하나 둘 보이기 시작하였다. 가장 필요하면서 되지 않고 있다고 느낀 것은 협업에 대한 문제였다.
+첫 번째 협업에서의 문제는 프론트엔드와 백엔드 간의 스펙 공유였다. 사람이 많은 팀이 아니다 보니 백엔드 API 서버를 만든 사람이 프론트엔드 웹 클라이언트도 만드는 경우가 다반사였기 때문에 문서로 정리하여 공유를 하지 않아도 큰 문제가 없는 것 같아 보였다.">
+<meta name="author" content="Hadooboo">
+<link rel="canonical" href="https://hadooboo.github.io/posts/mils/202112/">
+<link crossorigin="anonymous" href="/assets/css/stylesheet.3613efbd0b1772781e8f49935e973cae632a7f61471c05b17be155505ccf87b5.css" integrity="sha256-NhPvvQsXcngej0mTXpc8rmMqf2FHHAWxe&#43;FVUFzPh7U=" rel="preload stylesheet" as="style">
+<script defer crossorigin="anonymous" src="/assets/js/highlight.f413e19d0714851f6474e7ee9632408e58ac146fbdbe62747134bea2fa3415e0.js" integrity="sha256-9BPhnQcUhR9kdOfuljJAjlisFG&#43;9vmJ0cTS&#43;ovo0FeA="
+    onload="hljs.initHighlightingOnLoad();"></script>
+<link rel="icon" href="https://hadooboo.github.io/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="https://hadooboo.github.io/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="https://hadooboo.github.io/favicon-32x32.png">
+<link rel="apple-touch-icon" href="https://hadooboo.github.io/apple-touch-icon.png">
+<link rel="mask-icon" href="https://hadooboo.github.io/safari-pinned-tab.svg">
+<meta name="theme-color" content="#2e2e33">
+<meta name="msapplication-TileColor" content="#2e2e33">
+<noscript>
+    <style>
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
+
+    </style>
+    <style>
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --theme: rgb(29, 30, 32);
+                --entry: rgb(46, 46, 51);
+                --primary: rgb(218, 218, 219);
+                --secondary: rgb(155, 156, 157);
+                --tertiary: rgb(65, 66, 68);
+                --content: rgb(196, 196, 197);
+                --hljs-bg: rgb(46, 46, 51);
+                --code-bg: rgb(55, 56, 62);
+                --border: rgb(51, 51, 51);
+            }
+
+            .list {
+                background: var(--theme);
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-track {
+                background: 0 0;
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-thumb {
+                border-color: var(--theme);
+            }
+        }
+
+    </style>
+</noscript><meta property="og:title" content="202112 | 좋은 개발 문화" />
+<meta property="og:description" content="회사에 들어오고 난 뒤 처음으로 연말이 찾아왔고, 올 한 해 동안의 회사에서의 업무를 되돌아보기 좋은 시간이었다. 또한, 회사 생활에 점차 적응해나가니 우리 팀에서 부족한 점이 하나 둘 보이기 시작하였다. 가장 필요하면서 되지 않고 있다고 느낀 것은 협업에 대한 문제였다.
+첫 번째 협업에서의 문제는 프론트엔드와 백엔드 간의 스펙 공유였다. 사람이 많은 팀이 아니다 보니 백엔드 API 서버를 만든 사람이 프론트엔드 웹 클라이언트도 만드는 경우가 다반사였기 때문에 문서로 정리하여 공유를 하지 않아도 큰 문제가 없는 것 같아 보였다." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://hadooboo.github.io/posts/mils/202112/" /><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2021-12-31T00:00:00+00:00" />
+<meta property="article:modified_time" content="2021-12-31T00:00:00+00:00" />
+
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="202112 | 좋은 개발 문화"/>
+<meta name="twitter:description" content="회사에 들어오고 난 뒤 처음으로 연말이 찾아왔고, 올 한 해 동안의 회사에서의 업무를 되돌아보기 좋은 시간이었다. 또한, 회사 생활에 점차 적응해나가니 우리 팀에서 부족한 점이 하나 둘 보이기 시작하였다. 가장 필요하면서 되지 않고 있다고 느낀 것은 협업에 대한 문제였다.
+첫 번째 협업에서의 문제는 프론트엔드와 백엔드 간의 스펙 공유였다. 사람이 많은 팀이 아니다 보니 백엔드 API 서버를 만든 사람이 프론트엔드 웹 클라이언트도 만드는 경우가 다반사였기 때문에 문서로 정리하여 공유를 하지 않아도 큰 문제가 없는 것 같아 보였다."/>
+
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position":  1 ,
+      "name": "Posts",
+      "item": "https://hadooboo.github.io/posts/"
+    }, 
+    {
+      "@type": "ListItem",
+      "position":  2 ,
+      "name": "Mils",
+      "item": "https://hadooboo.github.io/posts/mils/"
+    }, 
+    {
+      "@type": "ListItem",
+      "position":  3 ,
+      "name": "202112 | 좋은 개발 문화",
+      "item": "https://hadooboo.github.io/posts/mils/202112/"
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "202112 | 좋은 개발 문화",
+  "name": "202112 | 좋은 개발 문화",
+  "description": "회사에 들어오고 난 뒤 처음으로 연말이 찾아왔고, 올 한 해 동안의 회사에서의 업무를 되돌아보기 좋은 시간이었다. 또한, 회사 생활에 점차 적응해나가니 우리 팀에서 부족한 점이 하나 둘 보이기 시작하였다. 가장 필요하면서 되지 않고 있다고 느낀 것은 협업에 대한 문제였다.\n첫 번째 협업에서의 문제는 프론트엔드와 백엔드 간의 스펙 공유였다. 사람이 많은 팀이 아니다 보니 백엔드 API 서버를 만든 사람이 프론트엔드 웹 클라이언트도 만드는 경우가 다반사였기 때문에 문서로 정리하여 공유를 하지 않아도 큰 문제가 없는 것 같아 보였다.",
+  "keywords": [
+    
+  ],
+  "articleBody": "회사에 들어오고 난 뒤 처음으로 연말이 찾아왔고, 올 한 해 동안의 회사에서의 업무를 되돌아보기 좋은 시간이었다. 또한, 회사 생활에 점차 적응해나가니 우리 팀에서 부족한 점이 하나 둘 보이기 시작하였다. 가장 필요하면서 되지 않고 있다고 느낀 것은 협업에 대한 문제였다.\n첫 번째 협업에서의 문제는 프론트엔드와 백엔드 간의 스펙 공유였다. 사람이 많은 팀이 아니다 보니 백엔드 API 서버를 만든 사람이 프론트엔드 웹 클라이언트도 만드는 경우가 다반사였기 때문에 문서로 정리하여 공유를 하지 않아도 큰 문제가 없는 것 같아 보였다. 그러나 내가 만들었던 코드도 다시 보면 기억이 안 날 때가 많은데 특히나 직관적으로 눈에 보이지 않는 API 요청 및 응답 형식은 더욱 더 쉽게 잊혔고, 결국 다른 팀원이 만든 API를 이용하려고 할 때와 같이 백엔드 코드를 직접 보고 스펙을 확인해야 했다. 점점 시간이 지나면 지날수록 비효율이라고 느껴졌다. 그래서 이번 달 처음으로 도입한 것이 swagger를 이용한 API 스펙 공유였다. 단순 yaml 파일 작성과 docker container 실행만으로 API 문서를 온라인으로 호스팅할 수 있었다. 개발 서버에 한 번 스펙을 올려두고 나니 다시 코드를 보지 않아도 되어 개발 속도가 빨라졌고, 이후 프로젝트의 인수인계 과정에서도 큰 도움이 되리라 생각한다.\n또한 중요한 문제가 코드 공유에 대한 것이었다. 팀에서 알파 테스트 단계부터는 git으로 관리했지만 프로토타입 과정 프로젝트에 대해서는 git으로 관리하지 않는 악습 아닌 악습이 있었다. git에서의 PR 및 리뷰 과정이 오버헤드로 작용하여 빠른 개발을 늦출 수 있다는 이유도 이해는 되었지만 팀원들끼리 파일 공유를 할 방법이 없어 압축 파일로 코드를 옮기고 눈으로 보고 수정사항을 복사 붙여넣기로 적용하는 이상한 일이 아무렇지 않게 일어나고 있었다. 이를 큰 문제라고 생각하여 개발 서버에 git 서버를 구축해야겠다고 마음먹었다. git 서버의 구축은 어려운 일은 아니었다. 개발 서버에서 git user를 새로 생성하고 팀원들에게 해당 유저에 대한 접속 권한을 부여한 뒤 git clone --bare 로 커밋 히스토리만 남는 git 디렉터리를 만들고 git instaweb 으로 간단하게 Web UI를 실행시켜주기만 하면 팀원들끼리 사용하기에 문제 없는 git 서버가 만들어졌다. 로컬에서 remote에 dev를 등록하여 origin과 구별하여 사용할 수 있도록 팀원들에게 알려주기도 했다. 물론 dev, origin 두 개의 git 서버에서 섞이고 꼬이는 일이 일어날 수도 있겠지만 적어도 프로토타입 단계에서는 좋은 개발 경험을 가져다주리라 생각한다.\n마지막으로 협업에서의 문제가 실험 데이터를 위한 파일을 google drive 공유 계정에 보관한다는 것이었다. google drive에 큰 문제가 있는 것은 아니다. 그러나 매번 큰 파일을 업로드하고 다운로드 하는 과정이나 공유 계정으로 로그인해서 들어가야만 하는 점 등이 귀찮은 것이 문제였다. 그래서 개발 서버에 파일 서버를 구축하였다. 복잡한 작업은 아니었고 단순히 file-server 라이브러리를 설치해 명령어 한 줄로 실행할 수 있었다. 실험을 할 때 http GET 요청을 통해 파일을 받아와 사용할 수 있게 된 것이 가장 큰 장점이었는데, 내 로컬에 있는 파일이 google drive에 가장 마지막으로 최신화된 파일인지 확인하는 것이 단순히 파일명을 통한 것이었다면 http GET 요청은 말 그대로 실시간이므로 그런 걱정을 할 필요가 없었다. 또한 파일 서버 url 접속으로 파일이 언제 최신화되었는지도 타임스탬프를 보고 쉽게 확인할 수 있는 것도 큰 장점이었다.\n이렇게 여러 문제를 해결하기 위해 추가적인 작업들을 하고 나니 생각보다 큰 작업들은 아니었다고 생각한다. 그러나 이러한 사소한 노력 하나하나가 정말 큰 효용을 가져다주었다. 잠시의 귀찮음이 협업 효율의 증가를 가져올 수 있다면 내가 해결해버리는 것이 결국에는 나를 위한 일이라고 생각한다.\n",
+  "wordCount" : "476",
+  "inLanguage": "en",
+  "datePublished": "2021-12-31T00:00:00Z",
+  "dateModified": "2021-12-31T00:00:00Z",
+  "author":{
+    "@type": "Person",
+    "name": "Hadooboo"
+  },
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://hadooboo.github.io/posts/mils/202112/"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "Hadooboo Dev Log",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://hadooboo.github.io/favicon.ico"
+    }
+  }
+}
+</script>
+</head>
+
+<body class="" id="top">
+<script>
+    if (localStorage.getItem("pref-theme") === "dark") {
+        document.body.classList.add('dark');
+    } else if (localStorage.getItem("pref-theme") === "light") {
+        document.body.classList.remove('dark')
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.body.classList.add('dark');
+    }
+
+</script>
+
+<header class="header">
+    <nav class="nav">
+        <div class="logo">
+            <a href="https://hadooboo.github.io/" accesskey="h" title="Hadooboo Dev Log (Alt + H)">Hadooboo Dev Log</a>
+            <div class="logo-switches">
+                <button id="theme-toggle" accesskey="t" title="(Alt + T)">
+                    <svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                    <svg id="sun" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                </button>
+            </div>
+        </div>
+        <ul id="menu">
+            <li>
+                <a href="https://hadooboo.github.io/about/" title="About">
+                    <span>About</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://hadooboo.github.io/tag/" title="Tag">
+                    <span>Tag</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</header>
+<main class="main">
+
+<article class="post-single">
+  <header class="post-header">
+    <div class="breadcrumbs"><a href="https://hadooboo.github.io/">Home</a>&nbsp;»&nbsp;<a href="https://hadooboo.github.io/posts/">Posts</a>&nbsp;»&nbsp;<a href="https://hadooboo.github.io/posts/mils/">Mils</a></div>
+    <h1 class="post-title">
+      202112 | 좋은 개발 문화
+    </h1>
+    <div class="post-meta"><span title='2021-12-31 00:00:00 +0000 UTC'>2021-12-31</span>&nbsp;·&nbsp;3 min&nbsp;·&nbsp;Hadooboo
+
+</div>
+  </header> 
+  <div class="post-content"><p>회사에 들어오고 난 뒤 처음으로 연말이 찾아왔고, 올 한 해 동안의 회사에서의 업무를 되돌아보기 좋은 시간이었다. 또한, 회사 생활에 점차 적응해나가니 우리 팀에서 부족한 점이 하나 둘 보이기 시작하였다. 가장 필요하면서 되지 않고 있다고 느낀 것은 협업에 대한 문제였다.</p>
+<p>첫 번째 협업에서의 문제는 프론트엔드와 백엔드 간의 스펙 공유였다. 사람이 많은 팀이 아니다 보니 백엔드 API 서버를 만든 사람이 프론트엔드 웹 클라이언트도 만드는 경우가 다반사였기 때문에 문서로 정리하여 공유를 하지 않아도 큰 문제가 없는 것 같아 보였다. 그러나 내가 만들었던 코드도 다시 보면 기억이 안 날 때가 많은데 특히나 직관적으로 눈에 보이지 않는 API 요청 및 응답 형식은 더욱 더 쉽게 잊혔고, 결국 다른 팀원이 만든 API를 이용하려고 할 때와 같이 백엔드 코드를 직접 보고 스펙을 확인해야 했다. 점점 시간이 지나면 지날수록 비효율이라고 느껴졌다. 그래서 이번 달 처음으로 도입한 것이 swagger를 이용한 API 스펙 공유였다. 단순 yaml 파일 작성과 docker container 실행만으로 API 문서를 온라인으로 호스팅할 수 있었다. 개발 서버에 한 번 스펙을 올려두고 나니 다시 코드를 보지 않아도 되어 개발 속도가 빨라졌고, 이후 프로젝트의 인수인계 과정에서도 큰 도움이 되리라 생각한다.</p>
+<p>또한 중요한 문제가 코드 공유에 대한 것이었다. 팀에서 알파 테스트 단계부터는 git으로 관리했지만 프로토타입 과정 프로젝트에 대해서는 git으로 관리하지 않는 악습 아닌 악습이 있었다. git에서의 PR 및 리뷰 과정이 오버헤드로 작용하여 빠른 개발을 늦출 수 있다는 이유도 이해는 되었지만 팀원들끼리 파일 공유를 할 방법이 없어 압축 파일로 코드를 옮기고 눈으로 보고 수정사항을 복사 붙여넣기로 적용하는 이상한 일이 아무렇지 않게 일어나고 있었다. 이를 큰 문제라고 생각하여 개발 서버에 git 서버를 구축해야겠다고 마음먹었다. git 서버의 구축은 어려운 일은 아니었다. 개발 서버에서 git user를 새로 생성하고 팀원들에게 해당 유저에 대한 접속 권한을 부여한 뒤 <code>git clone --bare</code> 로 커밋 히스토리만 남는 git 디렉터리를 만들고 <code>git instaweb</code> 으로 간단하게 Web UI를 실행시켜주기만 하면 팀원들끼리 사용하기에 문제 없는 git 서버가 만들어졌다. 로컬에서 remote에 dev를 등록하여 origin과 구별하여 사용할 수 있도록 팀원들에게 알려주기도 했다. 물론 dev, origin 두 개의 git 서버에서 섞이고 꼬이는 일이 일어날 수도 있겠지만 적어도 프로토타입 단계에서는 좋은 개발 경험을 가져다주리라 생각한다.</p>
+<p>마지막으로 협업에서의 문제가 실험 데이터를 위한 파일을 google drive 공유 계정에 보관한다는 것이었다. google drive에 큰 문제가 있는 것은 아니다. 그러나 매번 큰 파일을 업로드하고 다운로드 하는 과정이나 공유 계정으로 로그인해서 들어가야만 하는 점 등이 귀찮은 것이 문제였다. 그래서 개발 서버에 파일 서버를 구축하였다. 복잡한 작업은 아니었고 단순히 <a href="https://github.com/MauriceButler/file-server">file-server</a> 라이브러리를 설치해 명령어 한 줄로 실행할 수 있었다. 실험을 할 때 http GET 요청을 통해 파일을 받아와 사용할 수 있게 된 것이 가장 큰 장점이었는데, 내 로컬에 있는 파일이 google drive에 가장 마지막으로 최신화된 파일인지 확인하는 것이 단순히 파일명을 통한 것이었다면 http GET 요청은 말 그대로 실시간이므로 그런 걱정을 할 필요가 없었다. 또한 파일 서버 url 접속으로 파일이 언제 최신화되었는지도 타임스탬프를 보고 쉽게 확인할 수 있는 것도 큰 장점이었다.</p>
+<p>이렇게 여러 문제를 해결하기 위해 추가적인 작업들을 하고 나니 생각보다 큰 작업들은 아니었다고 생각한다. 그러나 이러한 사소한 노력 하나하나가 정말 큰 효용을 가져다주었다. 잠시의 귀찮음이 협업 효율의 증가를 가져올 수 있다면 내가 해결해버리는 것이 결국에는 나를 위한 일이라고 생각한다.</p>
+
+
+<script src="https://utteranc.es/client.js"
+        repo="hadooboo/hadooboo.github.io"
+        issue-term="pathname"
+        theme="github-light"
+        crossorigin="anonymous"
+        async>
+</script>
+
+
+
+  </div>
+
+  <footer class="post-footer">
+    <ul class="post-tags">
+    </ul>
+  </footer>
+</article>
+    </main>
+    
+<footer class="footer">
+    <span>&copy; 2023 <a href="https://hadooboo.github.io/">Hadooboo Dev Log</a></span>
+    <span>
+        Powered by
+        <a href="https://gohugo.io/" rel="noopener noreferrer" target="_blank">Hugo</a> &
+        <a href="https://github.com/adityatelange/hugo-PaperMod/" rel="noopener" target="_blank">PaperMod</a>
+    </span>
+</footer>
+<a href="#top" aria-label="go to top" title="Go to Top (Alt + G)" class="top-link" id="top-link" accesskey="g">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6" fill="currentColor">
+        <path d="M12 6H0l6-6z" />
+    </svg>
+</a>
+
+<script>
+    let menu = document.getElementById('menu')
+    if (menu) {
+        menu.scrollLeft = localStorage.getItem("menu-scroll-position");
+        menu.onscroll = function () {
+            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+        }
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            var id = this.getAttribute("href").substr(1);
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
+                    behavior: "smooth"
+                });
+            } else {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
+            }
+            if (id === "top") {
+                history.replaceState(null, null, " ");
+            } else {
+                history.pushState(null, null, `#${id}`);
+            }
+        });
+    });
+
+</script>
+<script>
+    var mybutton = document.getElementById("top-link");
+    window.onscroll = function () {
+        if (document.body.scrollTop > 800 || document.documentElement.scrollTop > 800) {
+            mybutton.style.visibility = "visible";
+            mybutton.style.opacity = "1";
+        } else {
+            mybutton.style.visibility = "hidden";
+            mybutton.style.opacity = "0";
+        }
+    };
+
+</script>
+<script>
+    document.getElementById("theme-toggle").addEventListener("click", () => {
+        if (document.body.className.includes("dark")) {
+            document.body.classList.remove('dark');
+            localStorage.setItem("pref-theme", 'light');
+        } else {
+            document.body.classList.add('dark');
+            localStorage.setItem("pref-theme", 'dark');
+        }
+    })
+
+</script>
+</body>
+
+</html>

@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="en" dir="auto">
+
+<head><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="robots" content="index, follow">
+<title>202108 | 가장 최신 기술을 알아간다는 것 | Hadooboo Dev Log</title>
+<meta name="keywords" content="">
+<meta name="description" content="IT 기술은 계속해서 빠르게 변해가고 개발자는 항상 새로운 내용을 공부해야 한다는 내용을 여기저기서 많이 들어왔고 느껴왔다. 그래도 학교 공부를 할 때와 지금까지의 인턴 및 회사 생활에서는 누군가가 미리 정리해 놓은 내용이 있거나 가르쳐주는 사람이 있었기에 방향성이 쉽게 보였고 할 만했다. 그러나 이번에 회사에서 비트코인 탭루트 업그레이드에 대해 조사하고 발표를 준비하면서 가장 최신의 기술을 알아간다는 것이 매우 까다로운 일임을 알게 되었다.
+비트코인 탭루트는 올해 11월 적용 예정인 소프트포크로서 2017년의 세그윗 소프트포크에 이은 두 번째 대규모 업그레이드라고 한다.">
+<meta name="author" content="Hadooboo">
+<link rel="canonical" href="https://hadooboo.github.io/posts/mils/202108/">
+<link crossorigin="anonymous" href="/assets/css/stylesheet.3613efbd0b1772781e8f49935e973cae632a7f61471c05b17be155505ccf87b5.css" integrity="sha256-NhPvvQsXcngej0mTXpc8rmMqf2FHHAWxe&#43;FVUFzPh7U=" rel="preload stylesheet" as="style">
+<script defer crossorigin="anonymous" src="/assets/js/highlight.f413e19d0714851f6474e7ee9632408e58ac146fbdbe62747134bea2fa3415e0.js" integrity="sha256-9BPhnQcUhR9kdOfuljJAjlisFG&#43;9vmJ0cTS&#43;ovo0FeA="
+    onload="hljs.initHighlightingOnLoad();"></script>
+<link rel="icon" href="https://hadooboo.github.io/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="https://hadooboo.github.io/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="https://hadooboo.github.io/favicon-32x32.png">
+<link rel="apple-touch-icon" href="https://hadooboo.github.io/apple-touch-icon.png">
+<link rel="mask-icon" href="https://hadooboo.github.io/safari-pinned-tab.svg">
+<meta name="theme-color" content="#2e2e33">
+<meta name="msapplication-TileColor" content="#2e2e33">
+<noscript>
+    <style>
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
+
+    </style>
+    <style>
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --theme: rgb(29, 30, 32);
+                --entry: rgb(46, 46, 51);
+                --primary: rgb(218, 218, 219);
+                --secondary: rgb(155, 156, 157);
+                --tertiary: rgb(65, 66, 68);
+                --content: rgb(196, 196, 197);
+                --hljs-bg: rgb(46, 46, 51);
+                --code-bg: rgb(55, 56, 62);
+                --border: rgb(51, 51, 51);
+            }
+
+            .list {
+                background: var(--theme);
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-track {
+                background: 0 0;
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-thumb {
+                border-color: var(--theme);
+            }
+        }
+
+    </style>
+</noscript><meta property="og:title" content="202108 | 가장 최신 기술을 알아간다는 것" />
+<meta property="og:description" content="IT 기술은 계속해서 빠르게 변해가고 개발자는 항상 새로운 내용을 공부해야 한다는 내용을 여기저기서 많이 들어왔고 느껴왔다. 그래도 학교 공부를 할 때와 지금까지의 인턴 및 회사 생활에서는 누군가가 미리 정리해 놓은 내용이 있거나 가르쳐주는 사람이 있었기에 방향성이 쉽게 보였고 할 만했다. 그러나 이번에 회사에서 비트코인 탭루트 업그레이드에 대해 조사하고 발표를 준비하면서 가장 최신의 기술을 알아간다는 것이 매우 까다로운 일임을 알게 되었다.
+비트코인 탭루트는 올해 11월 적용 예정인 소프트포크로서 2017년의 세그윗 소프트포크에 이은 두 번째 대규모 업그레이드라고 한다." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://hadooboo.github.io/posts/mils/202108/" /><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2021-08-31T00:00:00+00:00" />
+<meta property="article:modified_time" content="2021-08-31T00:00:00+00:00" />
+
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="202108 | 가장 최신 기술을 알아간다는 것"/>
+<meta name="twitter:description" content="IT 기술은 계속해서 빠르게 변해가고 개발자는 항상 새로운 내용을 공부해야 한다는 내용을 여기저기서 많이 들어왔고 느껴왔다. 그래도 학교 공부를 할 때와 지금까지의 인턴 및 회사 생활에서는 누군가가 미리 정리해 놓은 내용이 있거나 가르쳐주는 사람이 있었기에 방향성이 쉽게 보였고 할 만했다. 그러나 이번에 회사에서 비트코인 탭루트 업그레이드에 대해 조사하고 발표를 준비하면서 가장 최신의 기술을 알아간다는 것이 매우 까다로운 일임을 알게 되었다.
+비트코인 탭루트는 올해 11월 적용 예정인 소프트포크로서 2017년의 세그윗 소프트포크에 이은 두 번째 대규모 업그레이드라고 한다."/>
+
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position":  1 ,
+      "name": "Posts",
+      "item": "https://hadooboo.github.io/posts/"
+    }, 
+    {
+      "@type": "ListItem",
+      "position":  2 ,
+      "name": "Mils",
+      "item": "https://hadooboo.github.io/posts/mils/"
+    }, 
+    {
+      "@type": "ListItem",
+      "position":  3 ,
+      "name": "202108 | 가장 최신 기술을 알아간다는 것",
+      "item": "https://hadooboo.github.io/posts/mils/202108/"
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "202108 | 가장 최신 기술을 알아간다는 것",
+  "name": "202108 | 가장 최신 기술을 알아간다는 것",
+  "description": "IT 기술은 계속해서 빠르게 변해가고 개발자는 항상 새로운 내용을 공부해야 한다는 내용을 여기저기서 많이 들어왔고 느껴왔다. 그래도 학교 공부를 할 때와 지금까지의 인턴 및 회사 생활에서는 누군가가 미리 정리해 놓은 내용이 있거나 가르쳐주는 사람이 있었기에 방향성이 쉽게 보였고 할 만했다. 그러나 이번에 회사에서 비트코인 탭루트 업그레이드에 대해 조사하고 발표를 준비하면서 가장 최신의 기술을 알아간다는 것이 매우 까다로운 일임을 알게 되었다.\n비트코인 탭루트는 올해 11월 적용 예정인 소프트포크로서 2017년의 세그윗 소프트포크에 이은 두 번째 대규모 업그레이드라고 한다.",
+  "keywords": [
+    
+  ],
+  "articleBody": "IT 기술은 계속해서 빠르게 변해가고 개발자는 항상 새로운 내용을 공부해야 한다는 내용을 여기저기서 많이 들어왔고 느껴왔다. 그래도 학교 공부를 할 때와 지금까지의 인턴 및 회사 생활에서는 누군가가 미리 정리해 놓은 내용이 있거나 가르쳐주는 사람이 있었기에 방향성이 쉽게 보였고 할 만했다. 그러나 이번에 회사에서 비트코인 탭루트 업그레이드에 대해 조사하고 발표를 준비하면서 가장 최신의 기술을 알아간다는 것이 매우 까다로운 일임을 알게 되었다.\n비트코인 탭루트는 올해 11월 적용 예정인 소프트포크로서 2017년의 세그윗 소프트포크에 이은 두 번째 대규모 업그레이드라고 한다. 비트코인은 블록체인 기술을 이용한 암호화폐의 첫 시작을 열었다는 점에서 의의가 있고 상징성이 높지만 처음 설계될 때 확장성에 대해서는 고려하지 않고 만들어졌기 때문에 새로 등장하는 다른 블록체인 네트워크에 점차적으로 역할을 빼앗기고 있다. 특히 비트코인 다음으로 점유율이 높은 이더리움 네트워크는 스마트 컨트랙트를 바탕으로 점점 더 많은 애플리케이션(dapp)을 만들어낼 수 있도록 진화하고 있다. 이런 시대 흐름에 조금이라도 발맞춰 가기 위해 탭루트 소프트포크가 추진된 것으로 보인다.\n탭루트 업그레이드는 schnorr signature를 도입하여 다중 서명을 가능하게 한 후 일종의 merkle tree인 MAST를 적용함으로써 코드에 의한 계약, 즉 스마트 컨트랙트와 유사한 개념을 도입한다. 이더리움에서 컨트랙트도 주소로 관리하듯이 비트코인 탭루트 소프트포크를 통해 새로 도입되는 P2TR 주소 형식도 기존의 P2WPKH, P2WSH와 구분할 수 없다고 한다. 적용만 된다면 유용하게 쓰일 수 있을 기술이 많이 포함되어 있다.\n조사를 하면서 한 가지 느낀 점은 기술이 발전하는 방향을 아무도 알 수 없다는 것이다. 비트코인은 여전히 많은 사람들로부터 인정받고 있고 시가 총액도 가장 높은 암호화폐이지만 블록체인 기술적인 측면으로 보았을 때 부족한 점이 많다. 느린 트랜잭션 속도와 거래 가변성 같은 취약점으로 인해 세그윗 소프트포크가 등장하고, 오히려 비트코인의 후발주자로 나온 이더리움의 스마트 컨트랙트 기능을 따라하기 위해 탭루트 소프트포크가 등장하는 것을 보면서 맞지 않는 것에 끼워맞춘다는 느낌을 지울 수 없었다. 비트코인을 처음 만들 때 사토시는 이런 상황까진 예상하지 못하였을 것이라 생각한다. 발표할 때 첫 순서를 피하는 것처럼 오히려 첫 번째를 보완한 두 번째가 나을 수도 있겠다는 생각이 들었다.\n또한, 더 기억에 남는 것은 새로운 것을 알아가는 것에 대한 어려움과 도전적인 측면이다. 탭루트 소프트포크는 아직 예정일 뿐이고 실행되기까지도 3달 정도 남아 있기 때문에 지금 당장은 레퍼런스와 참고할 만한 문서가 많이 없었다. 한글로 된 문서는 거의 존재하지도 않았다. 이런 상황에서 새로운 개념을 이해하기 위해 bitcoin 공식 github 사이트에 들어가 탭루트 소프트포크에 대한 BIP 문서도 읽어 보고 비트코인 재단에 속한 사람이 찍어서 올린 유튜브 강의도 찾아보며 직접 머리 속으로 정리해 나갔다. 문서 하나하나가 귀했기 때문에 여러 번 읽고 정독하면 보이지 않던 것도 보이곤 했다. 발표 자료를 최종적으로 정리하고 발표 연습을 하면서 정리한 개념이 맞는지 한 번 더 점검할 수 있었다.\n분명 새로운 기술을 알아가는 것은 어려운 일이었지만 지금 이 세상에서 이 기술을 나만큼 이해하고 있는 사람이 얼마나 될까를 상상하면 그만큼 기쁜 일이 없다. 앞으로도 다양한 분야에서 state of the art를 익히는 경험을 해보고 싶다.\n",
+  "wordCount" : "420",
+  "inLanguage": "en",
+  "datePublished": "2021-08-31T00:00:00Z",
+  "dateModified": "2021-08-31T00:00:00Z",
+  "author":{
+    "@type": "Person",
+    "name": "Hadooboo"
+  },
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://hadooboo.github.io/posts/mils/202108/"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "Hadooboo Dev Log",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://hadooboo.github.io/favicon.ico"
+    }
+  }
+}
+</script>
+</head>
+
+<body class="" id="top">
+<script>
+    if (localStorage.getItem("pref-theme") === "dark") {
+        document.body.classList.add('dark');
+    } else if (localStorage.getItem("pref-theme") === "light") {
+        document.body.classList.remove('dark')
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.body.classList.add('dark');
+    }
+
+</script>
+
+<header class="header">
+    <nav class="nav">
+        <div class="logo">
+            <a href="https://hadooboo.github.io/" accesskey="h" title="Hadooboo Dev Log (Alt + H)">Hadooboo Dev Log</a>
+            <div class="logo-switches">
+                <button id="theme-toggle" accesskey="t" title="(Alt + T)">
+                    <svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                    <svg id="sun" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                </button>
+            </div>
+        </div>
+        <ul id="menu">
+            <li>
+                <a href="https://hadooboo.github.io/about/" title="About">
+                    <span>About</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://hadooboo.github.io/tag/" title="Tag">
+                    <span>Tag</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</header>
+<main class="main">
+
+<article class="post-single">
+  <header class="post-header">
+    <div class="breadcrumbs"><a href="https://hadooboo.github.io/">Home</a>&nbsp;»&nbsp;<a href="https://hadooboo.github.io/posts/">Posts</a>&nbsp;»&nbsp;<a href="https://hadooboo.github.io/posts/mils/">Mils</a></div>
+    <h1 class="post-title">
+      202108 | 가장 최신 기술을 알아간다는 것
+    </h1>
+    <div class="post-meta"><span title='2021-08-31 00:00:00 +0000 UTC'>2021-08-31</span>&nbsp;·&nbsp;2 min&nbsp;·&nbsp;Hadooboo
+
+</div>
+  </header> 
+  <div class="post-content"><p>IT 기술은 계속해서 빠르게 변해가고 개발자는 항상 새로운 내용을 공부해야 한다는 내용을 여기저기서 많이 들어왔고 느껴왔다. 그래도 학교 공부를 할 때와 지금까지의 인턴 및 회사 생활에서는 누군가가 미리 정리해 놓은 내용이 있거나 가르쳐주는 사람이 있었기에 방향성이 쉽게 보였고 할 만했다. 그러나 이번에 회사에서 비트코인 탭루트 업그레이드에 대해 조사하고 발표를 준비하면서 가장 최신의 기술을 알아간다는 것이 매우 까다로운 일임을 알게 되었다.</p>
+<p>비트코인 탭루트는 올해 11월 적용 예정인 소프트포크로서 2017년의 세그윗 소프트포크에 이은 두 번째 대규모 업그레이드라고 한다. 비트코인은 블록체인 기술을 이용한 암호화폐의 첫 시작을 열었다는 점에서 의의가 있고 상징성이 높지만 처음 설계될 때 확장성에 대해서는 고려하지 않고 만들어졌기 때문에 새로 등장하는 다른 블록체인 네트워크에 점차적으로 역할을 빼앗기고 있다. 특히 비트코인 다음으로 점유율이 높은 이더리움 네트워크는 스마트 컨트랙트를 바탕으로 점점 더 많은 애플리케이션(dapp)을 만들어낼 수 있도록 진화하고 있다. 이런 시대 흐름에 조금이라도 발맞춰 가기 위해 탭루트 소프트포크가 추진된 것으로 보인다.</p>
+<p>탭루트 업그레이드는 schnorr signature를 도입하여 다중 서명을 가능하게 한 후 일종의 merkle tree인 MAST를 적용함으로써 코드에 의한 계약, 즉 스마트 컨트랙트와 유사한 개념을 도입한다. 이더리움에서 컨트랙트도 주소로 관리하듯이 비트코인 탭루트 소프트포크를 통해 새로 도입되는 P2TR 주소 형식도 기존의 P2WPKH, P2WSH와 구분할 수 없다고 한다. 적용만 된다면 유용하게 쓰일 수 있을 기술이 많이 포함되어 있다.</p>
+<p>조사를 하면서 한 가지 느낀 점은 기술이 발전하는 방향을 아무도 알 수 없다는 것이다. 비트코인은 여전히 많은 사람들로부터 인정받고 있고 시가 총액도 가장 높은 암호화폐이지만 블록체인 기술적인 측면으로 보았을 때 부족한 점이 많다. 느린 트랜잭션 속도와 거래 가변성 같은 취약점으로 인해 세그윗 소프트포크가 등장하고, 오히려 비트코인의 후발주자로 나온 이더리움의 스마트 컨트랙트 기능을 따라하기 위해 탭루트 소프트포크가 등장하는 것을 보면서 맞지 않는 것에 끼워맞춘다는 느낌을 지울 수 없었다. 비트코인을 처음 만들 때 사토시는 이런 상황까진 예상하지 못하였을 것이라 생각한다. 발표할 때 첫 순서를 피하는 것처럼 오히려 첫 번째를 보완한 두 번째가 나을 수도 있겠다는 생각이 들었다.</p>
+<p>또한, 더 기억에 남는 것은 새로운 것을 알아가는 것에 대한 어려움과 도전적인 측면이다. 탭루트 소프트포크는 아직 예정일 뿐이고 실행되기까지도 3달 정도 남아 있기 때문에 지금 당장은 레퍼런스와 참고할 만한 문서가 많이 없었다. 한글로 된 문서는 거의 존재하지도 않았다. 이런 상황에서 새로운 개념을 이해하기 위해 bitcoin 공식 github 사이트에 들어가 탭루트 소프트포크에 대한 BIP 문서도 읽어 보고 비트코인 재단에 속한 사람이 찍어서 올린 유튜브 강의도 찾아보며 직접 머리 속으로 정리해 나갔다. 문서 하나하나가 귀했기 때문에 여러 번 읽고 정독하면 보이지 않던 것도 보이곤 했다. 발표 자료를 최종적으로 정리하고 발표 연습을 하면서 정리한 개념이 맞는지 한 번 더 점검할 수 있었다.</p>
+<p>분명 새로운 기술을 알아가는 것은 어려운 일이었지만 지금 이 세상에서 이 기술을 나만큼 이해하고 있는 사람이 얼마나 될까를 상상하면 그만큼 기쁜 일이 없다. 앞으로도 다양한 분야에서 state of the art를 익히는 경험을 해보고 싶다.</p>
+
+
+<script src="https://utteranc.es/client.js"
+        repo="hadooboo/hadooboo.github.io"
+        issue-term="pathname"
+        theme="github-light"
+        crossorigin="anonymous"
+        async>
+</script>
+
+
+
+  </div>
+
+  <footer class="post-footer">
+    <ul class="post-tags">
+    </ul>
+  </footer>
+</article>
+    </main>
+    
+<footer class="footer">
+    <span>&copy; 2023 <a href="https://hadooboo.github.io/">Hadooboo Dev Log</a></span>
+    <span>
+        Powered by
+        <a href="https://gohugo.io/" rel="noopener noreferrer" target="_blank">Hugo</a> &
+        <a href="https://github.com/adityatelange/hugo-PaperMod/" rel="noopener" target="_blank">PaperMod</a>
+    </span>
+</footer>
+<a href="#top" aria-label="go to top" title="Go to Top (Alt + G)" class="top-link" id="top-link" accesskey="g">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6" fill="currentColor">
+        <path d="M12 6H0l6-6z" />
+    </svg>
+</a>
+
+<script>
+    let menu = document.getElementById('menu')
+    if (menu) {
+        menu.scrollLeft = localStorage.getItem("menu-scroll-position");
+        menu.onscroll = function () {
+            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+        }
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            var id = this.getAttribute("href").substr(1);
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
+                    behavior: "smooth"
+                });
+            } else {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
+            }
+            if (id === "top") {
+                history.replaceState(null, null, " ");
+            } else {
+                history.pushState(null, null, `#${id}`);
+            }
+        });
+    });
+
+</script>
+<script>
+    var mybutton = document.getElementById("top-link");
+    window.onscroll = function () {
+        if (document.body.scrollTop > 800 || document.documentElement.scrollTop > 800) {
+            mybutton.style.visibility = "visible";
+            mybutton.style.opacity = "1";
+        } else {
+            mybutton.style.visibility = "hidden";
+            mybutton.style.opacity = "0";
+        }
+    };
+
+</script>
+<script>
+    document.getElementById("theme-toggle").addEventListener("click", () => {
+        if (document.body.className.includes("dark")) {
+            document.body.classList.remove('dark');
+            localStorage.setItem("pref-theme", 'light');
+        } else {
+            document.body.classList.add('dark');
+            localStorage.setItem("pref-theme", 'dark');
+        }
+    })
+
+</script>
+</body>
+
+</html>

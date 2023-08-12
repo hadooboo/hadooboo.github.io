@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="en" dir="auto">
+
+<head><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="robots" content="index, follow">
+<title>202110 | 프로토타입 | Hadooboo Dev Log</title>
+<meta name="keywords" content="">
+<meta name="description" content="이번 10월 한 달 동안 가장 힘들게 하고 많이 들었던 단어가 프로토타입이다. 이전 프로젝트가 마무리되고 다음 작업으로 진행하기 전 전반적인 기술 동향을 살피고 구현해볼만 한 가치가 있는 아이템에 대해 간단한 프로토타입을 만드는 시간을 가진다. 여러 아이템 중에서도 가장 기억에 남는 것은 Blockcerts를 이용하여 간단한 블록체인 기반 인증 시스템을 만드는 작업이었다.
+Blockcerts는 MIT에서 만든 블록체인 인증에 있어서의 공개 표준의 역할을 하는 라이브러리이며 실제 MIT 전자졸업장을 이를 이용하여 발행하고 있다고 한다. 백엔드 서버를 위한 python 라이브러리, 프론트엔드 구현을 위한 js 라이브러리, android 및 ios 클라이언트 모두를 오픈소스로 공개하여 우리 입맛에 맞게 쉽게 사용할 수 있다.">
+<meta name="author" content="Hadooboo">
+<link rel="canonical" href="https://hadooboo.github.io/posts/mils/202110/">
+<link crossorigin="anonymous" href="/assets/css/stylesheet.3613efbd0b1772781e8f49935e973cae632a7f61471c05b17be155505ccf87b5.css" integrity="sha256-NhPvvQsXcngej0mTXpc8rmMqf2FHHAWxe&#43;FVUFzPh7U=" rel="preload stylesheet" as="style">
+<script defer crossorigin="anonymous" src="/assets/js/highlight.f413e19d0714851f6474e7ee9632408e58ac146fbdbe62747134bea2fa3415e0.js" integrity="sha256-9BPhnQcUhR9kdOfuljJAjlisFG&#43;9vmJ0cTS&#43;ovo0FeA="
+    onload="hljs.initHighlightingOnLoad();"></script>
+<link rel="icon" href="https://hadooboo.github.io/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="https://hadooboo.github.io/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="https://hadooboo.github.io/favicon-32x32.png">
+<link rel="apple-touch-icon" href="https://hadooboo.github.io/apple-touch-icon.png">
+<link rel="mask-icon" href="https://hadooboo.github.io/safari-pinned-tab.svg">
+<meta name="theme-color" content="#2e2e33">
+<meta name="msapplication-TileColor" content="#2e2e33">
+<noscript>
+    <style>
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
+
+    </style>
+    <style>
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --theme: rgb(29, 30, 32);
+                --entry: rgb(46, 46, 51);
+                --primary: rgb(218, 218, 219);
+                --secondary: rgb(155, 156, 157);
+                --tertiary: rgb(65, 66, 68);
+                --content: rgb(196, 196, 197);
+                --hljs-bg: rgb(46, 46, 51);
+                --code-bg: rgb(55, 56, 62);
+                --border: rgb(51, 51, 51);
+            }
+
+            .list {
+                background: var(--theme);
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-track {
+                background: 0 0;
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-thumb {
+                border-color: var(--theme);
+            }
+        }
+
+    </style>
+</noscript><meta property="og:title" content="202110 | 프로토타입" />
+<meta property="og:description" content="이번 10월 한 달 동안 가장 힘들게 하고 많이 들었던 단어가 프로토타입이다. 이전 프로젝트가 마무리되고 다음 작업으로 진행하기 전 전반적인 기술 동향을 살피고 구현해볼만 한 가치가 있는 아이템에 대해 간단한 프로토타입을 만드는 시간을 가진다. 여러 아이템 중에서도 가장 기억에 남는 것은 Blockcerts를 이용하여 간단한 블록체인 기반 인증 시스템을 만드는 작업이었다.
+Blockcerts는 MIT에서 만든 블록체인 인증에 있어서의 공개 표준의 역할을 하는 라이브러리이며 실제 MIT 전자졸업장을 이를 이용하여 발행하고 있다고 한다. 백엔드 서버를 위한 python 라이브러리, 프론트엔드 구현을 위한 js 라이브러리, android 및 ios 클라이언트 모두를 오픈소스로 공개하여 우리 입맛에 맞게 쉽게 사용할 수 있다." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://hadooboo.github.io/posts/mils/202110/" /><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2021-10-31T00:00:00+00:00" />
+<meta property="article:modified_time" content="2021-10-31T00:00:00+00:00" />
+
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="202110 | 프로토타입"/>
+<meta name="twitter:description" content="이번 10월 한 달 동안 가장 힘들게 하고 많이 들었던 단어가 프로토타입이다. 이전 프로젝트가 마무리되고 다음 작업으로 진행하기 전 전반적인 기술 동향을 살피고 구현해볼만 한 가치가 있는 아이템에 대해 간단한 프로토타입을 만드는 시간을 가진다. 여러 아이템 중에서도 가장 기억에 남는 것은 Blockcerts를 이용하여 간단한 블록체인 기반 인증 시스템을 만드는 작업이었다.
+Blockcerts는 MIT에서 만든 블록체인 인증에 있어서의 공개 표준의 역할을 하는 라이브러리이며 실제 MIT 전자졸업장을 이를 이용하여 발행하고 있다고 한다. 백엔드 서버를 위한 python 라이브러리, 프론트엔드 구현을 위한 js 라이브러리, android 및 ios 클라이언트 모두를 오픈소스로 공개하여 우리 입맛에 맞게 쉽게 사용할 수 있다."/>
+
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position":  1 ,
+      "name": "Posts",
+      "item": "https://hadooboo.github.io/posts/"
+    }, 
+    {
+      "@type": "ListItem",
+      "position":  2 ,
+      "name": "Mils",
+      "item": "https://hadooboo.github.io/posts/mils/"
+    }, 
+    {
+      "@type": "ListItem",
+      "position":  3 ,
+      "name": "202110 | 프로토타입",
+      "item": "https://hadooboo.github.io/posts/mils/202110/"
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "202110 | 프로토타입",
+  "name": "202110 | 프로토타입",
+  "description": "이번 10월 한 달 동안 가장 힘들게 하고 많이 들었던 단어가 프로토타입이다. 이전 프로젝트가 마무리되고 다음 작업으로 진행하기 전 전반적인 기술 동향을 살피고 구현해볼만 한 가치가 있는 아이템에 대해 간단한 프로토타입을 만드는 시간을 가진다. 여러 아이템 중에서도 가장 기억에 남는 것은 Blockcerts를 이용하여 간단한 블록체인 기반 인증 시스템을 만드는 작업이었다.\nBlockcerts는 MIT에서 만든 블록체인 인증에 있어서의 공개 표준의 역할을 하는 라이브러리이며 실제 MIT 전자졸업장을 이를 이용하여 발행하고 있다고 한다. 백엔드 서버를 위한 python 라이브러리, 프론트엔드 구현을 위한 js 라이브러리, android 및 ios 클라이언트 모두를 오픈소스로 공개하여 우리 입맛에 맞게 쉽게 사용할 수 있다.",
+  "keywords": [
+    
+  ],
+  "articleBody": "이번 10월 한 달 동안 가장 힘들게 하고 많이 들었던 단어가 프로토타입이다. 이전 프로젝트가 마무리되고 다음 작업으로 진행하기 전 전반적인 기술 동향을 살피고 구현해볼만 한 가치가 있는 아이템에 대해 간단한 프로토타입을 만드는 시간을 가진다. 여러 아이템 중에서도 가장 기억에 남는 것은 Blockcerts를 이용하여 간단한 블록체인 기반 인증 시스템을 만드는 작업이었다.\nBlockcerts는 MIT에서 만든 블록체인 인증에 있어서의 공개 표준의 역할을 하는 라이브러리이며 실제 MIT 전자졸업장을 이를 이용하여 발행하고 있다고 한다. 백엔드 서버를 위한 python 라이브러리, 프론트엔드 구현을 위한 js 라이브러리, android 및 ios 클라이언트 모두를 오픈소스로 공개하여 우리 입맛에 맞게 쉽게 사용할 수 있다.\n이렇게 프로토타입 구현을 위한 아이템이 정해지고 구현을 시작했다. 첫 번째로 마주한 문제는 우리 팀의 백엔드 주력 언어는 go이지만 Blockcerts는 python 라이브러리만 제공하는 것이었다. 그래서 따로 공부했던 java spring framework, 팀의 go server skeleton code를 버리고 수업에서 잠깐 배우고 사용하였던 django framework로 백엔드 API 서버를 만들게 되었다. 그런데 놀라웠던 것은 내장된 ORM 덕분인지 go로는 1주일 정도 걸렸을 작업을 이틀 만에 끝낼 수 있었다는 것이다. 비록 대부분이 CRUD 작업이기는 했지만 말이다. 강타입 언어가 아니라는 점에서 python은 한계가 있다고 생각하지만 이렇게 빠른 주기의 프로토타입을 만드는 환경에서는 큰 쓸모가 있는 것 같다. 물론 지금까지 회사 생활 중에서 가장 집중한 이틀이기도 했다.\n백엔드 API 서버는 금방 만들 수 있었지만 다음으로 마주한 문제는 그에 맞는 웹 클라이언트 개발이었다. 물론 프론트엔드 스택이 아예 없는 것은 아니지만 졸속으로 만들고 있다는 느낌을 지울 수 없었다. 시간이 없기 때문에 컴포넌트의 복붙은 종종 일어났다. 그렇지만 Clean code 책을 봐도 저자가 머리에서 리팩터링이 자동으로 돼서 처음부터 그 코드를 작성하는 것이 아니라 일단 돌아가게 구현한 다음에 리팩터링한다고 했다. 프론트엔드 코드는 프로토타입의 목표에 맞게 딱 돌아가게까지만 해 놓은 코드였다. 아쉬운 점도 있었지만 프로토타입의 역할과 코드가 생명을 가지고 있는 시간을 고려했을 때 머리로는 이해할 수 있었다. 또한, 프로토타입 단계에서 회사에서 디자이너를 배정해주지 않았기 때문에 디자인도 마음에 들지 않는 부분이 존재했다. 템플릿을 사 와서 그것을 수정하는 방법으로 해도 디자인에 대한 개념이 없으니 손을 대면 댈수록 이상해진 것 같다.\n프로토타입 개발 경험을 하며 여러 가지를 느낄 수 있었다. 프로토타입은 말 그대로 완성품이 아니기 때문에 모든 방면에서 100% 완벽한 구현을 이룰 수 없지만 마음속으로는 그런 부분들에 대해 아쉬움을 많이 느끼고 있었다. 상황과 맥락에 따라서 정답이 달라지는 것을 인정하고 받아들이는 연습을 해야겠다고 생각했다. 또한, 풀스택의 의미에 대해서도 다시 한 번 생각해보게 되었다. 그전까지는 풀스택은 말도 안 되는 얘기라고 생각했었다. 그러나 풀스택을 모든 스택을 완벽하게 이해하고 사용할 수 있는 것이 아닌 전체 개발 흐름이 어떻게 이어지는지 파악할 수 있고 그 안에서 내가 맡은 스택이 무슨 역할을 하는지 이해할 수 있는 것이라고 생각한다면 모두가 풀스택이 되어야 하는 것이 아닐까 싶다.\n",
+  "wordCount" : "402",
+  "inLanguage": "en",
+  "datePublished": "2021-10-31T00:00:00Z",
+  "dateModified": "2021-10-31T00:00:00Z",
+  "author":{
+    "@type": "Person",
+    "name": "Hadooboo"
+  },
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://hadooboo.github.io/posts/mils/202110/"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "Hadooboo Dev Log",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://hadooboo.github.io/favicon.ico"
+    }
+  }
+}
+</script>
+</head>
+
+<body class="" id="top">
+<script>
+    if (localStorage.getItem("pref-theme") === "dark") {
+        document.body.classList.add('dark');
+    } else if (localStorage.getItem("pref-theme") === "light") {
+        document.body.classList.remove('dark')
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.body.classList.add('dark');
+    }
+
+</script>
+
+<header class="header">
+    <nav class="nav">
+        <div class="logo">
+            <a href="https://hadooboo.github.io/" accesskey="h" title="Hadooboo Dev Log (Alt + H)">Hadooboo Dev Log</a>
+            <div class="logo-switches">
+                <button id="theme-toggle" accesskey="t" title="(Alt + T)">
+                    <svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                    <svg id="sun" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                </button>
+            </div>
+        </div>
+        <ul id="menu">
+            <li>
+                <a href="https://hadooboo.github.io/about/" title="About">
+                    <span>About</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://hadooboo.github.io/tag/" title="Tag">
+                    <span>Tag</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</header>
+<main class="main">
+
+<article class="post-single">
+  <header class="post-header">
+    <div class="breadcrumbs"><a href="https://hadooboo.github.io/">Home</a>&nbsp;»&nbsp;<a href="https://hadooboo.github.io/posts/">Posts</a>&nbsp;»&nbsp;<a href="https://hadooboo.github.io/posts/mils/">Mils</a></div>
+    <h1 class="post-title">
+      202110 | 프로토타입
+    </h1>
+    <div class="post-meta"><span title='2021-10-31 00:00:00 +0000 UTC'>2021-10-31</span>&nbsp;·&nbsp;2 min&nbsp;·&nbsp;Hadooboo
+
+</div>
+  </header> 
+  <div class="post-content"><p>이번 10월 한 달 동안 가장 힘들게 하고 많이 들었던 단어가 프로토타입이다. 이전 프로젝트가 마무리되고 다음 작업으로 진행하기 전 전반적인 기술 동향을 살피고 구현해볼만 한 가치가 있는 아이템에 대해 간단한 프로토타입을 만드는 시간을 가진다. 여러 아이템 중에서도 가장 기억에 남는 것은 Blockcerts를 이용하여 간단한 블록체인 기반 인증 시스템을 만드는 작업이었다.</p>
+<p>Blockcerts는 MIT에서 만든 블록체인 인증에 있어서의 공개 표준의 역할을 하는 라이브러리이며 실제 MIT 전자졸업장을 이를 이용하여 발행하고 있다고 한다. 백엔드 서버를 위한 python 라이브러리, 프론트엔드 구현을 위한 js 라이브러리, android 및 ios 클라이언트 모두를 오픈소스로 공개하여 우리 입맛에 맞게 쉽게 사용할 수 있다.</p>
+<p>이렇게 프로토타입 구현을 위한 아이템이 정해지고 구현을 시작했다. 첫 번째로 마주한 문제는 우리 팀의 백엔드 주력 언어는 go이지만 Blockcerts는 python 라이브러리만 제공하는 것이었다. 그래서 따로 공부했던 java spring framework, 팀의 go server skeleton code를 버리고 수업에서 잠깐 배우고 사용하였던 django framework로 백엔드 API 서버를 만들게 되었다. 그런데 놀라웠던 것은 내장된 ORM 덕분인지 go로는 1주일 정도 걸렸을 작업을 이틀 만에 끝낼 수 있었다는 것이다. 비록 대부분이 CRUD 작업이기는 했지만 말이다. 강타입 언어가 아니라는 점에서 python은 한계가 있다고 생각하지만 이렇게 빠른 주기의 프로토타입을 만드는 환경에서는 큰 쓸모가 있는 것 같다. 물론 지금까지 회사 생활 중에서 가장 집중한 이틀이기도 했다.</p>
+<p>백엔드 API 서버는 금방 만들 수 있었지만 다음으로 마주한 문제는 그에 맞는 웹 클라이언트 개발이었다. 물론 프론트엔드 스택이 아예 없는 것은 아니지만 졸속으로 만들고 있다는 느낌을 지울 수 없었다. 시간이 없기 때문에 컴포넌트의 복붙은 종종 일어났다. 그렇지만 Clean code 책을 봐도 저자가 머리에서 리팩터링이 자동으로 돼서 처음부터 그 코드를 작성하는 것이 아니라 일단 돌아가게 구현한 다음에 리팩터링한다고 했다. 프론트엔드 코드는 프로토타입의 목표에 맞게 딱 돌아가게까지만 해 놓은 코드였다. 아쉬운 점도 있었지만 프로토타입의 역할과 코드가 생명을 가지고 있는 시간을 고려했을 때 머리로는 이해할 수 있었다. 또한, 프로토타입 단계에서 회사에서 디자이너를 배정해주지 않았기 때문에 디자인도 마음에 들지 않는 부분이 존재했다. 템플릿을 사 와서 그것을 수정하는 방법으로 해도 디자인에 대한 개념이 없으니 손을 대면 댈수록 이상해진 것 같다.</p>
+<p>프로토타입 개발 경험을 하며 여러 가지를 느낄 수 있었다. 프로토타입은 말 그대로 완성품이 아니기 때문에 모든 방면에서 100% 완벽한 구현을 이룰 수 없지만 마음속으로는 그런 부분들에 대해 아쉬움을 많이 느끼고 있었다. 상황과 맥락에 따라서 정답이 달라지는 것을 인정하고 받아들이는 연습을 해야겠다고 생각했다. 또한, 풀스택의 의미에 대해서도 다시 한 번 생각해보게 되었다. 그전까지는 풀스택은 말도 안 되는 얘기라고 생각했었다. 그러나 풀스택을 모든 스택을 완벽하게 이해하고 사용할 수 있는 것이 아닌 전체 개발 흐름이 어떻게 이어지는지 파악할 수 있고 그 안에서 내가 맡은 스택이 무슨 역할을 하는지 이해할 수 있는 것이라고 생각한다면 모두가 풀스택이 되어야 하는 것이 아닐까 싶다.</p>
+
+
+<script src="https://utteranc.es/client.js"
+        repo="hadooboo/hadooboo.github.io"
+        issue-term="pathname"
+        theme="github-light"
+        crossorigin="anonymous"
+        async>
+</script>
+
+
+
+  </div>
+
+  <footer class="post-footer">
+    <ul class="post-tags">
+    </ul>
+  </footer>
+</article>
+    </main>
+    
+<footer class="footer">
+    <span>&copy; 2023 <a href="https://hadooboo.github.io/">Hadooboo Dev Log</a></span>
+    <span>
+        Powered by
+        <a href="https://gohugo.io/" rel="noopener noreferrer" target="_blank">Hugo</a> &
+        <a href="https://github.com/adityatelange/hugo-PaperMod/" rel="noopener" target="_blank">PaperMod</a>
+    </span>
+</footer>
+<a href="#top" aria-label="go to top" title="Go to Top (Alt + G)" class="top-link" id="top-link" accesskey="g">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6" fill="currentColor">
+        <path d="M12 6H0l6-6z" />
+    </svg>
+</a>
+
+<script>
+    let menu = document.getElementById('menu')
+    if (menu) {
+        menu.scrollLeft = localStorage.getItem("menu-scroll-position");
+        menu.onscroll = function () {
+            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+        }
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            var id = this.getAttribute("href").substr(1);
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
+                    behavior: "smooth"
+                });
+            } else {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
+            }
+            if (id === "top") {
+                history.replaceState(null, null, " ");
+            } else {
+                history.pushState(null, null, `#${id}`);
+            }
+        });
+    });
+
+</script>
+<script>
+    var mybutton = document.getElementById("top-link");
+    window.onscroll = function () {
+        if (document.body.scrollTop > 800 || document.documentElement.scrollTop > 800) {
+            mybutton.style.visibility = "visible";
+            mybutton.style.opacity = "1";
+        } else {
+            mybutton.style.visibility = "hidden";
+            mybutton.style.opacity = "0";
+        }
+    };
+
+</script>
+<script>
+    document.getElementById("theme-toggle").addEventListener("click", () => {
+        if (document.body.className.includes("dark")) {
+            document.body.classList.remove('dark');
+            localStorage.setItem("pref-theme", 'light');
+        } else {
+            document.body.classList.add('dark');
+            localStorage.setItem("pref-theme", 'dark');
+        }
+    })
+
+</script>
+</body>
+
+</html>

@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="en" dir="auto">
+
+<head><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="robots" content="index, follow">
+<title>202203 | 안드로이드 SDK | Hadooboo Dev Log</title>
+<meta name="keywords" content="">
+<meta name="description" content="이번 달 주 업무는 녹음 기능을 메인으로 하는 안드로이드 네이티브 앱을 만드는 작업이었다. 기존까지는 프로토타입 앱 클라이언트를 만들어야 할 때 flutter를 사용하여 안드로이드와 iOS 멀티플랫폼 빌드가 가능하도록 했었다. 그러나 녹음과 같이 하드웨어와 밀접하게 연관된 기능을 갖는 경우에는 flutter의 한계가 명확했고 결국에는 안드로이드 SDK를 직접 익혀서 할 수밖에 없었다.
+하드웨어와 연관된 작업이다 보니 테스트 과정이 많이 힘들었다. 기능이 동작하는 것을 확인하려면 에뮬레이터에서 해 보는 것이 불가능하고 실제 앱을 테스트 기기에서 빌드해서 동작하는지 확인해보아야 했다.">
+<meta name="author" content="Hadooboo">
+<link rel="canonical" href="https://hadooboo.github.io/posts/mils/202203/">
+<link crossorigin="anonymous" href="/assets/css/stylesheet.3613efbd0b1772781e8f49935e973cae632a7f61471c05b17be155505ccf87b5.css" integrity="sha256-NhPvvQsXcngej0mTXpc8rmMqf2FHHAWxe&#43;FVUFzPh7U=" rel="preload stylesheet" as="style">
+<script defer crossorigin="anonymous" src="/assets/js/highlight.f413e19d0714851f6474e7ee9632408e58ac146fbdbe62747134bea2fa3415e0.js" integrity="sha256-9BPhnQcUhR9kdOfuljJAjlisFG&#43;9vmJ0cTS&#43;ovo0FeA="
+    onload="hljs.initHighlightingOnLoad();"></script>
+<link rel="icon" href="https://hadooboo.github.io/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="https://hadooboo.github.io/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="https://hadooboo.github.io/favicon-32x32.png">
+<link rel="apple-touch-icon" href="https://hadooboo.github.io/apple-touch-icon.png">
+<link rel="mask-icon" href="https://hadooboo.github.io/safari-pinned-tab.svg">
+<meta name="theme-color" content="#2e2e33">
+<meta name="msapplication-TileColor" content="#2e2e33">
+<noscript>
+    <style>
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
+
+    </style>
+    <style>
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --theme: rgb(29, 30, 32);
+                --entry: rgb(46, 46, 51);
+                --primary: rgb(218, 218, 219);
+                --secondary: rgb(155, 156, 157);
+                --tertiary: rgb(65, 66, 68);
+                --content: rgb(196, 196, 197);
+                --hljs-bg: rgb(46, 46, 51);
+                --code-bg: rgb(55, 56, 62);
+                --border: rgb(51, 51, 51);
+            }
+
+            .list {
+                background: var(--theme);
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-track {
+                background: 0 0;
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-thumb {
+                border-color: var(--theme);
+            }
+        }
+
+    </style>
+</noscript><meta property="og:title" content="202203 | 안드로이드 SDK" />
+<meta property="og:description" content="이번 달 주 업무는 녹음 기능을 메인으로 하는 안드로이드 네이티브 앱을 만드는 작업이었다. 기존까지는 프로토타입 앱 클라이언트를 만들어야 할 때 flutter를 사용하여 안드로이드와 iOS 멀티플랫폼 빌드가 가능하도록 했었다. 그러나 녹음과 같이 하드웨어와 밀접하게 연관된 기능을 갖는 경우에는 flutter의 한계가 명확했고 결국에는 안드로이드 SDK를 직접 익혀서 할 수밖에 없었다.
+하드웨어와 연관된 작업이다 보니 테스트 과정이 많이 힘들었다. 기능이 동작하는 것을 확인하려면 에뮬레이터에서 해 보는 것이 불가능하고 실제 앱을 테스트 기기에서 빌드해서 동작하는지 확인해보아야 했다." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://hadooboo.github.io/posts/mils/202203/" /><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2022-03-31T00:00:00+00:00" />
+<meta property="article:modified_time" content="2022-03-31T00:00:00+00:00" />
+
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="202203 | 안드로이드 SDK"/>
+<meta name="twitter:description" content="이번 달 주 업무는 녹음 기능을 메인으로 하는 안드로이드 네이티브 앱을 만드는 작업이었다. 기존까지는 프로토타입 앱 클라이언트를 만들어야 할 때 flutter를 사용하여 안드로이드와 iOS 멀티플랫폼 빌드가 가능하도록 했었다. 그러나 녹음과 같이 하드웨어와 밀접하게 연관된 기능을 갖는 경우에는 flutter의 한계가 명확했고 결국에는 안드로이드 SDK를 직접 익혀서 할 수밖에 없었다.
+하드웨어와 연관된 작업이다 보니 테스트 과정이 많이 힘들었다. 기능이 동작하는 것을 확인하려면 에뮬레이터에서 해 보는 것이 불가능하고 실제 앱을 테스트 기기에서 빌드해서 동작하는지 확인해보아야 했다."/>
+
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position":  1 ,
+      "name": "Posts",
+      "item": "https://hadooboo.github.io/posts/"
+    }, 
+    {
+      "@type": "ListItem",
+      "position":  2 ,
+      "name": "Mils",
+      "item": "https://hadooboo.github.io/posts/mils/"
+    }, 
+    {
+      "@type": "ListItem",
+      "position":  3 ,
+      "name": "202203 | 안드로이드 SDK",
+      "item": "https://hadooboo.github.io/posts/mils/202203/"
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "202203 | 안드로이드 SDK",
+  "name": "202203 | 안드로이드 SDK",
+  "description": "이번 달 주 업무는 녹음 기능을 메인으로 하는 안드로이드 네이티브 앱을 만드는 작업이었다. 기존까지는 프로토타입 앱 클라이언트를 만들어야 할 때 flutter를 사용하여 안드로이드와 iOS 멀티플랫폼 빌드가 가능하도록 했었다. 그러나 녹음과 같이 하드웨어와 밀접하게 연관된 기능을 갖는 경우에는 flutter의 한계가 명확했고 결국에는 안드로이드 SDK를 직접 익혀서 할 수밖에 없었다.\n하드웨어와 연관된 작업이다 보니 테스트 과정이 많이 힘들었다. 기능이 동작하는 것을 확인하려면 에뮬레이터에서 해 보는 것이 불가능하고 실제 앱을 테스트 기기에서 빌드해서 동작하는지 확인해보아야 했다.",
+  "keywords": [
+    
+  ],
+  "articleBody": "이번 달 주 업무는 녹음 기능을 메인으로 하는 안드로이드 네이티브 앱을 만드는 작업이었다. 기존까지는 프로토타입 앱 클라이언트를 만들어야 할 때 flutter를 사용하여 안드로이드와 iOS 멀티플랫폼 빌드가 가능하도록 했었다. 그러나 녹음과 같이 하드웨어와 밀접하게 연관된 기능을 갖는 경우에는 flutter의 한계가 명확했고 결국에는 안드로이드 SDK를 직접 익혀서 할 수밖에 없었다.\n하드웨어와 연관된 작업이다 보니 테스트 과정이 많이 힘들었다. 기능이 동작하는 것을 확인하려면 에뮬레이터에서 해 보는 것이 불가능하고 실제 앱을 테스트 기기에서 빌드해서 동작하는지 확인해보아야 했다. 테스트를 위해 매번 빌드를 기다려야 하니 답답할 때가 종종 있었다. 또 다른 어려웠던 점은 프로세스가 강제로 종료되고 나서 다시 앱을 시작해도 정상 작동하는지 확인할 때였는데, 프로세스가 종료되면 안드로이드 스튜디오와의 연결이 끊어져 더 이상 로그가 찍히지 않아 문제를 분석하는 데 많은 시간이 들었다. 브라우저라는 샌드박스 위에서의 웹 클라이언트를 만드는 것과는 다르게 고려해야 할 요소가 더 많다고 느꼈다.\n안드로이드 SDK가 지원하는 경우 안에서만 앱을 만들어야 한다는 것도 큰 어려움이었다. 경험은 없지만 제약은 iOS가 더 심하다고는 하긴 하는데 안드로이드의 경험만으로도 충분히 느낄 수 있었다. 예를 들어, 녹음이 다른 오디오 세션 사용 앱을 사용할 때에도 진행이 가능한지 알아봤는데 어떤 옵션에서는 불가능했고 어떤 옵션에서는 소리 없이 무음으로만 녹음이 진행되었다. 주어진 옵션 안에서만 기능 구현이 가능하다는 한계를 느낄 수 있었다.\n안드로이드 SDK 버전에 따른 제약도 상당히 강했다. 웹 클라이언트는 결국에는 정적인 파일로 빌드하기 때문에 vue 프레임워크 버전에 대해 고민할 필요가 없었지만 안드로이드 SDK는 버전 하나하나에 따라서도 내용이 많이 바뀌어서 타겟 버전, 미니멈 버전 등에 따라서 구현할 수 있는 기능이 매번 달라졌다. 안드로이드 SDK 버전에 따른 기기 시장 점유율도 고려해서 타겟 버전, 미니멈 버전을 정해야 하는 비즈니스 문제와 겹쳐 복잡했다.\n마지막으로 기종 문제 또한 생각해야 했다. 안드로이드는 iOS와 다르게 많은 기기 위에서 사용되기 때문에 갤럭시 기종에서는 잘 돌아간다고 해서 화웨이 기종에서 잘 돌아갈 것이라는 것을 보장할 수 없었다. 특히나 하드웨어 영역과 겹쳐 있기 때문에 더 신경을 써야 했다. 결국에는 팀에 갤럭시 기기밖에 없어 다른 기종에 대한 테스트는 베타 테스트 단계로 넘겨버리긴 했지만 말이다.\n안드로이드 앱을 개발하면서 지금까지 겪지 못했던 다양한 상황을 마주하며 하나하나 허들을 넘어가는 듯한 느낌을 받았다. 힘든 면도 분명 있었지만 재미도 있었다. 내가 구현한 기능이 내 손 안에서 동작한다는 것은 또 새로운 경험이었다. 그리고 MVVM 모델은 결국에는 MVC와 다를 것도 없어 보였다. 단지 controller의 output이 데이터가 아니라 small view snippet으로 바뀐 정도라고 느꼈다. 점차 컴퓨터보다는 모바일에 익숙해지는 세대가 찾아온다는데 이런 앱 개발 경험도 해볼 수 있어서 되돌아보면 또 알찬 한달이었다.\n",
+  "wordCount" : "368",
+  "inLanguage": "en",
+  "datePublished": "2022-03-31T00:00:00Z",
+  "dateModified": "2022-03-31T00:00:00Z",
+  "author":{
+    "@type": "Person",
+    "name": "Hadooboo"
+  },
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://hadooboo.github.io/posts/mils/202203/"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "Hadooboo Dev Log",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://hadooboo.github.io/favicon.ico"
+    }
+  }
+}
+</script>
+</head>
+
+<body class="" id="top">
+<script>
+    if (localStorage.getItem("pref-theme") === "dark") {
+        document.body.classList.add('dark');
+    } else if (localStorage.getItem("pref-theme") === "light") {
+        document.body.classList.remove('dark')
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.body.classList.add('dark');
+    }
+
+</script>
+
+<header class="header">
+    <nav class="nav">
+        <div class="logo">
+            <a href="https://hadooboo.github.io/" accesskey="h" title="Hadooboo Dev Log (Alt + H)">Hadooboo Dev Log</a>
+            <div class="logo-switches">
+                <button id="theme-toggle" accesskey="t" title="(Alt + T)">
+                    <svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                    <svg id="sun" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                </button>
+            </div>
+        </div>
+        <ul id="menu">
+            <li>
+                <a href="https://hadooboo.github.io/about/" title="About">
+                    <span>About</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://hadooboo.github.io/tag/" title="Tag">
+                    <span>Tag</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</header>
+<main class="main">
+
+<article class="post-single">
+  <header class="post-header">
+    <div class="breadcrumbs"><a href="https://hadooboo.github.io/">Home</a>&nbsp;»&nbsp;<a href="https://hadooboo.github.io/posts/">Posts</a>&nbsp;»&nbsp;<a href="https://hadooboo.github.io/posts/mils/">Mils</a></div>
+    <h1 class="post-title">
+      202203 | 안드로이드 SDK
+    </h1>
+    <div class="post-meta"><span title='2022-03-31 00:00:00 +0000 UTC'>2022-03-31</span>&nbsp;·&nbsp;2 min&nbsp;·&nbsp;Hadooboo
+
+</div>
+  </header> 
+  <div class="post-content"><p>이번 달 주 업무는 녹음 기능을 메인으로 하는 안드로이드 네이티브 앱을 만드는 작업이었다. 기존까지는 프로토타입 앱 클라이언트를 만들어야 할 때 flutter를 사용하여 안드로이드와 iOS 멀티플랫폼 빌드가 가능하도록 했었다. 그러나 녹음과 같이 하드웨어와 밀접하게 연관된 기능을 갖는 경우에는 flutter의 한계가 명확했고 결국에는 안드로이드 SDK를 직접 익혀서 할 수밖에 없었다.</p>
+<p>하드웨어와 연관된 작업이다 보니 테스트 과정이 많이 힘들었다. 기능이 동작하는 것을 확인하려면 에뮬레이터에서 해 보는 것이 불가능하고 실제 앱을 테스트 기기에서 빌드해서 동작하는지 확인해보아야 했다. 테스트를 위해 매번 빌드를 기다려야 하니 답답할 때가 종종 있었다. 또 다른 어려웠던 점은 프로세스가 강제로 종료되고 나서 다시 앱을 시작해도 정상 작동하는지 확인할 때였는데, 프로세스가 종료되면 안드로이드 스튜디오와의 연결이 끊어져 더 이상 로그가 찍히지 않아 문제를 분석하는 데 많은 시간이 들었다. 브라우저라는 샌드박스 위에서의 웹 클라이언트를 만드는 것과는 다르게 고려해야 할 요소가 더 많다고 느꼈다.</p>
+<p>안드로이드 SDK가 지원하는 경우 안에서만 앱을 만들어야 한다는 것도 큰 어려움이었다. 경험은 없지만 제약은 iOS가 더 심하다고는 하긴 하는데 안드로이드의 경험만으로도 충분히 느낄 수 있었다. 예를 들어, 녹음이 다른 오디오 세션 사용 앱을 사용할 때에도 진행이 가능한지 알아봤는데 어떤 옵션에서는 불가능했고 어떤 옵션에서는 소리 없이 무음으로만 녹음이 진행되었다. 주어진 옵션 안에서만 기능 구현이 가능하다는 한계를 느낄 수 있었다.</p>
+<p>안드로이드 SDK 버전에 따른 제약도 상당히 강했다. 웹 클라이언트는 결국에는 정적인 파일로 빌드하기 때문에 vue 프레임워크 버전에 대해 고민할 필요가 없었지만 안드로이드 SDK는 버전 하나하나에 따라서도 내용이 많이 바뀌어서 타겟 버전, 미니멈 버전 등에 따라서 구현할 수 있는 기능이 매번 달라졌다. 안드로이드 SDK 버전에 따른 기기 시장 점유율도 고려해서 타겟 버전, 미니멈 버전을 정해야 하는 비즈니스 문제와 겹쳐 복잡했다.</p>
+<p>마지막으로 기종 문제 또한 생각해야 했다. 안드로이드는 iOS와 다르게 많은 기기 위에서 사용되기 때문에 갤럭시 기종에서는 잘 돌아간다고 해서 화웨이 기종에서 잘 돌아갈 것이라는 것을 보장할 수 없었다. 특히나 하드웨어 영역과 겹쳐 있기 때문에 더 신경을 써야 했다. 결국에는 팀에 갤럭시 기기밖에 없어 다른 기종에 대한 테스트는 베타 테스트 단계로 넘겨버리긴 했지만 말이다.</p>
+<p>안드로이드 앱을 개발하면서 지금까지 겪지 못했던 다양한 상황을 마주하며 하나하나 허들을 넘어가는 듯한 느낌을 받았다. 힘든 면도 분명 있었지만 재미도 있었다. 내가 구현한 기능이 내 손 안에서 동작한다는 것은 또 새로운 경험이었다. 그리고 MVVM 모델은 결국에는 MVC와 다를 것도 없어 보였다. 단지 controller의 output이 데이터가 아니라 small view snippet으로 바뀐 정도라고 느꼈다. 점차 컴퓨터보다는 모바일에 익숙해지는 세대가 찾아온다는데 이런 앱 개발 경험도 해볼 수 있어서 되돌아보면 또 알찬 한달이었다.</p>
+
+
+<script src="https://utteranc.es/client.js"
+        repo="hadooboo/hadooboo.github.io"
+        issue-term="pathname"
+        theme="github-light"
+        crossorigin="anonymous"
+        async>
+</script>
+
+
+
+  </div>
+
+  <footer class="post-footer">
+    <ul class="post-tags">
+    </ul>
+  </footer>
+</article>
+    </main>
+    
+<footer class="footer">
+    <span>&copy; 2023 <a href="https://hadooboo.github.io/">Hadooboo Dev Log</a></span>
+    <span>
+        Powered by
+        <a href="https://gohugo.io/" rel="noopener noreferrer" target="_blank">Hugo</a> &
+        <a href="https://github.com/adityatelange/hugo-PaperMod/" rel="noopener" target="_blank">PaperMod</a>
+    </span>
+</footer>
+<a href="#top" aria-label="go to top" title="Go to Top (Alt + G)" class="top-link" id="top-link" accesskey="g">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6" fill="currentColor">
+        <path d="M12 6H0l6-6z" />
+    </svg>
+</a>
+
+<script>
+    let menu = document.getElementById('menu')
+    if (menu) {
+        menu.scrollLeft = localStorage.getItem("menu-scroll-position");
+        menu.onscroll = function () {
+            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+        }
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            var id = this.getAttribute("href").substr(1);
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
+                    behavior: "smooth"
+                });
+            } else {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
+            }
+            if (id === "top") {
+                history.replaceState(null, null, " ");
+            } else {
+                history.pushState(null, null, `#${id}`);
+            }
+        });
+    });
+
+</script>
+<script>
+    var mybutton = document.getElementById("top-link");
+    window.onscroll = function () {
+        if (document.body.scrollTop > 800 || document.documentElement.scrollTop > 800) {
+            mybutton.style.visibility = "visible";
+            mybutton.style.opacity = "1";
+        } else {
+            mybutton.style.visibility = "hidden";
+            mybutton.style.opacity = "0";
+        }
+    };
+
+</script>
+<script>
+    document.getElementById("theme-toggle").addEventListener("click", () => {
+        if (document.body.className.includes("dark")) {
+            document.body.classList.remove('dark');
+            localStorage.setItem("pref-theme", 'light');
+        } else {
+            document.body.classList.add('dark');
+            localStorage.setItem("pref-theme", 'dark');
+        }
+    })
+
+</script>
+</body>
+
+</html>
