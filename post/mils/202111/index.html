@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html lang="ko-kr" dir="ltr">
+    <head><meta charset='utf-8'>
+<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content='저번 달 업무였던 Blockcerts 프로토타입이 이어져 계속해서 블록체인 인증과 관련된 서비스 쪽으로 프로젝트 방향이 잡혔다. Blockcerts의 개념은 의미가 있었지만,'>
+<title>202111 | 우리 입맛대로 블록체인 다루기</title>
+
+<link rel='canonical' href='https://hadooboo.github.io/post/mils/202111/'>
+
+<link rel="stylesheet" href="/scss/style.min.fd84e57133f7e873d7b16bba3f165639533befb316512be183800fd65952f8fe.css"><meta property='og:title' content='202111 | 우리 입맛대로 블록체인 다루기'>
+<meta property='og:description' content='저번 달 업무였던 Blockcerts 프로토타입이 이어져 계속해서 블록체인 인증과 관련된 서비스 쪽으로 프로젝트 방향이 잡혔다. Blockcerts의 개념은 의미가 있었지만,'>
+<meta property='og:url' content='https://hadooboo.github.io/post/mils/202111/'>
+<meta property='og:site_name' content='Hadooboo Dev Log'>
+<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:published_time' content='2021-11-30T00:00:00&#43;00:00'/><meta property='article:modified_time' content='2021-11-30T00:00:00&#43;00:00'/>
+<meta name="twitter:title" content="202111 | 우리 입맛대로 블록체인 다루기">
+<meta name="twitter:description" content="저번 달 업무였던 Blockcerts 프로토타입이 이어져 계속해서 블록체인 인증과 관련된 서비스 쪽으로 프로젝트 방향이 잡혔다. Blockcerts의 개념은 의미가 있었지만,">
+    </head>
+    <body class="
+    article-page
+    ">
+    <script>
+        (function() {
+            const colorSchemeKey = 'StackColorScheme';
+            if(!localStorage.getItem(colorSchemeKey)){
+                localStorage.setItem(colorSchemeKey, "auto");
+            }
+        })();
+    </script><script>
+    (function() {
+        const colorSchemeKey = 'StackColorScheme';
+        const colorSchemeItem = localStorage.getItem(colorSchemeKey);
+        const supportDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches === true;
+
+        if (colorSchemeItem == 'dark' || colorSchemeItem === 'auto' && supportDarkMode) {
+            
+
+            document.documentElement.dataset.scheme = 'dark';
+        } else {
+            document.documentElement.dataset.scheme = 'light';
+        }
+    })();
+</script>
+<div class="container main-container flex on-phone--column extended"><aside class="sidebar left-sidebar sticky ">
+    <button class="hamburger hamburger--spin" type="button" id="toggle-menu" aria-label="Toggle Menu">
+        <span class="hamburger-box">
+            <span class="hamburger-inner"></span>
+        </span>
+    </button>
+
+    <header>
+        
+            
+            <figure class="site-avatar">
+                <a href="/">
+                
+                    
+                    
+                    
+                        
+                        <img src="/img/avatar_huda2458f72ce188392d75c5d51cd8e24e_373_300x0_resize_box_3.png" width="300"
+                            height="300" class="site-logo" loading="lazy" alt="Avatar">
+                    
+                
+                </a>
+                
+            </figure>
+            
+        
+        
+        <div class="site-meta">
+            <h1 class="site-name"><a href="/">Hadooboo Dev Log</a></h1>
+            <h2 class="site-description"></h2>
+        </div>
+    </header><ol class="menu" id="main-menu">
+        
+        
+
+        <div class="menu-bottom-section">
+            
+            
+                <li id="dark-mode-toggle">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="8" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-right" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="16" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                    <span>Dark Mode</span>
+                </li>
+            
+        </div>
+    </ol>
+</aside>
+
+    
+
+            <main class="main full-width">
+    <article class="main-article">
+    <header class="article-header">
+
+    <div class="article-details">
+    
+    <header class="article-category">
+        
+            <a href="/categories/mil/" style="background-color: #2a9d8f; color: #fff;">
+                MIL
+            </a>
+        
+    </header>
+    
+
+    <div class="article-title-wrapper">
+        <h2 class="article-title">
+            <a href="/post/mils/202111/">202111 | 우리 입맛대로 블록체인 다루기</a>
+        </h2>
+    
+        
+    </div>
+
+    
+    
+    
+    
+    <footer class="article-time">
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-calendar-time" width="56" height="56" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M11.795 21h-6.795a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v4" />
+  <circle cx="18" cy="18" r="4" />
+  <path d="M15 3v4" />
+  <path d="M7 3v4" />
+  <path d="M3 11h16" />
+  <path d="M18 16.496v1.504l1 1" />
+</svg>
+                <time class="article-time--published">Nov 30, 2021</time>
+            </div>
+        
+
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <polyline points="12 7 12 12 15 15" />
+</svg>
+
+
+
+                <time class="article-time--reading">
+                    3 minute read
+                </time>
+            </div>
+        
+    </footer>
+    
+
+    
+</div>
+
+</header>
+
+    <section class="article-content">
+    
+    
+    <p>저번 달 업무였던 Blockcerts 프로토타입이 이어져 계속해서 블록체인 인증과 관련된 서비스 쪽으로 프로젝트 방향이 잡혔다. Blockcerts의 개념은 의미가 있었지만, 제공하는 라이브러리들의 복잡성도 크지 않았으며 우리가 직접 구현해도 조금의 시간만 더 걸릴 뿐 못할 수준이 아니었다. 특히나 django framework를 사용할 수 있는 것이 나밖에 없다는 것도 결국 우리 팀이 직접 구현해야하겠다는 방향으로 이어지는 요인이 되었다.</p>
+<p>이를 위해서는 high-level에서만 이해하고 있던 블록체인 네트워크들이 어떤 방식으로 구현되어 있고 어떻게 상호작용할 수 있을지 공부하는 것이 필수적이었다. 나는 비트코인 네트워크의 조사부터 구현까지를 맡았다. 지금까지는 메타적인 개념으로만 알고 있었던 원장, 트랜잭션 등의 내용을 구체적인 예시와 코드로 이해해야 했다. 더군다나 송금과 같이 기본적인 비트코인 트랜잭션 사용법이 아닌 임의의 데이터를 트랜잭션에 포함시키는 것이 목표였으므로 더 복잡하였다.</p>
+<p>우선 인터넷을 찾아보면 쉽게 나오는 <code>OP_RETURN</code> 을 이용하는 방법은 우리 서비스의 상황에 맞지 않았다. 최대 80 bytes까지만 포함할 수 있었기 때문에 원하는 데이터를 넣기에는 부족하였다. <code>OP_RETURN</code> 방법은 원본 데이터를 넣을 때 사용하기보다는 어떤 데이터의 해시값을 넣어 무결성을 보장하는 용도로 사용할 때만 좋다. 그래서 일반적인 구글링으로는 방법을 찾을 수 없었고, <a class="link" href="https://ledgerjournal.org/ojs/ledger/article/download/101/93/"  target="_blank" rel="noopener"
+    >&lt;Data Insertion in Bitcoin’s Blockchain&gt;</a> 이라는 리서치 글을 분석하여 결론적으로 <code>Data Drop</code> 방식을 사용하게 되었다.</p>
+<p>비트코인은 송금하는 사람이 일종의 암호 스크립트를 만든 후 비밀키를 가지고 있는 사용자가 그것을 풀어 UTXO의 소유권을 가져오는 방식으로 동작한다. <code>OP_RETURN</code> 도 사실은 스크립트 명령어의 일종이다. <code>Data Drop</code> 방식에서는 <code>OP_DROP</code> 이라는 명령어를 사용하여 암호 스크립트에 원하는 데이터를 넣고 그것을 해독 스크립트에서 무시하도록 하는 방법이다. <code>OP_DROP</code> 명령어가 말 그대로 스택에 있는 데이터를 Drop해버리는 명령어이기 때문이다. 이렇게 했을 때에도 하나의 트랜잭션에 들어갈 수 있는 최대 데이터는 1529 bytes라는 제한이 있지만, 이는 비트코인 트랜잭션 암호 스크립트가 최대 1650 bytes라는 제한 때문이고 사실상의 최대치이다. 원하는 데이터를 잘게 쪼개 각각을 주소로 하여 송금하는 방법도 있지만, 이는 너무 많은 무의미한 UTXO를 남겨버려 네트워크에 좋지 못한 영향을 주기 때문에 계속해서 UTXO도 사용할 수 있는 <code>Data Drop</code> 방식이 가장 낫다고 판단하였다.</p>
+<p>스크립트를 개념적으로 만들 수 있게 된 것과 실제로 그것을 비트코인 네트워크가 받아들일 수 있는 형식으로 만들어 적용하는 것은 또 다른 문제였다. 다행히도 go에서는 <a class="link" href="https://github.com/btcsuite/btcd"  target="_blank" rel="noopener"
+    >btcd</a> 라이브러리가 존재하여 builder 패턴과 함께 쉽게 암호 스크립트, 해독 스크립트 등을 만들 수 있었다. 비트코인 풀노드를 운영하는 것은 무리가 있기 때문에 상용 API를 이용하여 만든 트랜잭션 데이터를 비트코인 네트워크에 전송하였고, 실제로 원하는 데이터가 Sigscript 자리에 잘 들어간 것을 확인할 수 있었다. 트랜잭션이 최대한 빨리 컨펌되기 위한 수수료 계산, 잔여 UTXO 관리를 위한 로직 등은 추가로 해결해야 할 과제로 남았다.</p>
+<p>논문까지는 아니었지만 리서치 글을 분석하여 원하는 기능을 구현하는 경험을 오랜만에 해보며 머리는 조금 더 아플 수 있었지만 뿌듯함을 느꼈다. 이렇게 구조를 자세히 분석하고 실제 구현까지 해 보는 경험이 있어야 어떤 기술에 대한 이해가 확실히 많이 증가하는 것 같다. 그와 별개로 송금 목적이 주인 비트코인 네트워크에 데이터를 임의로 집어넣는 것이 일종의 어뷰징이라고 볼 수도 있다. 그렇기 때문에 UTXO가 남지 않는 <code>Data Drop</code> 방식을 사용하여 최대한 어뷰징의 가능성을 낮췄다. 항상 내가 사용하는 방법이 올바른 방향인지 고민하면서 구현하도록 노력해야겠다.</p>
+
+</section>
+
+
+    <footer class="article-footer">
+    
+
+    </footer>
+
+
+    
+</article>
+
+    
+
+    
+
+     
+    
+        
+    <script src="https://utteranc.es/client.js" 
+        repo="hadooboo/hadooboo.github.io"
+        issue-term="pathname"
+        
+        crossorigin="anonymous"
+        async
+        >
+</script>
+
+<style>
+    .utterances {
+        max-width: unset;
+    }
+</style>
+
+<script>
+    let utterancesLoaded = false;
+
+    function setUtterancesTheme(theme) {
+        let utterances = document.querySelector('.utterances iframe');
+        if (utterances) {
+            utterances.contentWindow.postMessage(
+                {
+                    type: 'set-theme',
+                    theme: `github-${theme}`
+                },
+                'https://utteranc.es'
+            );
+        }
+    }
+
+    addEventListener('message', event => {
+        if (event.origin !== 'https://utteranc.es') return;
+
+        
+        utterancesLoaded = true;
+        setUtterancesTheme(document.documentElement.dataset.scheme)
+    });
+
+    window.addEventListener('onColorSchemeChange', (e) => {
+        if (!utterancesLoaded) return;
+        setUtterancesTheme(e.detail)
+    })
+</script>
+
+
+    
+
+    <footer class="site-footer">
+    <section class="copyright">
+        &copy; 
+        
+        2023 Hadooboo Dev Log
+    </section>
+    
+    <section class="powerby">
+        Built with <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> <br />
+        Theme <b><a href="https://github.com/CaiJimmy/hugo-theme-stack" target="_blank" rel="noopener" data-version="3.17.0">Stack</a></b> designed by <a href="https://jimmycai.com" target="_blank" rel="noopener">Jimmy</a>
+    </section>
+</footer>
+
+
+    
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    
+    <div class="pswp__bg"></div>
+
+    
+    <div class="pswp__scroll-wrap">
+
+        
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                
+                
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"integrity="sha256-ePwmChbbvXbsO02lbM3HoHbSHTHFAeChekF1xKJdleo="crossorigin="anonymous"
+                defer
+                >
+            </script><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"integrity="sha256-UKkzOn/w1mBxRmLLGrSeyB4e1xbrp4xylgAWb3M42pU="crossorigin="anonymous"
+                defer
+                >
+            </script><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.min.css"crossorigin="anonymous"
+            ><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.css"crossorigin="anonymous"
+            >
+
+            </main>
+        </div>
+        <script 
+                src="https://cdn.jsdelivr.net/npm/node-vibrant@3.1.6/dist/vibrant.min.js"integrity="sha256-awcR2jno4kI5X0zL8ex0vi2z&#43;KMkF24hUW8WePSA9HM="crossorigin="anonymous"
+                
+                >
+            </script><script type="text/javascript" src="/ts/main.js" defer></script>
+<script>
+    (function () {
+        const customFont = document.createElement('link');
+        customFont.href = "https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap";
+
+        customFont.type = "text/css";
+        customFont.rel = "stylesheet";
+
+        document.head.appendChild(customFont);
+    }());
+</script>
+
+    </body>
+</html>

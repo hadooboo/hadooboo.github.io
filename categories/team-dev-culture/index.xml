@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+    <channel>
+        <title>Team Dev Culture on Hadooboo Dev Log</title>
+        <link>https://hadooboo.github.io/categories/team-dev-culture/</link>
+        <description>Recent content in Team Dev Culture on Hadooboo Dev Log</description>
+        <generator>Hugo -- gohugo.io</generator>
+        <language>ko-kr</language>
+        <lastBuildDate>Wed, 09 Nov 2022 00:00:00 +0000</lastBuildDate><atom:link href="https://hadooboo.github.io/categories/team-dev-culture/index.xml" rel="self" type="application/rss+xml" /><item>
+        <title>[팀 개발 문화 발전시키기] 방화벽 관리</title>
+        <link>https://hadooboo.github.io/post/teams/%EB%B0%A9%ED%99%94%EB%B2%BD-%EA%B4%80%EB%A6%AC/</link>
+        <pubDate>Wed, 09 Nov 2022 00:00:00 +0000</pubDate>
+        
+        <guid>https://hadooboo.github.io/post/teams/%EB%B0%A9%ED%99%94%EB%B2%BD-%EA%B4%80%EB%A6%AC/</guid>
+        <description>&lt;p&gt;&lt;img src=&#34;https://velog.velcdn.com/images/hadooboo/post/a2e234f4-ad35-48de-8c5e-1780a82431ff/image.png&#34;
+	
+	
+	
+	loading=&#34;lazy&#34;
+	
+	
+&gt;&lt;/p&gt;
+&lt;h2 id=&#34;개발서버에서-방화벽을-제대로-관리해야겠다고-마음먹은-이유&#34;&gt;개발서버에서 방화벽을 제대로 관리해야겠다고 마음먹은 이유&lt;/h2&gt;
+&lt;p&gt;개발서버에서는 여러 프로그램들이 실행되고 있고 네트워크를 통해 통신을 하는 프로그램도 다수 있다. 가장 대표적인 예시로 SSH, 데이터베이스, API 서버, 웹 서버 등등이 있다.&lt;/p&gt;
+&lt;p&gt;그렇다면 모든 네트워크가 정상적인 사용자로부터만 유입될까? 우선 개발서버는 public ip 주소를 가지고 있기 때문에 누구나 접근이 가능하다. 또한, 각 프로그램들은 일반적으로 기본 포트를 이용하여 실행된다. 예를 들어, ssh 22, mysql 3306 등. 그렇기 때문에 네트워크를 통한 접근 자체는 아무나 쉽게 할 수 있다.&lt;/p&gt;
+&lt;p&gt;실제로 개발서버에 띄워둔 mongodb에 문제가 생긴 적이 있었다. 도커 컨테이너의 형태로, 기본 포트를 이용하여, 매우 쉬운 아이디와 비밀번호로 켜 둔 것이 문제의 원인이었다. 해커로 추정되는 누군가는 브루트포스 방법으로 각 ip마다 mongodb 기본 포트인 27017으로 로그인을 막 시도한 듯 하다. 도커 컨테이너의 로그를 보면 다음과 같이 쉽게 유추할 수 있는 아이디와 비밀번호 조합으로 로그인 시도를 한 흔적을 볼 수 있다.&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;2022-10-13T05:56:58.294+0000 I  ACCESS   [conn25470] SASL SCRAM-SHA-1 authentication failed for admin on admin from client 220.235.190.244:56604 ; AuthenticationFailed: SCRAM authentication failed, storedKey mismatch
+2022-10-13T05:56:58.391+0000 I  ACCESS   [conn25472] SASL SCRAM-SHA-1 authentication failed for admin on admin from client 220.235.190.244:56620 ; AuthenticationFailed: SCRAM authentication failed, storedKey mismatch
+...
+2022-10-16T00:26:08.670+0000 I  ACCESS   [conn33439] SASL SCRAM-SHA-256 authentication failed for admin on admin from client 159.203.111.244:50404 ; AuthenticationFailed: SCRAM authentication failed, storedKey mismatch
+2022-10-16T00:26:09.899+0000 I  ACCESS   [conn33441] SASL SCRAM-SHA-256 authentication failed for admin on admin from client 159.203.111.244:50430 ; AuthenticationFailed: SCRAM authentication failed, storedKey mismatch
+...
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;실서버에는 네트워크 유입에 대한 접근 권한 처리를 철저하게 하고 있지만 개발서버에는 소홀했던 면이 있었다. 다행히 mongodb에 중요한 정보가 들어있지도 않았고 해당 컨테이너를 통해 서버의 다른 자원에 접근할 수도 없었지만 mongodb의 데이터를 싹 다 날리게 되는 안타까운 일이 있었다. 그래서 개발 진행 과정에도 제동이 걸렸다.&lt;/p&gt;
+&lt;p&gt;따라서 개발서버에서도 방화벽 기능을 이용하여 철저한 접근 제어를 해야겠다고 마음먹었다.&lt;/p&gt;
+&lt;h2 id=&#34;개선한-방향&#34;&gt;개선한 방향&lt;/h2&gt;
+&lt;p&gt;우분투 운영체제로 운영되고 있는 개발서버에 방화벽을 설정하기 위한 툴로는 크게 ufw와 iptables가 있다. ufw는 알고 보면 iptables의 frontend라서 모든 규칙이 결국에는 iptables에 존재하게 되지만 간단한 사용법 때문에 같이 이용하였다.&lt;/p&gt;
+&lt;h3 id=&#34;ufw를-이용하여-host에서-직접-실행되는-프로그램-관리&#34;&gt;ufw를 이용하여 host에서 직접 실행되는 프로그램 관리&lt;/h3&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;$ ufw allow from &amp;lt;ip&amp;gt; to any port &amp;lt;port number&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;사무실 밖에서 접근할 필요가 없는 프로그램의 포트에 대해서는 접근 가능한 ip를 제한하도록 했다. ssh는 2FA가 적용되어 있기도 하고, 가끔 집에서 접속할 때도 있기 때문에 접근 제한을 걸지 않았지만 대시보드 용으로 사무실에서만 접속하는 몇몇 프로그램의 경우 외부에 노출될 필요가 전혀 없었다.&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;$ ufw &amp;lt;some rule&amp;gt; comment &amp;lt;my comment&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;추가적으로 ufw를 통해 어떤 규칙을 적용할 때 comment를 추가할 수 있는 기능이 있다는 것을 확인하였다. 이미 존재하는 규칙에도 위 명령어를 치면 알아서 comment만 추가해준다. 이를 이용하여 이제부터는 모든 규칙에 무조건 주석을 달도록 했다. 매번 &lt;code&gt;netstat -np&lt;/code&gt; 를 통해 어떤 포트가 어떤 목적으로 쓰이고 있는지 확인하지 않아도 되어 중복 작업을 많이 막을 수 있었다.&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;$ ufw status numbered
+$ ufw delete &amp;lt;rule number&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;또한, 더 이상 사용하지 않는 모든 규칙들도 삭제하였다. 입력했던 규칙을 그대로 입력하여 삭제하는 것도 한 방법이지만, 긴 규칙을 그대로 타이핑하는 것도 비효율적이기 때문에 rule number를 사용하는 방법을 병행하였다.&lt;/p&gt;
+&lt;h3 id=&#34;iptables를-이용하여-docker-container로-실행되는-서비스-관리&#34;&gt;iptables를 이용하여 docker container로 실행되는 서비스 관리&lt;/h3&gt;
+&lt;h4 id=&#34;ufw만으로-규칙을-설정할-수-없는-이유&#34;&gt;ufw만으로 규칙을 설정할 수 없는 이유&lt;/h4&gt;
+&lt;p&gt;docker container로 실행되고 있는 서비스들에 대해서는 조금 더 고려해야 했다. 서비스가 1234포트를 사용한다고 할 때 &lt;code&gt;ufw deny 1234&lt;/code&gt; 를 한다고 해서 1234포트로의 접근이 막아지지 않는다(!) 이를 이해하려면 iptables의 규칙을 자세히 확인해보아야 한다.&lt;/p&gt;
+&lt;p&gt;docker bridge network로 연결되어 있는 컨테이너의 경우 먼저 iptables에서 PREROUTING을 거친다.&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;$ iptables -L -t nat -v --line-number
+Chain PREROUTING (policy ACCEPT)
+num target     prot opt in     out     source               destination
+1   DOCKER     all  --  any    any     anywhere             anywhere
+...
+Chain DOCKER (3 references)
+num target     prot opt in       out     source               destination
+1   DNAT       tcp  --  !docker0 any     anywhere             anywhere             tcp dpt:1234 to:172.17.0.3:1234
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;PREROUTING 에서 docker bridge network 내부적으로 사용하는 주소로 이동시키기 때문에 INPUT chain이 아니라 FORWARD chain을 타게 된다.&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;$ iptables -L FORWARD -v --line-number
+Chain FORWARD (policy DROP 0 packets, 0 bytes)
+num target                      prot opt in      out       source               destination
+1   DOCKER-USER                 all  --  any     any       anywhere             anywhere
+2   DOCKER-ISOLATION-STAGE-1    all  --  any     any       anywhere             anywhere
+3   ACCEPT                      all  --  any     docker0   anywhere             anywhere             ctstate RELATED,ESTABLISHED
+4   DOCKER                      all  --  any     docker0   anywhere             anywhere
+5   ACCEPT                      all  --  docker0 !docker0  anywhere             anywhere
+6   ACCEPT                      all  --  docker0 docker0   anywhere             anywhere
+...
+39  ufw-before-logging-forward  all  --  any     any       anywhere             anywhere
+40  ufw-before-forward          all  --  any     any       anywhere             anywhere
+41  ufw-after-forward           all  --  any     any       anywhere             anywhere
+42  ufw-after-logging-forward   all  --  any     any       anywhere             anywhere
+43  ufw-reject-forward          all  --  any     any       anywhere             anywhere
+44  ufw-track-forward           all  --  any     any       anywhere             anywhere
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;여기서 DOCKER-USER(1번 줄) 안에 아직 내용이 없고, DOCKER-ISOLATION-STAGE-1(2번 줄)은 docker network 간 격리를 위한 부분이기 때문에 다음 규칙으로 넘어간다. 목적지가 docker0 이고, 이제 새로운 연결을 맺는 상황이므로 ctstate가 &lt;code&gt;NEW&lt;/code&gt; 이기 때문에 4번 줄에 따라 DOCKER chain으로 넘어간다.&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;$ iptables -L DOCKER -v --line-number
+num target     prot opt in       out      source               destination
+1   ACCEPT     tcp  --  !docker0 docker0  anywhere             172.17.0.3           tcp dpt:1234
+...
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;1번 줄을 보면 docker0가 아닌 곳에서 docker0의 172.17.0.3:1234(PREROUTING의 to-destination과 동일)로 들어오는 tcp 패킷을 ACCEPT 하기 때문에 결론적으로 방화벽에 막히지 않았다. docker 관련된 규칙들이 전부 끝나고 나서야 39번째 줄부터 ufw-* 로 표현되는 ufw 관련 규칙들이 검사를 하고 있기 때문에 ufw 설정만으로는 막을 수 없었던 것이다.&lt;/p&gt;
+&lt;h4 id=&#34;docker-user-체인-이용하여-방화벽-규칙-적용하기&#34;&gt;&lt;code&gt;DOCKER-USER&lt;/code&gt; 체인 이용하여 방화벽 규칙 적용하기&lt;/h4&gt;
+&lt;p&gt;그래서 docker에서 제안하는 방법은 FORWARD chain 가장 상단에 있었던 DOCKER-USER chain에서 원하는 규칙을 추가하여 방화벽 관리를 하라는 것이다. 사무실에서만 1234포트로 접근 가능하도록 만들고 싶기 때문에 다음과 같은 명령들을 수행하였다.&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;$ iptables -I DOCKER-USER -p tcp --dport 1234 -j DROP
+$ iptables -I DOCKER-USER -s &amp;lt;ip&amp;gt; -p tcp --dport 1234 -j ACCEPT
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;첫번째 명령은 1234포트로 들어오는 tcp 패킷을 DROP하라는 규칙을 DOCKER-USER chain의 가장 첫번째 줄에 대입하라는 것이고, 두번째 명령은 ip 주소를 source로 하면서 1234포트로 들어오는 tcp 패킷은 ACCEPT하라는 규칙을 마찬가지로 DOCKER-USER chain의 가장 첫번째 줄에 대입하라는 것이다. 명령을 실행하는 순서도 중요한데, 만약 DROP 규칙이 먼저 있을 경우 ACCEPT 규칙을 보기도 전에 확인이 끝나기 때문이다.&lt;/p&gt;
+&lt;p&gt;이에 따라 DOCKER-USER chain은 최종적으로 다음과 같다.&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;$ iptables -L DOCKER-USER -v --line-number
+Chain DOCKER-USER
+num target     prot opt in     out     source               destination
+1   ACCEPT     tcp  --  any    any     &amp;lt;ip&amp;gt;                 anywhere             tcp dpt:1234
+2   DROP       tcp  --  any    any     anywhere             anywhere             tcp dpt:1234
+3   RETURN     all  --  any    any     anywhere             anywhere
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;이렇게 해서 docker container로 실행되는 프로그램에 대해서도 원하는 ip에서 들어오는 패킷만 받을 수 있도록 세팅하였다.&lt;/p&gt;
+&lt;h4 id=&#34;conntrack-모듈-이용하여-포트-포워딩-적용된-컨테이너에도-방화벽-규칙-적용하기&#34;&gt;&lt;code&gt;conntrack&lt;/code&gt; 모듈 이용하여 포트 포워딩 적용된 컨테이너에도 방화벽 규칙 적용하기&lt;/h4&gt;
+&lt;p&gt;위에서는 &lt;code&gt;--dport&lt;/code&gt; 옵션을 사용하여 목적지 포트를 이용한 규칙을 정의했다. 그런데 목적지 포트라고 하면 호스트 머신의 것일까 아니면 컨테이너의 것일까? nat 설정에서 보았던 &lt;code&gt;DOCKER&lt;/code&gt; 체인을 보면 감이 올 것이다.&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;$ iptables -L DOCKER -t nat -v --line-number
+Chain DOCKER (3 references)
+num target     prot opt in       out     source               destination
+1   DNAT       tcp  --  !docker0 any     anywhere             anywhere             tcp dpt:1234 to:172.17.0.3:1234
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;PREROUTING 과정에 들어오기 전 패킷의 목적지 포트는 호스트 머신의 것이었다. 그러나 PREROUTING을 거치며 목적지 포트는 컨테이너의 것으로 변경이 되었다.&lt;/p&gt;
+&lt;p&gt;그렇다면, 포트 포워딩을 &lt;code&gt;-p 1234:80&lt;/code&gt; 과 같이 적용한 경우 위에서 추가한 방화벽 규칙은 제대로 적용될까? 답은 그렇지 않다. 목적지 포트는 이미 80으로 포워딩 된 상황이지만 &lt;code&gt;DOCKER-USER&lt;/code&gt; 체인에서는 1234 포트를 제한하고 있기 때문이다.&lt;/p&gt;
+&lt;p&gt;그렇다고 80 포트를 &lt;code&gt;DOCKER-USER&lt;/code&gt; 체인에서 막을 수는 없다. 다른 컨테이너들이 사용할 수도 있는 일반적인 포트를 미리 막아 놓을 수는 없다. 컨테이너의 ip 주소를 같이 이용하는 것도 컨테이너가 꺼지고 켜지는 상황에 따라 매번 방화벽을 수정하는 것이 말이 되지 않으니만큼 불가능한 방법이다. 규칙에서 사용할, 사용해야 할 정보는 호스트 머신에 처음으로 들어온 패킷의 source ip address, destination port 이다.&lt;/p&gt;
+&lt;p&gt;PREROUTING을 거쳐 온 패킷에 대해 destination port 정보는 유실되는데 어떻게 해야 할까? 이 때 사용할 수 있는 것이 &lt;code&gt;conntrack&lt;/code&gt; 모듈이다. 사용은 iptables 명령어를 입력할 때 &lt;code&gt;-m conntrack&lt;/code&gt; 옵션을 추가하기만 하면 된다. &lt;code&gt;conntrack&lt;/code&gt; 는 iptables를 개발한 netfilter의 유틸리티 프로그램으로 패킷을 추적하고 관리할 때 사용할 수 있는 모듈이기도 하다. 모듈을 추가하고 나면 각각이 source ip address, destination port를 의미하는 &lt;code&gt;ctorigsrc&lt;/code&gt;, &lt;code&gt;ctorigdstport&lt;/code&gt; 옵션을 규칙에 추가할 수 있다. 최종적으로 입력한 명령줄과 그 결과는 다음과 같다.&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;$ iptables -I DOCKER-USER -m conntrack --ctorigdstport 1234 -p tcp -j DROP
+$ iptables -I DOCKER-USER -m conntrack --ctorigsrc &amp;lt;ip&amp;gt; --ctorigdstport 1234 -p tcp -j ACCEPT
+$ iptables -L DOCKER-USER -v --line-number
+Chain DOCKER-USER (1 references)
+num target     prot opt in     out     source               destination
+1   ACCEPT     tcp  --  *      *       anywhere             anywhere            ctorigsrc &amp;lt;ip&amp;gt; ctorigdstport 1234
+2   DROP       tcp  --  *      *       anywhere             anywhere            ctorigdstport 1234
+3   RETURN     all  --  *      *       anywhere             anywhere
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;source가 anywhere로 바뀐 대신 &lt;code&gt;ctorigsrc&lt;/code&gt; 내용이 마지막에 추가되었고, &lt;code&gt;dpt&lt;/code&gt; 대신 &lt;code&gt;ctorigdstport&lt;/code&gt; 를 확인할 수 있다. 이렇게 해서 서로 다른 포트로 포트 포워딩 적용된 컨테이너에도 방화벽 규칙을 적용할 수 있었다. 또한, 같은 포트로 포트 포워딩이 걸려 있다고 하더라도 일관성을 위해 &lt;code&gt;conntrack&lt;/code&gt; 을 이용한 규칙을 사용하는 것이 좋다고 판단하여 전부 변경하였다.&lt;/p&gt;
+&lt;h4 id=&#34;conntrack-advanced&#34;&gt;&lt;code&gt;conntrack&lt;/code&gt; advanced&lt;/h4&gt;
+&lt;p&gt;&lt;code&gt;conntrack&lt;/code&gt; 모듈을 사용해보며 여러 테스트를 하던 중 &lt;code&gt;--ctorigsrc&lt;/code&gt; 옵션 대신 그냥 원래 사용하던 &lt;code&gt;-s&lt;/code&gt; 옵션을 사용해도 문제가 없지 않을까라는 생각이 들었다. destination은 포워딩을 통해 변경되어도 source는 그대로 유지되기 때문이다.&lt;/p&gt;
+&lt;p&gt;언뜻 보기에는(?) 같아보이는 규칙을 입력할 수 있는 명령줄은 다음과 같다.&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;$ iptables -I DOCKER-USER -s &amp;lt;ip&amp;gt; -m conntrack --ctorigdstport 1234 -p tcp -j ACCEPT
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;그런데 결론적으로 위 방법은 작동하지 않았다. connection timeout이 발생하는 것을 확인할 수 있었다. 그래서 watch 명령어를 이용하여 어떤 룰에 걸리는지 확인해 보았다. &lt;code&gt;-d&lt;/code&gt; 옵션과 함께 사용하여 변화가 일어나는 부분을 하이라이트 하도록 했다.&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;$ watch -d iptables -L DOCKER-USER -v --line-number
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;&lt;img src=&#34;https://velog.velcdn.com/images/hadooboo/post/90070337-c830-4f26-8502-3b3ede841862/image.gif&#34;
+	
+	
+	
+	loading=&#34;lazy&#34;
+	
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;어떤 패킷은 ACCEPT 되고 있지만, 어떤 패킷이 계속해서 DROP 되고 있는 상황임을 확인하였다.&lt;/p&gt;
+&lt;p&gt;문제 상황을 이해하려면 &lt;code&gt;conntrack&lt;/code&gt; 모듈의 &lt;code&gt;ORIGINAL&lt;/code&gt;, &lt;code&gt;REPLY&lt;/code&gt; 타입을 알아야 한다. 그 이전에 패킷 개념만 생각해도 된다. 패킷은 클라이언트와 서버 간에 데이터를 전달하기 위한 데이터 조각이다. 그렇다면 클라이언트에서 서버로 오는 방향의 패킷 뿐만 아니라 서버에서 클라이언트로 가는 패킷도 존재한다는 것은 자명하다. 이 방향을 나타내는 것이 &lt;code&gt;ORIGINAL&lt;/code&gt;(클라이언트 -&amp;gt; 서버), &lt;code&gt;REPLY&lt;/code&gt;(서버 -&amp;gt; 클라이언트) 이다.&lt;/p&gt;
+&lt;p&gt;예를 들어, 위 상황에서 &lt;code&gt;ORIGINAL&lt;/code&gt;, &lt;code&gt;REPLY&lt;/code&gt; 패킷 정보는 각각 다음과 같다.&lt;/p&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;direction&lt;/th&gt;
+&lt;th&gt;src ip address&lt;/th&gt;
+&lt;th&gt;src port&lt;/th&gt;
+&lt;th&gt;dst ip address&lt;/th&gt;
+&lt;th&gt;dst port&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;code&gt;ORIGINAL&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;클라이언트 ip&lt;/td&gt;
+&lt;td&gt;random port&lt;/td&gt;
+&lt;td&gt;서버 ip&lt;/td&gt;
+&lt;td&gt;1234&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;code&gt;REPLY&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;도커 컨테이너 ip&lt;/td&gt;
+&lt;td&gt;80&lt;/td&gt;
+&lt;td&gt;클라이언트 ip&lt;/td&gt;
+&lt;td&gt;random port&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;p&gt;iptables 규칙에서 &lt;code&gt;ORIGINAL&lt;/code&gt; 은 확실히 ACCEPT 되고 있는 상황이므로 &lt;code&gt;REPLY&lt;/code&gt; 패킷이 DROP 되어 연결이 맺어지지 않는 것이라는 것을 알아내었다.&lt;/p&gt;
+&lt;p&gt;그럼 왜 &lt;code&gt;REPLY&lt;/code&gt; 패킷도 forwarding 규칙에 걸리는 것일까? 지금까지 PREROUTING 규칙을 보며 확인한 것은 &lt;code&gt;DNAT&lt;/code&gt;(destination nat)의 일종이었다. 그런데 반대로 POSTROUTING 규칙도 존재한다. 도커 네트워크를 거치는 패킷들은 &lt;code&gt;SNAT&lt;/code&gt;(source nat)의 인터페이스 버전이라고 할 수 있는 &lt;code&gt;MASQUERADE&lt;/code&gt; 가 적용된다. 따라서 forwarding 규칙에 의해 검사를 받게 되는 것이다.&lt;/p&gt;
+&lt;p&gt;이 때, src ip address는 도커 컨테이너의 것이 되며 &lt;code&gt;-s&lt;/code&gt; 옵션으로 클라이언트 ip를 직접 지정했을 경우 도커 컨테이너의 ip는 어디서도 ACCEPT 하고 있지 않기 때문에 DROP이 발생한다.&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;conntrack&lt;/code&gt; 은 &lt;code&gt;ORIGINAL&lt;/code&gt;, &lt;code&gt;REPLY&lt;/code&gt; 방향의 패킷들을 하나의 connection 개념으로 관리한다. 따라서 &lt;code&gt;--ctorigsrc&lt;/code&gt; 옵션을 사용하는 것으로 해당 연결에서 양방향으로 전달되는 패킷 모두가 ACCEPT 규칙을 타게 할 수 있었다.&lt;/p&gt;
+&lt;h2 id=&#34;회고&#34;&gt;회고&lt;/h2&gt;
+&lt;p&gt;방화벽은 프로그램 내부의 인증 시스템 앞에서 1차적으로 필터링할 수 있다는 점에서 필수적이면서 효과적인 기능이다. source ip 주소를 바꾸는 식으로 방화벽을 피해갈 수 있기 때문에 프로그램 내부적으로도 철저한 인증이 필요하기는 하지만 사무실의 source ip를 누구나 알 수 없기 때문에 대부분의 공격을 차단할 수 있을 것이다. 개발 서버에서도 실전처럼 잘 운영하는 것이 실서버에서의 휴먼 에러를 줄일 수 있는 가장 큰 연습이 될 것이라고 생각한다.&lt;/p&gt;
+</description>
+        </item>
+        
+    </channel>
+</rss>

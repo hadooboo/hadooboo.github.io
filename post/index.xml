@@ -1,0 +1,372 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+    <channel>
+        <title>Posts on Hadooboo Dev Log</title>
+        <link>https://hadooboo.github.io/post/</link>
+        <description>Recent content in Posts on Hadooboo Dev Log</description>
+        <generator>Hugo -- gohugo.io</generator>
+        <language>ko-kr</language>
+        <lastBuildDate>Wed, 09 Nov 2022 00:00:00 +0000</lastBuildDate><atom:link href="https://hadooboo.github.io/post/index.xml" rel="self" type="application/rss+xml" /><item>
+        <title>[팀 개발 문화 발전시키기] 방화벽 관리</title>
+        <link>https://hadooboo.github.io/post/teams/%EB%B0%A9%ED%99%94%EB%B2%BD-%EA%B4%80%EB%A6%AC/</link>
+        <pubDate>Wed, 09 Nov 2022 00:00:00 +0000</pubDate>
+        
+        <guid>https://hadooboo.github.io/post/teams/%EB%B0%A9%ED%99%94%EB%B2%BD-%EA%B4%80%EB%A6%AC/</guid>
+        <description>&lt;p&gt;&lt;img src=&#34;https://velog.velcdn.com/images/hadooboo/post/a2e234f4-ad35-48de-8c5e-1780a82431ff/image.png&#34;
+	
+	
+	
+	loading=&#34;lazy&#34;
+	
+	
+&gt;&lt;/p&gt;
+&lt;h2 id=&#34;개발서버에서-방화벽을-제대로-관리해야겠다고-마음먹은-이유&#34;&gt;개발서버에서 방화벽을 제대로 관리해야겠다고 마음먹은 이유&lt;/h2&gt;
+&lt;p&gt;개발서버에서는 여러 프로그램들이 실행되고 있고 네트워크를 통해 통신을 하는 프로그램도 다수 있다. 가장 대표적인 예시로 SSH, 데이터베이스, API 서버, 웹 서버 등등이 있다.&lt;/p&gt;
+&lt;p&gt;그렇다면 모든 네트워크가 정상적인 사용자로부터만 유입될까? 우선 개발서버는 public ip 주소를 가지고 있기 때문에 누구나 접근이 가능하다. 또한, 각 프로그램들은 일반적으로 기본 포트를 이용하여 실행된다. 예를 들어, ssh 22, mysql 3306 등. 그렇기 때문에 네트워크를 통한 접근 자체는 아무나 쉽게 할 수 있다.&lt;/p&gt;
+&lt;p&gt;실제로 개발서버에 띄워둔 mongodb에 문제가 생긴 적이 있었다. 도커 컨테이너의 형태로, 기본 포트를 이용하여, 매우 쉬운 아이디와 비밀번호로 켜 둔 것이 문제의 원인이었다. 해커로 추정되는 누군가는 브루트포스 방법으로 각 ip마다 mongodb 기본 포트인 27017으로 로그인을 막 시도한 듯 하다. 도커 컨테이너의 로그를 보면 다음과 같이 쉽게 유추할 수 있는 아이디와 비밀번호 조합으로 로그인 시도를 한 흔적을 볼 수 있다.&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;2022-10-13T05:56:58.294+0000 I  ACCESS   [conn25470] SASL SCRAM-SHA-1 authentication failed for admin on admin from client 220.235.190.244:56604 ; AuthenticationFailed: SCRAM authentication failed, storedKey mismatch
+2022-10-13T05:56:58.391+0000 I  ACCESS   [conn25472] SASL SCRAM-SHA-1 authentication failed for admin on admin from client 220.235.190.244:56620 ; AuthenticationFailed: SCRAM authentication failed, storedKey mismatch
+...
+2022-10-16T00:26:08.670+0000 I  ACCESS   [conn33439] SASL SCRAM-SHA-256 authentication failed for admin on admin from client 159.203.111.244:50404 ; AuthenticationFailed: SCRAM authentication failed, storedKey mismatch
+2022-10-16T00:26:09.899+0000 I  ACCESS   [conn33441] SASL SCRAM-SHA-256 authentication failed for admin on admin from client 159.203.111.244:50430 ; AuthenticationFailed: SCRAM authentication failed, storedKey mismatch
+...
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;실서버에는 네트워크 유입에 대한 접근 권한 처리를 철저하게 하고 있지만 개발서버에는 소홀했던 면이 있었다. 다행히 mongodb에 중요한 정보가 들어있지도 않았고 해당 컨테이너를 통해 서버의 다른 자원에 접근할 수도 없었지만 mongodb의 데이터를 싹 다 날리게 되는 안타까운 일이 있었다. 그래서 개발 진행 과정에도 제동이 걸렸다.&lt;/p&gt;
+&lt;p&gt;따라서 개발서버에서도 방화벽 기능을 이용하여 철저한 접근 제어를 해야겠다고 마음먹었다.&lt;/p&gt;
+&lt;h2 id=&#34;개선한-방향&#34;&gt;개선한 방향&lt;/h2&gt;
+&lt;p&gt;우분투 운영체제로 운영되고 있는 개발서버에 방화벽을 설정하기 위한 툴로는 크게 ufw와 iptables가 있다. ufw는 알고 보면 iptables의 frontend라서 모든 규칙이 결국에는 iptables에 존재하게 되지만 간단한 사용법 때문에 같이 이용하였다.&lt;/p&gt;
+&lt;h3 id=&#34;ufw를-이용하여-host에서-직접-실행되는-프로그램-관리&#34;&gt;ufw를 이용하여 host에서 직접 실행되는 프로그램 관리&lt;/h3&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;$ ufw allow from &amp;lt;ip&amp;gt; to any port &amp;lt;port number&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;사무실 밖에서 접근할 필요가 없는 프로그램의 포트에 대해서는 접근 가능한 ip를 제한하도록 했다. ssh는 2FA가 적용되어 있기도 하고, 가끔 집에서 접속할 때도 있기 때문에 접근 제한을 걸지 않았지만 대시보드 용으로 사무실에서만 접속하는 몇몇 프로그램의 경우 외부에 노출될 필요가 전혀 없었다.&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;$ ufw &amp;lt;some rule&amp;gt; comment &amp;lt;my comment&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;추가적으로 ufw를 통해 어떤 규칙을 적용할 때 comment를 추가할 수 있는 기능이 있다는 것을 확인하였다. 이미 존재하는 규칙에도 위 명령어를 치면 알아서 comment만 추가해준다. 이를 이용하여 이제부터는 모든 규칙에 무조건 주석을 달도록 했다. 매번 &lt;code&gt;netstat -np&lt;/code&gt; 를 통해 어떤 포트가 어떤 목적으로 쓰이고 있는지 확인하지 않아도 되어 중복 작업을 많이 막을 수 있었다.&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;$ ufw status numbered
+$ ufw delete &amp;lt;rule number&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;또한, 더 이상 사용하지 않는 모든 규칙들도 삭제하였다. 입력했던 규칙을 그대로 입력하여 삭제하는 것도 한 방법이지만, 긴 규칙을 그대로 타이핑하는 것도 비효율적이기 때문에 rule number를 사용하는 방법을 병행하였다.&lt;/p&gt;
+&lt;h3 id=&#34;iptables를-이용하여-docker-container로-실행되는-서비스-관리&#34;&gt;iptables를 이용하여 docker container로 실행되는 서비스 관리&lt;/h3&gt;
+&lt;h4 id=&#34;ufw만으로-규칙을-설정할-수-없는-이유&#34;&gt;ufw만으로 규칙을 설정할 수 없는 이유&lt;/h4&gt;
+&lt;p&gt;docker container로 실행되고 있는 서비스들에 대해서는 조금 더 고려해야 했다. 서비스가 1234포트를 사용한다고 할 때 &lt;code&gt;ufw deny 1234&lt;/code&gt; 를 한다고 해서 1234포트로의 접근이 막아지지 않는다(!) 이를 이해하려면 iptables의 규칙을 자세히 확인해보아야 한다.&lt;/p&gt;
+&lt;p&gt;docker bridge network로 연결되어 있는 컨테이너의 경우 먼저 iptables에서 PREROUTING을 거친다.&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;$ iptables -L -t nat -v --line-number
+Chain PREROUTING (policy ACCEPT)
+num target     prot opt in     out     source               destination
+1   DOCKER     all  --  any    any     anywhere             anywhere
+...
+Chain DOCKER (3 references)
+num target     prot opt in       out     source               destination
+1   DNAT       tcp  --  !docker0 any     anywhere             anywhere             tcp dpt:1234 to:172.17.0.3:1234
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;PREROUTING 에서 docker bridge network 내부적으로 사용하는 주소로 이동시키기 때문에 INPUT chain이 아니라 FORWARD chain을 타게 된다.&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;$ iptables -L FORWARD -v --line-number
+Chain FORWARD (policy DROP 0 packets, 0 bytes)
+num target                      prot opt in      out       source               destination
+1   DOCKER-USER                 all  --  any     any       anywhere             anywhere
+2   DOCKER-ISOLATION-STAGE-1    all  --  any     any       anywhere             anywhere
+3   ACCEPT                      all  --  any     docker0   anywhere             anywhere             ctstate RELATED,ESTABLISHED
+4   DOCKER                      all  --  any     docker0   anywhere             anywhere
+5   ACCEPT                      all  --  docker0 !docker0  anywhere             anywhere
+6   ACCEPT                      all  --  docker0 docker0   anywhere             anywhere
+...
+39  ufw-before-logging-forward  all  --  any     any       anywhere             anywhere
+40  ufw-before-forward          all  --  any     any       anywhere             anywhere
+41  ufw-after-forward           all  --  any     any       anywhere             anywhere
+42  ufw-after-logging-forward   all  --  any     any       anywhere             anywhere
+43  ufw-reject-forward          all  --  any     any       anywhere             anywhere
+44  ufw-track-forward           all  --  any     any       anywhere             anywhere
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;여기서 DOCKER-USER(1번 줄) 안에 아직 내용이 없고, DOCKER-ISOLATION-STAGE-1(2번 줄)은 docker network 간 격리를 위한 부분이기 때문에 다음 규칙으로 넘어간다. 목적지가 docker0 이고, 이제 새로운 연결을 맺는 상황이므로 ctstate가 &lt;code&gt;NEW&lt;/code&gt; 이기 때문에 4번 줄에 따라 DOCKER chain으로 넘어간다.&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;$ iptables -L DOCKER -v --line-number
+num target     prot opt in       out      source               destination
+1   ACCEPT     tcp  --  !docker0 docker0  anywhere             172.17.0.3           tcp dpt:1234
+...
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;1번 줄을 보면 docker0가 아닌 곳에서 docker0의 172.17.0.3:1234(PREROUTING의 to-destination과 동일)로 들어오는 tcp 패킷을 ACCEPT 하기 때문에 결론적으로 방화벽에 막히지 않았다. docker 관련된 규칙들이 전부 끝나고 나서야 39번째 줄부터 ufw-* 로 표현되는 ufw 관련 규칙들이 검사를 하고 있기 때문에 ufw 설정만으로는 막을 수 없었던 것이다.&lt;/p&gt;
+&lt;h4 id=&#34;docker-user-체인-이용하여-방화벽-규칙-적용하기&#34;&gt;&lt;code&gt;DOCKER-USER&lt;/code&gt; 체인 이용하여 방화벽 규칙 적용하기&lt;/h4&gt;
+&lt;p&gt;그래서 docker에서 제안하는 방법은 FORWARD chain 가장 상단에 있었던 DOCKER-USER chain에서 원하는 규칙을 추가하여 방화벽 관리를 하라는 것이다. 사무실에서만 1234포트로 접근 가능하도록 만들고 싶기 때문에 다음과 같은 명령들을 수행하였다.&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;$ iptables -I DOCKER-USER -p tcp --dport 1234 -j DROP
+$ iptables -I DOCKER-USER -s &amp;lt;ip&amp;gt; -p tcp --dport 1234 -j ACCEPT
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;첫번째 명령은 1234포트로 들어오는 tcp 패킷을 DROP하라는 규칙을 DOCKER-USER chain의 가장 첫번째 줄에 대입하라는 것이고, 두번째 명령은 ip 주소를 source로 하면서 1234포트로 들어오는 tcp 패킷은 ACCEPT하라는 규칙을 마찬가지로 DOCKER-USER chain의 가장 첫번째 줄에 대입하라는 것이다. 명령을 실행하는 순서도 중요한데, 만약 DROP 규칙이 먼저 있을 경우 ACCEPT 규칙을 보기도 전에 확인이 끝나기 때문이다.&lt;/p&gt;
+&lt;p&gt;이에 따라 DOCKER-USER chain은 최종적으로 다음과 같다.&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;$ iptables -L DOCKER-USER -v --line-number
+Chain DOCKER-USER
+num target     prot opt in     out     source               destination
+1   ACCEPT     tcp  --  any    any     &amp;lt;ip&amp;gt;                 anywhere             tcp dpt:1234
+2   DROP       tcp  --  any    any     anywhere             anywhere             tcp dpt:1234
+3   RETURN     all  --  any    any     anywhere             anywhere
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;이렇게 해서 docker container로 실행되는 프로그램에 대해서도 원하는 ip에서 들어오는 패킷만 받을 수 있도록 세팅하였다.&lt;/p&gt;
+&lt;h4 id=&#34;conntrack-모듈-이용하여-포트-포워딩-적용된-컨테이너에도-방화벽-규칙-적용하기&#34;&gt;&lt;code&gt;conntrack&lt;/code&gt; 모듈 이용하여 포트 포워딩 적용된 컨테이너에도 방화벽 규칙 적용하기&lt;/h4&gt;
+&lt;p&gt;위에서는 &lt;code&gt;--dport&lt;/code&gt; 옵션을 사용하여 목적지 포트를 이용한 규칙을 정의했다. 그런데 목적지 포트라고 하면 호스트 머신의 것일까 아니면 컨테이너의 것일까? nat 설정에서 보았던 &lt;code&gt;DOCKER&lt;/code&gt; 체인을 보면 감이 올 것이다.&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;$ iptables -L DOCKER -t nat -v --line-number
+Chain DOCKER (3 references)
+num target     prot opt in       out     source               destination
+1   DNAT       tcp  --  !docker0 any     anywhere             anywhere             tcp dpt:1234 to:172.17.0.3:1234
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;PREROUTING 과정에 들어오기 전 패킷의 목적지 포트는 호스트 머신의 것이었다. 그러나 PREROUTING을 거치며 목적지 포트는 컨테이너의 것으로 변경이 되었다.&lt;/p&gt;
+&lt;p&gt;그렇다면, 포트 포워딩을 &lt;code&gt;-p 1234:80&lt;/code&gt; 과 같이 적용한 경우 위에서 추가한 방화벽 규칙은 제대로 적용될까? 답은 그렇지 않다. 목적지 포트는 이미 80으로 포워딩 된 상황이지만 &lt;code&gt;DOCKER-USER&lt;/code&gt; 체인에서는 1234 포트를 제한하고 있기 때문이다.&lt;/p&gt;
+&lt;p&gt;그렇다고 80 포트를 &lt;code&gt;DOCKER-USER&lt;/code&gt; 체인에서 막을 수는 없다. 다른 컨테이너들이 사용할 수도 있는 일반적인 포트를 미리 막아 놓을 수는 없다. 컨테이너의 ip 주소를 같이 이용하는 것도 컨테이너가 꺼지고 켜지는 상황에 따라 매번 방화벽을 수정하는 것이 말이 되지 않으니만큼 불가능한 방법이다. 규칙에서 사용할, 사용해야 할 정보는 호스트 머신에 처음으로 들어온 패킷의 source ip address, destination port 이다.&lt;/p&gt;
+&lt;p&gt;PREROUTING을 거쳐 온 패킷에 대해 destination port 정보는 유실되는데 어떻게 해야 할까? 이 때 사용할 수 있는 것이 &lt;code&gt;conntrack&lt;/code&gt; 모듈이다. 사용은 iptables 명령어를 입력할 때 &lt;code&gt;-m conntrack&lt;/code&gt; 옵션을 추가하기만 하면 된다. &lt;code&gt;conntrack&lt;/code&gt; 는 iptables를 개발한 netfilter의 유틸리티 프로그램으로 패킷을 추적하고 관리할 때 사용할 수 있는 모듈이기도 하다. 모듈을 추가하고 나면 각각이 source ip address, destination port를 의미하는 &lt;code&gt;ctorigsrc&lt;/code&gt;, &lt;code&gt;ctorigdstport&lt;/code&gt; 옵션을 규칙에 추가할 수 있다. 최종적으로 입력한 명령줄과 그 결과는 다음과 같다.&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;$ iptables -I DOCKER-USER -m conntrack --ctorigdstport 1234 -p tcp -j DROP
+$ iptables -I DOCKER-USER -m conntrack --ctorigsrc &amp;lt;ip&amp;gt; --ctorigdstport 1234 -p tcp -j ACCEPT
+$ iptables -L DOCKER-USER -v --line-number
+Chain DOCKER-USER (1 references)
+num target     prot opt in     out     source               destination
+1   ACCEPT     tcp  --  *      *       anywhere             anywhere            ctorigsrc &amp;lt;ip&amp;gt; ctorigdstport 1234
+2   DROP       tcp  --  *      *       anywhere             anywhere            ctorigdstport 1234
+3   RETURN     all  --  *      *       anywhere             anywhere
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;source가 anywhere로 바뀐 대신 &lt;code&gt;ctorigsrc&lt;/code&gt; 내용이 마지막에 추가되었고, &lt;code&gt;dpt&lt;/code&gt; 대신 &lt;code&gt;ctorigdstport&lt;/code&gt; 를 확인할 수 있다. 이렇게 해서 서로 다른 포트로 포트 포워딩 적용된 컨테이너에도 방화벽 규칙을 적용할 수 있었다. 또한, 같은 포트로 포트 포워딩이 걸려 있다고 하더라도 일관성을 위해 &lt;code&gt;conntrack&lt;/code&gt; 을 이용한 규칙을 사용하는 것이 좋다고 판단하여 전부 변경하였다.&lt;/p&gt;
+&lt;h4 id=&#34;conntrack-advanced&#34;&gt;&lt;code&gt;conntrack&lt;/code&gt; advanced&lt;/h4&gt;
+&lt;p&gt;&lt;code&gt;conntrack&lt;/code&gt; 모듈을 사용해보며 여러 테스트를 하던 중 &lt;code&gt;--ctorigsrc&lt;/code&gt; 옵션 대신 그냥 원래 사용하던 &lt;code&gt;-s&lt;/code&gt; 옵션을 사용해도 문제가 없지 않을까라는 생각이 들었다. destination은 포워딩을 통해 변경되어도 source는 그대로 유지되기 때문이다.&lt;/p&gt;
+&lt;p&gt;언뜻 보기에는(?) 같아보이는 규칙을 입력할 수 있는 명령줄은 다음과 같다.&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;$ iptables -I DOCKER-USER -s &amp;lt;ip&amp;gt; -m conntrack --ctorigdstport 1234 -p tcp -j ACCEPT
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;그런데 결론적으로 위 방법은 작동하지 않았다. connection timeout이 발생하는 것을 확인할 수 있었다. 그래서 watch 명령어를 이용하여 어떤 룰에 걸리는지 확인해 보았다. &lt;code&gt;-d&lt;/code&gt; 옵션과 함께 사용하여 변화가 일어나는 부분을 하이라이트 하도록 했다.&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;$ watch -d iptables -L DOCKER-USER -v --line-number
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;&lt;img src=&#34;https://velog.velcdn.com/images/hadooboo/post/90070337-c830-4f26-8502-3b3ede841862/image.gif&#34;
+	
+	
+	
+	loading=&#34;lazy&#34;
+	
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;어떤 패킷은 ACCEPT 되고 있지만, 어떤 패킷이 계속해서 DROP 되고 있는 상황임을 확인하였다.&lt;/p&gt;
+&lt;p&gt;문제 상황을 이해하려면 &lt;code&gt;conntrack&lt;/code&gt; 모듈의 &lt;code&gt;ORIGINAL&lt;/code&gt;, &lt;code&gt;REPLY&lt;/code&gt; 타입을 알아야 한다. 그 이전에 패킷 개념만 생각해도 된다. 패킷은 클라이언트와 서버 간에 데이터를 전달하기 위한 데이터 조각이다. 그렇다면 클라이언트에서 서버로 오는 방향의 패킷 뿐만 아니라 서버에서 클라이언트로 가는 패킷도 존재한다는 것은 자명하다. 이 방향을 나타내는 것이 &lt;code&gt;ORIGINAL&lt;/code&gt;(클라이언트 -&amp;gt; 서버), &lt;code&gt;REPLY&lt;/code&gt;(서버 -&amp;gt; 클라이언트) 이다.&lt;/p&gt;
+&lt;p&gt;예를 들어, 위 상황에서 &lt;code&gt;ORIGINAL&lt;/code&gt;, &lt;code&gt;REPLY&lt;/code&gt; 패킷 정보는 각각 다음과 같다.&lt;/p&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;direction&lt;/th&gt;
+&lt;th&gt;src ip address&lt;/th&gt;
+&lt;th&gt;src port&lt;/th&gt;
+&lt;th&gt;dst ip address&lt;/th&gt;
+&lt;th&gt;dst port&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;code&gt;ORIGINAL&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;클라이언트 ip&lt;/td&gt;
+&lt;td&gt;random port&lt;/td&gt;
+&lt;td&gt;서버 ip&lt;/td&gt;
+&lt;td&gt;1234&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;code&gt;REPLY&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;도커 컨테이너 ip&lt;/td&gt;
+&lt;td&gt;80&lt;/td&gt;
+&lt;td&gt;클라이언트 ip&lt;/td&gt;
+&lt;td&gt;random port&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;p&gt;iptables 규칙에서 &lt;code&gt;ORIGINAL&lt;/code&gt; 은 확실히 ACCEPT 되고 있는 상황이므로 &lt;code&gt;REPLY&lt;/code&gt; 패킷이 DROP 되어 연결이 맺어지지 않는 것이라는 것을 알아내었다.&lt;/p&gt;
+&lt;p&gt;그럼 왜 &lt;code&gt;REPLY&lt;/code&gt; 패킷도 forwarding 규칙에 걸리는 것일까? 지금까지 PREROUTING 규칙을 보며 확인한 것은 &lt;code&gt;DNAT&lt;/code&gt;(destination nat)의 일종이었다. 그런데 반대로 POSTROUTING 규칙도 존재한다. 도커 네트워크를 거치는 패킷들은 &lt;code&gt;SNAT&lt;/code&gt;(source nat)의 인터페이스 버전이라고 할 수 있는 &lt;code&gt;MASQUERADE&lt;/code&gt; 가 적용된다. 따라서 forwarding 규칙에 의해 검사를 받게 되는 것이다.&lt;/p&gt;
+&lt;p&gt;이 때, src ip address는 도커 컨테이너의 것이 되며 &lt;code&gt;-s&lt;/code&gt; 옵션으로 클라이언트 ip를 직접 지정했을 경우 도커 컨테이너의 ip는 어디서도 ACCEPT 하고 있지 않기 때문에 DROP이 발생한다.&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;conntrack&lt;/code&gt; 은 &lt;code&gt;ORIGINAL&lt;/code&gt;, &lt;code&gt;REPLY&lt;/code&gt; 방향의 패킷들을 하나의 connection 개념으로 관리한다. 따라서 &lt;code&gt;--ctorigsrc&lt;/code&gt; 옵션을 사용하는 것으로 해당 연결에서 양방향으로 전달되는 패킷 모두가 ACCEPT 규칙을 타게 할 수 있었다.&lt;/p&gt;
+&lt;h2 id=&#34;회고&#34;&gt;회고&lt;/h2&gt;
+&lt;p&gt;방화벽은 프로그램 내부의 인증 시스템 앞에서 1차적으로 필터링할 수 있다는 점에서 필수적이면서 효과적인 기능이다. source ip 주소를 바꾸는 식으로 방화벽을 피해갈 수 있기 때문에 프로그램 내부적으로도 철저한 인증이 필요하기는 하지만 사무실의 source ip를 누구나 알 수 없기 때문에 대부분의 공격을 차단할 수 있을 것이다. 개발 서버에서도 실전처럼 잘 운영하는 것이 실서버에서의 휴먼 에러를 줄일 수 있는 가장 큰 연습이 될 것이라고 생각한다.&lt;/p&gt;
+</description>
+        </item>
+        <item>
+        <title>202207 | Testflight와 심사</title>
+        <link>https://hadooboo.github.io/post/mils/202207/</link>
+        <pubDate>Sun, 31 Jul 2022 00:00:00 +0000</pubDate>
+        
+        <guid>https://hadooboo.github.io/post/mils/202207/</guid>
+        <description>&lt;p&gt;지금 회사에 들어온 지 이제 1년 정도가 넘었다. 그동안 여러 프로토타입을 만들어 보았지만 기존에 제공하고 있던 서비스를 유지보수한 것을 제외하고는 실제 사용자에게 서비스가 전달된 적은 없었다. 이 점이 항상 아쉬운 요소였는데 공학을 한다는 것은 사람들에게 서비스를 전달하기 위한 것이며 사용자의 피드백을 받아 수정하면서 발전할 때 더 나은 서비스를 만들 수 있는 개발자로 성장할 것이라고 생각하기 때문이다. 그런데 이번 달 처음으로 지금까지 만든 아이폰 앱에 대한 심사 요청을 보냈다. 아직까지 앱스토어에 출시되진 않았지만 정말 큰 발걸음을 뗐다고 생각한다.&lt;/p&gt;
+&lt;p&gt;그 전에 먼저 testflight를 통한 사내 테스트 과정을 거쳤다. 안드로이드 앱을 개발할 때 로컬에서 빌드한 결과를 sdk로 주고받았던 것보다 장점이 더 많아 보였다. 먼저, 테스트 할 사람을 지정할 수 있었다. sdk 파일을 지정한 사람들에게만 보내는 것도 방법이긴 하겠지만, appstoreconnect에서 테스터 그룹과 테스터를 쉽게 변경할 수 있고 그것을 명시적으로 확인할 수 있다는 것이 편리했다. 테스터들의 피드백 또한 하나의 채널에서 모두 확인할 수 있었다. 또한, 새로운 버전으로 앱을 배포할 때 자동으로 테스터들에게 알림을 보내 주고 테스터들은 testflight 앱을 통해 간단히 업데이트를 할 수 있다는 것도 큰 장점이었다.&lt;/p&gt;
+&lt;p&gt;내부 테스트 과정을 통해 5회 정도 추가 업데이트를 거친 후 애플 측에 최종으로 심사를 요청하였다. 애플이 앱스토어에 올릴 앱을 심사하는 과정이 매우 까다롭다고 들었다. 기준에 미치지 못하는 앱을 앱스토어에 올리는 것을 차단하여 사용자들에게 최선의 경험만을 제공하고자 함이 목적이라고 한다. 확실히 애플의 닫힌 생태계와 결을 같이한다는 것이 느껴진다. 따라서 우리도 심사를 위해 준비를 철저히 해야 했다. 앱에서 사용 가능한 테스트용 계정을 만들어 전달했으며, 테스트 과정에서 확인하기 어려운 부분은 동영상으로 녹화하여 보내야 했다.&lt;/p&gt;
+&lt;p&gt;그러나 심사에서 리젝되는 경험을 피할 수는 없었다. 전체적인 앱에서 아직 베타 테스트 단계라고 느낄 수 있을 만한 부분이 많이 남아있었던 것이 가장 큰 원인이었다. 애플이 앱스토어에 올릴 앱에서 완성도를 가장 중요하게 본다고 했기 때문에 눌러지지 않는 버튼이나 앱이 갑자기 꺼지는 부분이 존재하지 않도록은 했었다. 그러나 가장 중요한 서비스의 이름이 정해지지 않았었다. 수련회나 레크레이션 자리에서 조 이름을 정하는 것은 내겐 항상 어려운 문제였었다. 특히나 우리만이 볼 것이 아니라 사용자들이 느낄 첫 인상이 정해지는 지점이기 때문에 떠올려내기 더 어려웠다. 결국 다른 팀원 분이 빠르게 좋은 의견을 내어 주셔서 오래 지체되지는 않았다. 아직 심사는 끝나지 않은 상태이고, 예상외로 UI 적인 부분은 없었으며 앱의 목적과 전반적인 설명을 많이 요구하고 있다.&lt;/p&gt;
+&lt;p&gt;이번 심사 과정 동안에는 앱 심사 과정에서 완성도를 100%로 끌어올린 뒤 심사를 요청하는 것이 아니라 심사에 걸릴 시간을 고려해 최대한 빠르게 제출하고 피드백을 받아 수정하도록 하는 전략을 취했었다. 확실히 경험해보니 이 전략이 좋았던 것 같다. 앱 심사에서 돌아오는 매번의 응답은 우리 팀이 예상하지 못했던 부분들이었다. 결국에는 애플이 원하는 바를 이뤄주어야 하기 때문에 우리가 먼저 완성도 100%를 정의하는 것은 사실상 불가능이지 않나 싶다. 애플 심사가 아니라 평소에도 이 &amp;lt;예광탄&amp;gt; 전략을 취하는데, 요구사항은 항상 개발자에게 있는 것이 아니라 테스터 또는 사용자에게 있기 때문이다. 그에 발맞춰 기민하게 반응하는 것이 최선이겠다.&lt;/p&gt;
+&lt;p&gt;또한, 회사와 회사의 관계 속에서 어떤 스탠스를 취해야 하는지에 대해서도 많은 생각을 한 한달이었다. 분명 플랫폼은 애플이 쥐고 있기 때문에 그들이 갑인 관계는 맞다. 그러나 우리가 결국에는 회사의 입장을 대변해서 코멘트를 주고 받는 상황이기 때문에 너무 모든 것을 수용하려는 태도는 지양하는게 맞다고 본다. 우리의 목소리를 줄이지 않으면서 상호작용을 거쳐 합의에 이르는 과정을 배운 것도 의미 있었다고 생각한다.&lt;/p&gt;
+</description>
+        </item>
+        <item>
+        <title>202206 | iOS SDK</title>
+        <link>https://hadooboo.github.io/post/mils/202206/</link>
+        <pubDate>Thu, 30 Jun 2022 00:00:00 +0000</pubDate>
+        
+        <guid>https://hadooboo.github.io/post/mils/202206/</guid>
+        <description>&lt;p&gt;저번 달에 만들었던 Asterisk 서버를 이용하는 아이폰 앱을 만드는 것이 이번 달 주요 업무였다. 아이폰 앱은 또 처음이었다. 3월에 안드로이드 앱을 만들 때 고생했던 것을 생각하면 시작할 때 걱정이 되었던 것은 사실이다. 그런데 새롭게 마주한 swift라는 언어와 xcode라는 개발 환경에서도 느끼고 배운 점들이 더러 있었다.&lt;/p&gt;
+&lt;p&gt;swift에서 가장 흥미로웠던 것은 extension이라는 기능이었다. extension을 사용하면 이미 존재하는 클래스를 확장시켜 새로운 메소드를 추가할 수 있다. 우리가 정의한 클래스 뿐만 아니라 기존에 존재하는 라이브러리의 클래스도 확장 가능하다. 따라서 공통적으로 사용하는 alert, toast 기능 등을 대부분의 페이지가 상속하는 &lt;code&gt;UIViewController&lt;/code&gt; 에 정의해놓고 통일되게 사용할 수 있었다. 또한, extension을 정의하는 개수에는 제한이 없기 때문에 구현하는 protocol 별로 extension을 따로 정의함으로써 보기에 좋은 코드를 만들고 모듈화를 이룰 수 있었다.&lt;/p&gt;
+&lt;p&gt;이러한 기능은 지금까지 배워 온 다른 언어들에는 없는 기능이었다. 특정 클래스에 대해 추가적인 기능이 필요할 때는 utils 패키지를 추가로 만들어 인자로 클래스를 받는 메소드를 정의하는 정도가 끝이었다. swift는 확실히 앱을 개발하기 위한 용도로 만들어져서 그런지 확장성이 뛰어나고 커스터마이징이 용이한 특징을 가진다고 느꼈다.&lt;/p&gt;
+&lt;p&gt;xcode 개발 환경도 경험해보지 못한 새로운 환경이었다. 페이지를 관리하기 위해 storyboard 형식을 사용하였는데, GUI로 개발해보는 것은 처음이었다. Android studio에도 비슷한 기능이 있다고는 알고 있지만, 그 때는 UI적인 부분까지는 고려하지 않아도 됐었어서 다루지 않았다. 화면에 대해 머릿속에서 그린 대로 아이폰과 시뮬레이터 위에서 화면이 등장하고 수정이 가능하다는 점과 디자인에 대한 배경 지식이 없는데도 준수한 UI가 산출될 수 있다는 점이 큰 장점으로 보였다.&lt;/p&gt;
+&lt;p&gt;그러나 개발하면 할수록 GUI의 한계가 있다는 것을 느꼈다. storyboard 파일을 열어 보면 결국에는 xml 형식으로 관리되는 듯했다. 문제는 팀원들끼리 수정한 부분이 겹쳐 git merge가 자연스럽게 되지 않았을 때였다. 수정한 내용이 코드의 어떤 부분이랑 매치되는지를 알 수 없어서 일일이 바꿔서 띄워보고 결정해야 했다. 나중에 storyboard 자체도 분리해서 관리할 수 있고, one storyboard one viewcontroller 라는 원칙이 있다는 것도 알게 되었지만 프로젝트 규모가 많이 커진 이후였고 리팩터링이 어려운 시점이었다. GUI 기반 개발이 아직까지는 쉽지 않다고 느꼈다.&lt;/p&gt;
+&lt;p&gt;또한, xcode에서 파일을 관리해주는 것도 협업을 복잡하게 한 요소 중 하나이다. xcode는 파일을 디렉터리 상 위치 그대로 보여주는 것이 아니고 파일이랑 프로젝트 구조랑 따로 관리한다. 그래서 파일을 잘못해서 상대 경로로 지정하면 다른 사람의 컴퓨터에서는 해당 파일이 없다고 나오는 문제가 있었다. 이러한 점은 매번 project 파일에서 확인 후 커밋해야 하는 문제로 이어졌으며 잦은 수정의 원인이 되었다.&lt;/p&gt;
+&lt;p&gt;아이폰 앱 개발을 하며 여러 가지를 느낄 수 있었다. 분명 사용자에게 친화적인 여러 기능을 제공하려는 면을 이곳저곳에서 많이 느낄 수 있었다. 그러나 무언가를 처음 할 때는 제공하는 기능을 100% 사용하지 못하고 아쉬운 점이 항상 남게 되는 것 같다. 특히나 혼자 하는 경우면 몰라도 여럿이서 협업하는 상황이었기 때문에 내가 잠깐 잘못 만든 것이 다른 사람들에게도 표준처럼 여겨지고 좋지 않는 레거시로 남는다는 것이 아쉬웠다. 그러나 이것이 경험이 중요하다는 반증이 아닐까. 점차 계단식으로 발전하면서 다음 번에는 아쉬운 점을 줄일 수 있도록 해보아야겠다.&lt;/p&gt;
+</description>
+        </item>
+        <item>
+        <title>202205 | Asterisk와 새로운 프로토콜</title>
+        <link>https://hadooboo.github.io/post/mils/202205/</link>
+        <pubDate>Tue, 31 May 2022 00:00:00 +0000</pubDate>
+        
+        <guid>https://hadooboo.github.io/post/mils/202205/</guid>
+        <description>&lt;p&gt;이번 달에는 사설 전화 네트워크(PBX)의 대표적인 오픈 소스 소프트웨어인 Asterisk를 사용하여 통화 연결 관련된 업무를 하였다. 살아가면서 ARS를 많이 사용해보긴 했지만 어떻게 작동할지는 상상해 본 적도 없었고 내가 그것을 구현하게 될지는 더더욱 상상도 못했다. 현재 대부분의 서비스 플랫폼은 웹 또는 앱 서비스 기반이라고 생각하는데 개발이라고 했을 때 나도 모르게 전형적인 서버 클라이언트 모델에만 초점을 맞췄던 것 같다.&lt;/p&gt;
+&lt;p&gt;가장 신기했던 것은 지금까지는 들어보지도 못했던 SIP, RTP 등의 프로토콜들이었다. 먼저 SIP는 통화의 개시와 종료 등의 메타 정보를 위해 사용되는 프로토콜이다. RTP는 실제 음성 데이터를 주고받기 위한 프로토콜이다. UDP를 기반으로 하여 오버헤드 없이 빠른 전송을 목표로 하였고 통화 예시에서 뿐만 아니라 스트리밍에서도 쓰인다고 한다. 마지막으로 DTMF라는 개념은 핸드폰 키패드에서 숫자를 눌렀을 때 전달되는 그 정보이다. Asterisk에서는 SIP에 담아서 안정적으로 보낼 수도 있고(out of band) RTP에 담아서 빠르게 보낼 수도 있는데(in band) RFC2833을 따라 RTP로 보내는 것이 일반적이라고는 한다.&lt;/p&gt;
+&lt;p&gt;Asterisk는 독립적으로 동작하는 애플리케이션이지만 agi, ami, ari라는 세 개의 인터페이스 채널을 통해 추가적인 기능을 실행하는 코드와 상호작용하도록 만들 수 있다. 세 인터페이스 모두 c++, java, python, go 등 다양한 언어 플랫폼에서 모두 사용할 수 있다. 그 중 ari가 가장 마지막으로 등장하였는데, 웹소켓을 통해 Asterisk 애플리케이션의 이벤트를 구독하고 REST API를 이용해 Asterisk에 특정 동작을 요청할 수 있어서 둘 중 하나의 역할밖에 하지 못하는 agi, ami보다 발전된 형태이다. ari를 이용하여 데이터베이스에 저장된 정보를 이용해 통화를 다른 곳으로 돌리는 스크립트를 만들면 되었다.&lt;/p&gt;
+&lt;p&gt;개발을 하면서 결국에는 프로토콜 단위는 추상화가 되어 있어서 내가 SIP를 쓰는지, RTP를 쓰는지, HTTP를 쓰는지에 대해서는 알지 못해도 되는 레벨에서 스크립트를 구현했다. REST API를 Asterisk 클라이언트 라이브러리에서 이미 메소드로 구현하여 제공하고, 그 요청을 보냈을 때 Asterisk 쪽에서 어떻게 처리하는지는 몰라도 스크립트는 구현이 가능했기 때문이다. 오히려 어려웠던 것은 REST API는 동기로 보낼 수 있지만, 그에 따라 웹소켓으로 오는 정보는 비동기이기 때문에 브릿지를 만들고 채널을 잇는 등의 작업에서 타이밍을 고려해야 할 것이 많았다는 점이다. 전화를 받기 전에 끊기, 전화를 받지 않아 타임아웃 되기 등 사용자의 유스케이스를 전부 고려하는 것이 더 복잡하다면 복잡했다.&lt;/p&gt;
+&lt;p&gt;이런 상황에서 low level에 대한 지식이 어디까지 필요할까 다시 한 번 생각해보게 되었다. 물론 표면적으로는 네트워크 기반 지식이 없어도 이번 업무를 할 수 있었던 것은 맞다. 그러나 RTP가 UDP 기반이라는 내용을 봤을 때 단번에 이해가 된 것은 UDP라는 배경 지식을 가지고 있었기에 가능한 것이었다고 본다. 이번에 RTP라는 내용을 알아 두었기 때문에 나중에 WebRTC같은 개념을 보게 될 때 더 빠른 이해가 가능할 것이다. 하나하나의 작은 개념들이 모여 궁극적으로는 하나의 큰 개념을 이룰 것이기 때문에 소홀히 해도 될 것은 아무것도 없다고 생각한다. 또한, 프로토콜은 말 그대로 사람들이 정의해 놓은 규칙이기 때문에 새로 마주하는 것에 겁낼 필요가 전혀 없어 보인다. 복잡한 로직도 아니고 말 그대로 규칙일 뿐이다.&lt;/p&gt;
+</description>
+        </item>
+        <item>
+        <title>202204 | CRUD 작업에서 의미 찾기: DDD</title>
+        <link>https://hadooboo.github.io/post/mils/202204/</link>
+        <pubDate>Sat, 30 Apr 2022 00:00:00 +0000</pubDate>
+        
+        <guid>https://hadooboo.github.io/post/mils/202204/</guid>
+        <description>&lt;p&gt;이번 달 역시 새로운 프로토타입을 만드는 업무를 진행하였다. 그런데 이번에는 정말 게시판의 확장 버전이었다. 다른 복잡한 알고리즘이나 모델 없이 글을 올리고 그에 대한 몇 가지 기능만 있으면 되는 간단한 수준이었다. 이런 방향으로 프로토타입 개발 방향이 잡히자 이번 작업을 통해 배울 수 있는 점이 있을지 바로 고민이 시작되었다. 단순한 sql 명령어를 실행하는 데이터베이스 레이어와 데이터베이스 테이블 구조과 비슷하게 생긴 API 요청 및 응답을 처리하는 API 서버 레이어. 기존 작업들과 아이템만 다를 뿐 별반 차이점이 없을 뿐더러 복사 붙여넣기만 하게 되지 싶었다.&lt;/p&gt;
+&lt;p&gt;그런데 대부분의 서비스 플랫폼을 생각했을 때 아이템이 다 다르고 부가적인 기능도 더러 있지만 결국에는 CRUD의 확장이라는 생각이 들었다. 반복적인 일이라고 생각할 수도 있지만 어떻게 하면 CRUD 자체를 잘할 수 있을지, 메소드와 구조체 단위에 집중할 것이 아니라 전체적인 구조와 패턴을 어떻게 잡으면 좋을지 고민해보아야 할 시간이라고 느꼈다.&lt;/p&gt;
+&lt;p&gt;이 때, 얼마 전에 읽었던 &amp;lt;만들면서 배우는 클린 아키텍처: 자바 코드로 구현하는 클린 웹 애플리케이션&amp;gt; 책에서 등장하는 DDD를 적용해보면 어떨까라는 생각이 떠올랐다. 책을 읽었어도 막상 적용해 볼 경험이 없었어서 글자 뿐인 지식이 될 까봐 염려하던 참이었다. 책의 내용은 자바로 되어 있었지만 결국에는 아키텍처이기 때문에 go로도 못할 이유가 없다고 생각했다.&lt;/p&gt;
+&lt;p&gt;다행히 마침 팀에서도 아키텍처 변화에 대한 얘기가 나와서 DDD 적용을 바로 시도해볼 수 있었다. 기존에는 데이터베이스 중심 설계를 하고 있어서 API 서버에서 데이터베이스를 직접 참조하는 구조에 중요한 로직들도 그냥 API 서버 패키지 안에서 모두 구현하고 있었다. 데이터베이스 레이어, API 서버 레이어를 정말 단순히 in, out 커넥터로 생각하여 모든 로직을 빼고 로직은 service 레이어에서 모두 처리할 수 있도록 하는 것이 이번 아키텍처 수정의 목표였다.&lt;/p&gt;
+&lt;p&gt;구현하면 할수록 기존 구조보다 훨씬 낫다는 느낌을 받을 수 있었다. API 서버 레이어는 단순히 API 요청을 받아 필수 필드의 존재 여부만 검증하여 service 레이어로 요청을 전달하고, 그 결과를 적절한 형태로 인코딩하여 응답으로 보낸다. 데이터베이스 레이어도 service 레이어로부터 요청을 받아 sql을 처리하는 역할에 지나지 않는다. 모든 레이어간의 통신은 service/model 패키지에 정의된 구조체를 이용한다. 해당 패키지 안에는 service 레이어에서 사용하는 외부 패키지들이 지켜야 하는 인터페이스도 정의되어 있어 다른 데이터베이스 벤더를 사용하게 될 때와 같은 상황에서 수정이 용이하다.&lt;/p&gt;
+&lt;p&gt;이런 아키텍처 수정 과정을 거치며 또 반복적인 업무가 될 것이라고 생각했던 CRUD 작업에서도 큰 흥미를 느낄 수 있었다. 물론 DDD가 다른 아키텍처들에 비해 무조건 낫다는 것은 아니지만 도메인 관점에서 응집성 있게 코드를 표현할 수 있는 좋은 방법 중에 하나라고 생각한다. 하루하루 더 나은 코드를 고민하는 성장하는 개발자가 되어야겠다.&lt;/p&gt;
+</description>
+        </item>
+        <item>
+        <title>202203 | 안드로이드 SDK</title>
+        <link>https://hadooboo.github.io/post/mils/202203/</link>
+        <pubDate>Thu, 31 Mar 2022 00:00:00 +0000</pubDate>
+        
+        <guid>https://hadooboo.github.io/post/mils/202203/</guid>
+        <description>&lt;p&gt;이번 달 주 업무는 녹음 기능을 메인으로 하는 안드로이드 네이티브 앱을 만드는 작업이었다. 기존까지는 프로토타입 앱 클라이언트를 만들어야 할 때 flutter를 사용하여 안드로이드와 iOS 멀티플랫폼 빌드가 가능하도록 했었다. 그러나 녹음과 같이 하드웨어와 밀접하게 연관된 기능을 갖는 경우에는 flutter의 한계가 명확했고 결국에는 안드로이드 SDK를 직접 익혀서 할 수밖에 없었다.&lt;/p&gt;
+&lt;p&gt;하드웨어와 연관된 작업이다 보니 테스트 과정이 많이 힘들었다. 기능이 동작하는 것을 확인하려면 에뮬레이터에서 해 보는 것이 불가능하고 실제 앱을 테스트 기기에서 빌드해서 동작하는지 확인해보아야 했다. 테스트를 위해 매번 빌드를 기다려야 하니 답답할 때가 종종 있었다. 또 다른 어려웠던 점은 프로세스가 강제로 종료되고 나서 다시 앱을 시작해도 정상 작동하는지 확인할 때였는데, 프로세스가 종료되면 안드로이드 스튜디오와의 연결이 끊어져 더 이상 로그가 찍히지 않아 문제를 분석하는 데 많은 시간이 들었다. 브라우저라는 샌드박스 위에서의 웹 클라이언트를 만드는 것과는 다르게 고려해야 할 요소가 더 많다고 느꼈다.&lt;/p&gt;
+&lt;p&gt;안드로이드 SDK가 지원하는 경우 안에서만 앱을 만들어야 한다는 것도 큰 어려움이었다. 경험은 없지만 제약은 iOS가 더 심하다고는 하긴 하는데 안드로이드의 경험만으로도 충분히 느낄 수 있었다. 예를 들어, 녹음이 다른 오디오 세션 사용 앱을 사용할 때에도 진행이 가능한지 알아봤는데 어떤 옵션에서는 불가능했고 어떤 옵션에서는 소리 없이 무음으로만 녹음이 진행되었다. 주어진 옵션 안에서만 기능 구현이 가능하다는 한계를 느낄 수 있었다.&lt;/p&gt;
+&lt;p&gt;안드로이드 SDK 버전에 따른 제약도 상당히 강했다. 웹 클라이언트는 결국에는 정적인 파일로 빌드하기 때문에 vue 프레임워크 버전에 대해 고민할 필요가 없었지만 안드로이드 SDK는 버전 하나하나에 따라서도 내용이 많이 바뀌어서 타겟 버전, 미니멈 버전 등에 따라서 구현할 수 있는 기능이 매번 달라졌다. 안드로이드 SDK 버전에 따른 기기 시장 점유율도 고려해서 타겟 버전, 미니멈 버전을 정해야 하는 비즈니스 문제와 겹쳐 복잡했다.&lt;/p&gt;
+&lt;p&gt;마지막으로 기종 문제 또한 생각해야 했다. 안드로이드는 iOS와 다르게 많은 기기 위에서 사용되기 때문에 갤럭시 기종에서는 잘 돌아간다고 해서 화웨이 기종에서 잘 돌아갈 것이라는 것을 보장할 수 없었다. 특히나 하드웨어 영역과 겹쳐 있기 때문에 더 신경을 써야 했다. 결국에는 팀에 갤럭시 기기밖에 없어 다른 기종에 대한 테스트는 베타 테스트 단계로 넘겨버리긴 했지만 말이다.&lt;/p&gt;
+&lt;p&gt;안드로이드 앱을 개발하면서 지금까지 겪지 못했던 다양한 상황을 마주하며 하나하나 허들을 넘어가는 듯한 느낌을 받았다. 힘든 면도 분명 있었지만 재미도 있었다. 내가 구현한 기능이 내 손 안에서 동작한다는 것은 또 새로운 경험이었다. 그리고 MVVM 모델은 결국에는 MVC와 다를 것도 없어 보였다. 단지 controller의 output이 데이터가 아니라 small view snippet으로 바뀐 정도라고 느꼈다. 점차 컴퓨터보다는 모바일에 익숙해지는 세대가 찾아온다는데 이런 앱 개발 경험도 해볼 수 있어서 되돌아보면 또 알찬 한달이었다.&lt;/p&gt;
+</description>
+        </item>
+        <item>
+        <title>202202 | legacy 코드 다루기</title>
+        <link>https://hadooboo.github.io/post/mils/202202/</link>
+        <pubDate>Mon, 28 Feb 2022 00:00:00 +0000</pubDate>
+        
+        <guid>https://hadooboo.github.io/post/mils/202202/</guid>
+        <description>&lt;p&gt;이번 달 업무는 우리 팀이 2~3년 전에 만들어 두었던 서비스에다가 기능을 추가하는 작업이었다. 해당 서비스는 외부로 제공 중이었으며 사람들이 이미 사용하고 있었기에 신중한 업데이트가 필요했다. 그러나 가장 큰 문제는 서비스가 개발될 때 팀에서 근무했던 사원이 아무도 없어서 코드를 직접 보고 어떤 방향으로 구현했는지 직접 확인해야 한다는 것이었다. 말로만 듣던 legacy 코드 분석을 실제로 처음 경험해보는 순간이었다.&lt;/p&gt;
+&lt;p&gt;코드를 보면서 가장 크게 느낀 차이점은 모든 데이터 전달용 구조체를 types 패키지에 넣고 사용하는 방법이었다. 이렇게 하면 패키지끼리 구조체를 서로 참조할 때 생기는 import cycle을 없앨 수 있다는 장점이 있지만 types 패키지 없이는 전체 코드가 돌아가지 못해서 모듈화가 되지 않는 문제가 있다. 현재 우리 팀의 구현 스타일은 데이터베이스 레이어에 table 형식과 동일하게 생긴 entity 구조체를 만들어 데이터베이스 중심 설계를 하는 것이다. API 서버 레이어에서 데이터베이스 레이어로 데이터를 주고 받을 때는 entity 구조체 형식만을 따라야 한다. 각 방법의 장단점이 있겠지만 현재 팀의 구현 스타일을 버리고 다른 스타일으로 구현하는 것은 색다른 경험이었다.&lt;/p&gt;
+&lt;p&gt;또한, 큰 차이점은 기본적으로 go 버전이 다르다는 것이었다. go는 아직까지도 업데이트가 빠르게 진행되고 있는 언어라서 대략 6개월 단위로 새 버전이 나오는 것 같다. legacy 코드의 go 버전은 1.13이었고, 현재 최신 버전은 1.17이다. go 버전을 낮춰서 개발 환경을 세팅하기만 하면 컴파일 단계에서 문제를 다 체크해 주겠지만, 현재 사용하고 있는 메소드가 1.13 이후에 새로 생긴 것일 수도 있어서 이전에는 어떻게 사용했는지 한 번 더 찾아봐야 하는 문제는 있었다. 예를 들어 &lt;code&gt;io.ReadAll&lt;/code&gt; 메소드를 잘 사용하고 있었는데 go 1.16부터 등장했다는 것을 처음 알았다. 대신에 &lt;code&gt;ioutil.ReadAll&lt;/code&gt;을 사용해야 했다. &lt;code&gt;As of Go 1.16, this function simply calls io.ReadAll.&lt;/code&gt; 와 같은 공식 문서의 설명을 다시 보게 되는 계기가 되었다. 또한, go embed 기능도 1.16부터 추가되었다고 한다. 이번 업무에서 실행 파일에 정적 파일을 포함시켜야 하는 부분이 있어서 go embed를 사용하려고 하였으나 없는 기능이라고 나왔다. 그래서 Dockerfile에서 go 1.17로 업데이트를 진행하게 되었는데, 하위 호환성을 제공하기 때문에 문제는 없었으나 실행 파일을 빌드하는 과정에서 패키지 의존성 관리를 하는 방법이 go modules로 바뀌어 Dockerfile을 일부 수정해야 했다.&lt;/p&gt;
+&lt;p&gt;이렇게 legacy 코드를 다루는 것은 생각치도 못한 곳에서 예외 상황을 마주하기 때문에 사람들이 하기 싫어하는 것 같다고 느꼈다. 또한, 기존 코드에서 마음에 들지 않는 곳이 있더라도 수정을 했다가 원래의 기능이 제대로 동작하지 않게 될 위험성 때문이나 전체 구조의 변경으로 이어질 경우의 비용 때문에 손을 쉽게 대지 못하게 되는 것 같다. 이를 보고 &amp;lt;실용주의 프로그래머&amp;gt;의 “깨진 창문을 내버려두지 말라&amp;quot;라는 원칙이 생각났다. 한 번 손을 잘못 된 코드를 나중에 유지보수 할 경우 legacy의 불완전함을 고치려고 하기 보다는 불완전한 코드에 순응하여 결국에 하향 평준화된 코드가 만들어진다는 것이다. 긴 수명을 가지는 코드를 만들 때는 나 뿐만이 아니라 이 코드를 다시 보게 될 사람까지도 생각해서 신중한 코드를 만들어내야겠다는 생각을 하게 된다.&lt;/p&gt;
+</description>
+        </item>
+        <item>
+        <title>202201 | 프론트엔드 경험에 대하여</title>
+        <link>https://hadooboo.github.io/post/mils/202201/</link>
+        <pubDate>Mon, 31 Jan 2022 00:00:00 +0000</pubDate>
+        
+        <guid>https://hadooboo.github.io/post/mils/202201/</guid>
+        <description>&lt;p&gt;나는 백엔드 개발자다. 동시에 데이터에도 관심이 많아 데이터 엔지니어, 데이터 사이언티스트도 꿈꾸고 있다. 그런데 회사에서 항상 백엔드 업무만 할 수는 없었다. 백엔드 프론트엔드 동시 작업은 어렵다 보니 백엔드 API 서버를 전부 구현하고 프론트엔드 웹 클라이언트를 구현할 때 결국에는 같이 참여하게 되기 때문이었다. 또한, 팀원 구성도 백엔드 2명, 프론트엔드 1명이다보니 더욱 더 그럴 수밖에 없었다.&lt;/p&gt;
+&lt;p&gt;이런 상황 속에서 가장 고민이 되는 것은 프론트엔드에 대해 지금 내가 배우고 하고 있는 것이 앞으로 내 커리어에 도움이 될까하는 것이다. 물론 아직 모든 기술 스택에 대해 경험해보고 판단을 내릴 수 있을 만큼 경험이 있지는 않지만 백엔드에 대해 알면 알수록 모르는 것이 더 많다는 것을 알았기에 여유가 없는 건 사실이었다. 그러나 내가 생각했을 때 더 중요한 건 당장 주어진 업무에 대해 팀에서 효율적으로 일을 어떻게 처리할 수 있을지였고, 프론트엔드 작업에 대해 손을 놓을 수 없었다.&lt;/p&gt;
+&lt;p&gt;이번 달 프로토타입 개발 업무에서 나는 프론트엔드를 하기로 선택했다. 따라서 팀 구성이 백엔드 1명, 프론트엔드 2명이 되었다. 내가 생각했을 때 우리 팀은 프론트엔드 사람 수가 더 많아야 한다. 프로토타입은 서버의 확장, 운영 안정성 등을 크게 고려하지 않아도 되기 때문에 백엔드는 단순히 CRUD 개발에 모델 하나 정도 수준이지만, 사용자들에게 좋은 인상과 경험을 주어야 하므로 더 나은 UI/UX를 제공할 필요가 있었다. 다른 팀원들이 개발하고자 하는 바를 맘대로 바꿀 수는 없었기 때문에 내가 프론트엔드로 잠시 역할을 변경하기로 결정했다.&lt;/p&gt;
+&lt;p&gt;이를 통해 더 나은 개발 속도를 얻을 수 있었다. 내가 벡엔드에 대해서도 잘 알고 있었기 때문에 처음에 API 요청 및 응답 형식을 정의해 두고 그 내용을 서로 공유하며 프론트엔드 개발을 빨리 시작할 수 있었다. 백엔드 API에 대한 mocking이 가능해졌기 때문이다. 또한, API 서버가 구현되는 속도와 웹 클라이언트가 만들어지는 속도가 거의 비슷해져서 결과적으로는 더 빠른 시간에 산출물이 나올 수 있었다.&lt;/p&gt;
+&lt;p&gt;프론트엔드 업무를 하며 당장 백엔드 관련 경험을 쌓을 수 없었던 것은 사실이다. 그러나 프론트엔드 개발이 백엔드 개발과 일맥상통하는 부분도 있었다. 먼저 리팩터링과 관련된 부분이다. 반복되는 코드를 컴포넌트로 빼서 여러 페이지에서 동시에 사용하고 이를 위해 props로 인자를 넘기는 것은 마치 메소드를 리팩터링해서 utils로 보내는 것과 비슷해보였다. 코드의 부분부분이 맡는 책임을 최대한 간소화해서 병렬적인 개발과 테스트 용이성을 챙기는 모습은 어디서든 적용된다고 느꼈다. 또한, 결국에는 구글링을 하면 답이 다 나온다는 것이었다. vue도 일종의 프레임워크라서 공식 사이트에 참고할 만한 문서가 대부분 있었고 vue의 시장 점유율도 낮지 않기 때문에 해결 방법이 올라와 있지 않은 문제는 없다시피 했다. 백엔드 개발을 하지 못하는 것이 지금 당장은 돌아가는 것 같아도 백엔드 서버에서 만든 것이 어떻게 사용되는지에 대해 알아보고 구현해보는 것도 내게 필요한 경험이었다고 생각한다.&lt;/p&gt;
+</description>
+        </item>
+        <item>
+        <title>202112 | 좋은 개발 문화</title>
+        <link>https://hadooboo.github.io/post/mils/202112/</link>
+        <pubDate>Fri, 31 Dec 2021 00:00:00 +0000</pubDate>
+        
+        <guid>https://hadooboo.github.io/post/mils/202112/</guid>
+        <description>&lt;p&gt;회사에 들어오고 난 뒤 처음으로 연말이 찾아왔고, 올 한 해 동안의 회사에서의 업무를 되돌아보기 좋은 시간이었다. 또한, 회사 생활에 점차 적응해나가니 우리 팀에서 부족한 점이 하나 둘 보이기 시작하였다. 가장 필요하면서 되지 않고 있다고 느낀 것은 협업에 대한 문제였다.&lt;/p&gt;
+&lt;p&gt;첫 번째 협업에서의 문제는 프론트엔드와 백엔드 간의 스펙 공유였다. 사람이 많은 팀이 아니다 보니 백엔드 API 서버를 만든 사람이 프론트엔드 웹 클라이언트도 만드는 경우가 다반사였기 때문에 문서로 정리하여 공유를 하지 않아도 큰 문제가 없는 것 같아 보였다. 그러나 내가 만들었던 코드도 다시 보면 기억이 안 날 때가 많은데 특히나 직관적으로 눈에 보이지 않는 API 요청 및 응답 형식은 더욱 더 쉽게 잊혔고, 결국 다른 팀원이 만든 API를 이용하려고 할 때와 같이 백엔드 코드를 직접 보고 스펙을 확인해야 했다. 점점 시간이 지나면 지날수록 비효율이라고 느껴졌다. 그래서 이번 달 처음으로 도입한 것이 swagger를 이용한 API 스펙 공유였다. 단순 yaml 파일 작성과 docker container 실행만으로 API 문서를 온라인으로 호스팅할 수 있었다. 개발 서버에 한 번 스펙을 올려두고 나니 다시 코드를 보지 않아도 되어 개발 속도가 빨라졌고, 이후 프로젝트의 인수인계 과정에서도 큰 도움이 되리라 생각한다.&lt;/p&gt;
+&lt;p&gt;또한 중요한 문제가 코드 공유에 대한 것이었다. 팀에서 알파 테스트 단계부터는 git으로 관리했지만 프로토타입 과정 프로젝트에 대해서는 git으로 관리하지 않는 악습 아닌 악습이 있었다. git에서의 PR 및 리뷰 과정이 오버헤드로 작용하여 빠른 개발을 늦출 수 있다는 이유도 이해는 되었지만 팀원들끼리 파일 공유를 할 방법이 없어 압축 파일로 코드를 옮기고 눈으로 보고 수정사항을 복사 붙여넣기로 적용하는 이상한 일이 아무렇지 않게 일어나고 있었다. 이를 큰 문제라고 생각하여 개발 서버에 git 서버를 구축해야겠다고 마음먹었다. git 서버의 구축은 어려운 일은 아니었다. 개발 서버에서 git user를 새로 생성하고 팀원들에게 해당 유저에 대한 접속 권한을 부여한 뒤 &lt;code&gt;git clone --bare&lt;/code&gt; 로 커밋 히스토리만 남는 git 디렉터리를 만들고 &lt;code&gt;git instaweb&lt;/code&gt; 으로 간단하게 Web UI를 실행시켜주기만 하면 팀원들끼리 사용하기에 문제 없는 git 서버가 만들어졌다. 로컬에서 remote에 dev를 등록하여 origin과 구별하여 사용할 수 있도록 팀원들에게 알려주기도 했다. 물론 dev, origin 두 개의 git 서버에서 섞이고 꼬이는 일이 일어날 수도 있겠지만 적어도 프로토타입 단계에서는 좋은 개발 경험을 가져다주리라 생각한다.&lt;/p&gt;
+&lt;p&gt;마지막으로 협업에서의 문제가 실험 데이터를 위한 파일을 google drive 공유 계정에 보관한다는 것이었다. google drive에 큰 문제가 있는 것은 아니다. 그러나 매번 큰 파일을 업로드하고 다운로드 하는 과정이나 공유 계정으로 로그인해서 들어가야만 하는 점 등이 귀찮은 것이 문제였다. 그래서 개발 서버에 파일 서버를 구축하였다. 복잡한 작업은 아니었고 단순히 &lt;a class=&#34;link&#34; href=&#34;https://github.com/MauriceButler/file-server&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;file-server&lt;/a&gt; 라이브러리를 설치해 명령어 한 줄로 실행할 수 있었다. 실험을 할 때 http GET 요청을 통해 파일을 받아와 사용할 수 있게 된 것이 가장 큰 장점이었는데, 내 로컬에 있는 파일이 google drive에 가장 마지막으로 최신화된 파일인지 확인하는 것이 단순히 파일명을 통한 것이었다면 http GET 요청은 말 그대로 실시간이므로 그런 걱정을 할 필요가 없었다. 또한 파일 서버 url 접속으로 파일이 언제 최신화되었는지도 타임스탬프를 보고 쉽게 확인할 수 있는 것도 큰 장점이었다.&lt;/p&gt;
+&lt;p&gt;이렇게 여러 문제를 해결하기 위해 추가적인 작업들을 하고 나니 생각보다 큰 작업들은 아니었다고 생각한다. 그러나 이러한 사소한 노력 하나하나가 정말 큰 효용을 가져다주었다. 잠시의 귀찮음이 협업 효율의 증가를 가져올 수 있다면 내가 해결해버리는 것이 결국에는 나를 위한 일이라고 생각한다.&lt;/p&gt;
+</description>
+        </item>
+        <item>
+        <title>202111 | 우리 입맛대로 블록체인 다루기</title>
+        <link>https://hadooboo.github.io/post/mils/202111/</link>
+        <pubDate>Tue, 30 Nov 2021 00:00:00 +0000</pubDate>
+        
+        <guid>https://hadooboo.github.io/post/mils/202111/</guid>
+        <description>&lt;p&gt;저번 달 업무였던 Blockcerts 프로토타입이 이어져 계속해서 블록체인 인증과 관련된 서비스 쪽으로 프로젝트 방향이 잡혔다. Blockcerts의 개념은 의미가 있었지만, 제공하는 라이브러리들의 복잡성도 크지 않았으며 우리가 직접 구현해도 조금의 시간만 더 걸릴 뿐 못할 수준이 아니었다. 특히나 django framework를 사용할 수 있는 것이 나밖에 없다는 것도 결국 우리 팀이 직접 구현해야하겠다는 방향으로 이어지는 요인이 되었다.&lt;/p&gt;
+&lt;p&gt;이를 위해서는 high-level에서만 이해하고 있던 블록체인 네트워크들이 어떤 방식으로 구현되어 있고 어떻게 상호작용할 수 있을지 공부하는 것이 필수적이었다. 나는 비트코인 네트워크의 조사부터 구현까지를 맡았다. 지금까지는 메타적인 개념으로만 알고 있었던 원장, 트랜잭션 등의 내용을 구체적인 예시와 코드로 이해해야 했다. 더군다나 송금과 같이 기본적인 비트코인 트랜잭션 사용법이 아닌 임의의 데이터를 트랜잭션에 포함시키는 것이 목표였으므로 더 복잡하였다.&lt;/p&gt;
+&lt;p&gt;우선 인터넷을 찾아보면 쉽게 나오는 &lt;code&gt;OP_RETURN&lt;/code&gt; 을 이용하는 방법은 우리 서비스의 상황에 맞지 않았다. 최대 80 bytes까지만 포함할 수 있었기 때문에 원하는 데이터를 넣기에는 부족하였다. &lt;code&gt;OP_RETURN&lt;/code&gt; 방법은 원본 데이터를 넣을 때 사용하기보다는 어떤 데이터의 해시값을 넣어 무결성을 보장하는 용도로 사용할 때만 좋다. 그래서 일반적인 구글링으로는 방법을 찾을 수 없었고, &lt;a class=&#34;link&#34; href=&#34;https://ledgerjournal.org/ojs/ledger/article/download/101/93/&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;&amp;lt;Data Insertion in Bitcoin’s Blockchain&amp;gt;&lt;/a&gt; 이라는 리서치 글을 분석하여 결론적으로 &lt;code&gt;Data Drop&lt;/code&gt; 방식을 사용하게 되었다.&lt;/p&gt;
+&lt;p&gt;비트코인은 송금하는 사람이 일종의 암호 스크립트를 만든 후 비밀키를 가지고 있는 사용자가 그것을 풀어 UTXO의 소유권을 가져오는 방식으로 동작한다. &lt;code&gt;OP_RETURN&lt;/code&gt; 도 사실은 스크립트 명령어의 일종이다. &lt;code&gt;Data Drop&lt;/code&gt; 방식에서는 &lt;code&gt;OP_DROP&lt;/code&gt; 이라는 명령어를 사용하여 암호 스크립트에 원하는 데이터를 넣고 그것을 해독 스크립트에서 무시하도록 하는 방법이다. &lt;code&gt;OP_DROP&lt;/code&gt; 명령어가 말 그대로 스택에 있는 데이터를 Drop해버리는 명령어이기 때문이다. 이렇게 했을 때에도 하나의 트랜잭션에 들어갈 수 있는 최대 데이터는 1529 bytes라는 제한이 있지만, 이는 비트코인 트랜잭션 암호 스크립트가 최대 1650 bytes라는 제한 때문이고 사실상의 최대치이다. 원하는 데이터를 잘게 쪼개 각각을 주소로 하여 송금하는 방법도 있지만, 이는 너무 많은 무의미한 UTXO를 남겨버려 네트워크에 좋지 못한 영향을 주기 때문에 계속해서 UTXO도 사용할 수 있는 &lt;code&gt;Data Drop&lt;/code&gt; 방식이 가장 낫다고 판단하였다.&lt;/p&gt;
+&lt;p&gt;스크립트를 개념적으로 만들 수 있게 된 것과 실제로 그것을 비트코인 네트워크가 받아들일 수 있는 형식으로 만들어 적용하는 것은 또 다른 문제였다. 다행히도 go에서는 &lt;a class=&#34;link&#34; href=&#34;https://github.com/btcsuite/btcd&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;btcd&lt;/a&gt; 라이브러리가 존재하여 builder 패턴과 함께 쉽게 암호 스크립트, 해독 스크립트 등을 만들 수 있었다. 비트코인 풀노드를 운영하는 것은 무리가 있기 때문에 상용 API를 이용하여 만든 트랜잭션 데이터를 비트코인 네트워크에 전송하였고, 실제로 원하는 데이터가 Sigscript 자리에 잘 들어간 것을 확인할 수 있었다. 트랜잭션이 최대한 빨리 컨펌되기 위한 수수료 계산, 잔여 UTXO 관리를 위한 로직 등은 추가로 해결해야 할 과제로 남았다.&lt;/p&gt;
+&lt;p&gt;논문까지는 아니었지만 리서치 글을 분석하여 원하는 기능을 구현하는 경험을 오랜만에 해보며 머리는 조금 더 아플 수 있었지만 뿌듯함을 느꼈다. 이렇게 구조를 자세히 분석하고 실제 구현까지 해 보는 경험이 있어야 어떤 기술에 대한 이해가 확실히 많이 증가하는 것 같다. 그와 별개로 송금 목적이 주인 비트코인 네트워크에 데이터를 임의로 집어넣는 것이 일종의 어뷰징이라고 볼 수도 있다. 그렇기 때문에 UTXO가 남지 않는 &lt;code&gt;Data Drop&lt;/code&gt; 방식을 사용하여 최대한 어뷰징의 가능성을 낮췄다. 항상 내가 사용하는 방법이 올바른 방향인지 고민하면서 구현하도록 노력해야겠다.&lt;/p&gt;
+</description>
+        </item>
+        <item>
+        <title>202110 | 프로토타입</title>
+        <link>https://hadooboo.github.io/post/mils/202110/</link>
+        <pubDate>Sun, 31 Oct 2021 00:00:00 +0000</pubDate>
+        
+        <guid>https://hadooboo.github.io/post/mils/202110/</guid>
+        <description>&lt;p&gt;이번 10월 한 달 동안 가장 힘들게 하고 많이 들었던 단어가 프로토타입이다. 이전 프로젝트가 마무리되고 다음 작업으로 진행하기 전 전반적인 기술 동향을 살피고 구현해볼만 한 가치가 있는 아이템에 대해 간단한 프로토타입을 만드는 시간을 가진다. 여러 아이템 중에서도 가장 기억에 남는 것은 Blockcerts를 이용하여 간단한 블록체인 기반 인증 시스템을 만드는 작업이었다.&lt;/p&gt;
+&lt;p&gt;Blockcerts는 MIT에서 만든 블록체인 인증에 있어서의 공개 표준의 역할을 하는 라이브러리이며 실제 MIT 전자졸업장을 이를 이용하여 발행하고 있다고 한다. 백엔드 서버를 위한 python 라이브러리, 프론트엔드 구현을 위한 js 라이브러리, android 및 ios 클라이언트 모두를 오픈소스로 공개하여 우리 입맛에 맞게 쉽게 사용할 수 있다.&lt;/p&gt;
+&lt;p&gt;이렇게 프로토타입 구현을 위한 아이템이 정해지고 구현을 시작했다. 첫 번째로 마주한 문제는 우리 팀의 백엔드 주력 언어는 go이지만 Blockcerts는 python 라이브러리만 제공하는 것이었다. 그래서 따로 공부했던 java spring framework, 팀의 go server skeleton code를 버리고 수업에서 잠깐 배우고 사용하였던 django framework로 백엔드 API 서버를 만들게 되었다. 그런데 놀라웠던 것은 내장된 ORM 덕분인지 go로는 1주일 정도 걸렸을 작업을 이틀 만에 끝낼 수 있었다는 것이다. 비록 대부분이 CRUD 작업이기는 했지만 말이다. 강타입 언어가 아니라는 점에서 python은 한계가 있다고 생각하지만 이렇게 빠른 주기의 프로토타입을 만드는 환경에서는 큰 쓸모가 있는 것 같다. 물론 지금까지 회사 생활 중에서 가장 집중한 이틀이기도 했다.&lt;/p&gt;
+&lt;p&gt;백엔드 API 서버는 금방 만들 수 있었지만 다음으로 마주한 문제는 그에 맞는 웹 클라이언트 개발이었다. 물론 프론트엔드 스택이 아예 없는 것은 아니지만 졸속으로 만들고 있다는 느낌을 지울 수 없었다. 시간이 없기 때문에 컴포넌트의 복붙은 종종 일어났다. 그렇지만 Clean code 책을 봐도 저자가 머리에서 리팩터링이 자동으로 돼서 처음부터 그 코드를 작성하는 것이 아니라 일단 돌아가게 구현한 다음에 리팩터링한다고 했다. 프론트엔드 코드는 프로토타입의 목표에 맞게 딱 돌아가게까지만 해 놓은 코드였다. 아쉬운 점도 있었지만 프로토타입의 역할과 코드가 생명을 가지고 있는 시간을 고려했을 때 머리로는 이해할 수 있었다. 또한, 프로토타입 단계에서 회사에서 디자이너를 배정해주지 않았기 때문에 디자인도 마음에 들지 않는 부분이 존재했다. 템플릿을 사 와서 그것을 수정하는 방법으로 해도 디자인에 대한 개념이 없으니 손을 대면 댈수록 이상해진 것 같다.&lt;/p&gt;
+&lt;p&gt;프로토타입 개발 경험을 하며 여러 가지를 느낄 수 있었다. 프로토타입은 말 그대로 완성품이 아니기 때문에 모든 방면에서 100% 완벽한 구현을 이룰 수 없지만 마음속으로는 그런 부분들에 대해 아쉬움을 많이 느끼고 있었다. 상황과 맥락에 따라서 정답이 달라지는 것을 인정하고 받아들이는 연습을 해야겠다고 생각했다. 또한, 풀스택의 의미에 대해서도 다시 한 번 생각해보게 되었다. 그전까지는 풀스택은 말도 안 되는 얘기라고 생각했었다. 그러나 풀스택을 모든 스택을 완벽하게 이해하고 사용할 수 있는 것이 아닌 전체 개발 흐름이 어떻게 이어지는지 파악할 수 있고 그 안에서 내가 맡은 스택이 무슨 역할을 하는지 이해할 수 있는 것이라고 생각한다면 모두가 풀스택이 되어야 하는 것이 아닐까 싶다.&lt;/p&gt;
+</description>
+        </item>
+        <item>
+        <title>202109 | 외부 API와 함께 작업하기</title>
+        <link>https://hadooboo.github.io/post/mils/202109/</link>
+        <pubDate>Thu, 30 Sep 2021 00:00:00 +0000</pubDate>
+        
+        <guid>https://hadooboo.github.io/post/mils/202109/</guid>
+        <description>&lt;p&gt;대학교에 들어와서 1학년 1학기에 첫 전공 수업에서 배운 것은 abstraction였다. 교수님께서는 컴퓨터공학이 이렇게까지 발전할 수 있었던 것은 추상화 덕분이라고 말씀하셨다. 우리가 하위 계층에 대해 정확하게 알고 구현할 수 없을지라도 추상화를 통해 그 동작을 사용할 수 있으며 우리가 만든 것이 동시에 상위 계층에 추상화를 제공하곤 한다.&lt;/p&gt;
+&lt;p&gt;소프트웨어 개발을 하면서도 다양한 곳에서 추상화와 관련된 개념을 마주하게 되는 것 같다. 모듈을 인터페이스화해서 구현하는 것, 외부 API를 이용하는 것 등등이 있다. 그 동안의 개발 경험을 통해 추상화에는 병렬적이고 빠른 개발, 쉬운 플러그인과 같은 여러 강점이 존재함을 알게 되었다. 그러나 이번 달 회사 업무를 진행하며 큰 약점도 존재함을 새롭게 알게 되었다. 바로 스펙이 제대로 명시되어 있지 않은 경우에 발생하는 여러 문제들이다.&lt;/p&gt;
+&lt;p&gt;스펙이 제대로 명시되지 않았다는 것은 크게 보면 두 가지 케이스가 있다. 첫 번째로, 스펙이 불완전하게 명시되어 있지 않은 것, 그리고 스펙이 틀리게 명시되어 있는 것이다. 이번 달에 외부 API를 쓰면서 두 가지 케이스를 모두 경험하였다. 먼저 정의되어 있지 않은 에러 코드가 리턴되는 상황이 있었다. 우리 서비스 모델에서 에러 코드를 보고 다시 잠시 후 실행하면 해결될 것 같은 에러, 영구적으로 실패할 에러를 구분해서 로직을 짜 두었는데 문서에 나와 있지 않은 경우 네트워크 관련 실패라고 여기고 재시도하도록 했었다. 마치 HTTP 429 Too Many Requests 에러와 같은 경우이다. 그러나 정의되어 있지 않았던 에러는 HTTP 409 Conflict 에러였다. 서버에 일종의 로직이 숨겨져있었고 재시도로는 해결되지 않는 문제였다. 프로그램을 돌리던 중 해당 문제를 발견하여 hotfix로 대응해야 했다.&lt;/p&gt;
+&lt;p&gt;또 다른 문제는 웹소켓 연결로 받은 데이터의 논리 규칙이 틀린 경우였다. 예를 들어, count 변수에 2가 담겨서 오면 members 변수의 길이가 2로 올 것을 예상하고 로직을 만들었는데 데이터를 받아 보니 두 조건이 맞지 않았다. 이런 상황에서 당연히 segmentation fault 패닉이 발생하여 프로그램이 계속해서 죽었다가 재실행되었다. 이 부분도 실제 배포 후 발견하여 hotfix로 논리 규칙에 맞지 않는 메세지를 무시하도록 수정하였다.&lt;/p&gt;
+&lt;p&gt;이렇듯 외부 API는 강점에 못지 않게 우리가 제어할 수 없는 부분이 많고 정보의 격차가 존재한다는 단점을 알게 되었다. 매시업 과정에서 외부 API는 필수불가결한 요소이겠지만 마치 장난감처럼 충분히 많이 가지고 노는 과정을 선행함으로써 최대한의 정보를 가지고 다음 단계로 넘어가는 것이 최선이 아닐까 싶다. 회사에서 그럴 시간이 충분히 있을지는 모르겠지만 때로는 돌아가는 것이 더 빠르지 않을까?&lt;/p&gt;
+</description>
+        </item>
+        <item>
+        <title>202108 | 가장 최신 기술을 알아간다는 것</title>
+        <link>https://hadooboo.github.io/post/mils/202108/</link>
+        <pubDate>Tue, 31 Aug 2021 00:00:00 +0000</pubDate>
+        
+        <guid>https://hadooboo.github.io/post/mils/202108/</guid>
+        <description>&lt;p&gt;IT 기술은 계속해서 빠르게 변해가고 개발자는 항상 새로운 내용을 공부해야 한다는 내용을 여기저기서 많이 들어왔고 느껴왔다. 그래도 학교 공부를 할 때와 지금까지의 인턴 및 회사 생활에서는 누군가가 미리 정리해 놓은 내용이 있거나 가르쳐주는 사람이 있었기에 방향성이 쉽게 보였고 할 만했다. 그러나 이번에 회사에서 비트코인 탭루트 업그레이드에 대해 조사하고 발표를 준비하면서 가장 최신의 기술을 알아간다는 것이 매우 까다로운 일임을 알게 되었다.&lt;/p&gt;
+&lt;p&gt;비트코인 탭루트는 올해 11월 적용 예정인 소프트포크로서 2017년의 세그윗 소프트포크에 이은 두 번째 대규모 업그레이드라고 한다. 비트코인은 블록체인 기술을 이용한 암호화폐의 첫 시작을 열었다는 점에서 의의가 있고 상징성이 높지만 처음 설계될 때 확장성에 대해서는 고려하지 않고 만들어졌기 때문에 새로 등장하는 다른 블록체인 네트워크에 점차적으로 역할을 빼앗기고 있다. 특히 비트코인 다음으로 점유율이 높은 이더리움 네트워크는 스마트 컨트랙트를 바탕으로 점점 더 많은 애플리케이션(dapp)을 만들어낼 수 있도록 진화하고 있다. 이런 시대 흐름에 조금이라도 발맞춰 가기 위해 탭루트 소프트포크가 추진된 것으로 보인다.&lt;/p&gt;
+&lt;p&gt;탭루트 업그레이드는 schnorr signature를 도입하여 다중 서명을 가능하게 한 후 일종의 merkle tree인 MAST를 적용함으로써 코드에 의한 계약, 즉 스마트 컨트랙트와 유사한 개념을 도입한다. 이더리움에서 컨트랙트도 주소로 관리하듯이 비트코인 탭루트 소프트포크를 통해 새로 도입되는 P2TR 주소 형식도 기존의 P2WPKH, P2WSH와 구분할 수 없다고 한다. 적용만 된다면 유용하게 쓰일 수 있을 기술이 많이 포함되어 있다.&lt;/p&gt;
+&lt;p&gt;조사를 하면서 한 가지 느낀 점은 기술이 발전하는 방향을 아무도 알 수 없다는 것이다. 비트코인은 여전히 많은 사람들로부터 인정받고 있고 시가 총액도 가장 높은 암호화폐이지만 블록체인 기술적인 측면으로 보았을 때 부족한 점이 많다. 느린 트랜잭션 속도와 거래 가변성 같은 취약점으로 인해 세그윗 소프트포크가 등장하고, 오히려 비트코인의 후발주자로 나온 이더리움의 스마트 컨트랙트 기능을 따라하기 위해 탭루트 소프트포크가 등장하는 것을 보면서 맞지 않는 것에 끼워맞춘다는 느낌을 지울 수 없었다. 비트코인을 처음 만들 때 사토시는 이런 상황까진 예상하지 못하였을 것이라 생각한다. 발표할 때 첫 순서를 피하는 것처럼 오히려 첫 번째를 보완한 두 번째가 나을 수도 있겠다는 생각이 들었다.&lt;/p&gt;
+&lt;p&gt;또한, 더 기억에 남는 것은 새로운 것을 알아가는 것에 대한 어려움과 도전적인 측면이다. 탭루트 소프트포크는 아직 예정일 뿐이고 실행되기까지도 3달 정도 남아 있기 때문에 지금 당장은 레퍼런스와 참고할 만한 문서가 많이 없었다. 한글로 된 문서는 거의 존재하지도 않았다. 이런 상황에서 새로운 개념을 이해하기 위해 bitcoin 공식 github 사이트에 들어가 탭루트 소프트포크에 대한 BIP 문서도 읽어 보고 비트코인 재단에 속한 사람이 찍어서 올린 유튜브 강의도 찾아보며 직접 머리 속으로 정리해 나갔다. 문서 하나하나가 귀했기 때문에 여러 번 읽고 정독하면 보이지 않던 것도 보이곤 했다. 발표 자료를 최종적으로 정리하고 발표 연습을 하면서 정리한 개념이 맞는지 한 번 더 점검할 수 있었다.&lt;/p&gt;
+&lt;p&gt;분명 새로운 기술을 알아가는 것은 어려운 일이었지만 지금 이 세상에서 이 기술을 나만큼 이해하고 있는 사람이 얼마나 될까를 상상하면 그만큼 기쁜 일이 없다. 앞으로도 다양한 분야에서 state of the art를 익히는 경험을 해보고 싶다.&lt;/p&gt;
+</description>
+        </item>
+        <item>
+        <title>202107 | 답이 없는 상황</title>
+        <link>https://hadooboo.github.io/post/mils/202107/</link>
+        <pubDate>Sat, 31 Jul 2021 00:00:00 +0000</pubDate>
+        
+        <guid>https://hadooboo.github.io/post/mils/202107/</guid>
+        <description>&lt;p&gt;초중고 교육과정을 거치며, 대학교에서 컴퓨터공학을 전공하며 내가 수강했던 대부분의 수업에서는 답이 정해져 있는 상황에서 누가 더 정답을 많이 맞추느냐로 성적이 결정되었다. 특히 컴퓨터공학 수업에서는 과제조차도 정해진 input output 사이에서 점수가 절대적으로 매겨졌기 때문에 교수님 마음대로가 평가의 기준이었던 다른 학과의 친구들은 이 점을 부러워하기도 하였다.&lt;/p&gt;
+&lt;p&gt;그러나 회사에 들어와보니 프로그램을 만드는 과정에서 말 그대로 답이 없는 상황을 마주하게 되었다. 가장 큰 문제는 완성도와 산출물 사이에서의 저울질이었다. 분명 좋은 서비스를 만들기 위해서는 코드의 품질을 올리고 더 많은 테스트케이스를 만드는 등 해야 할 작업이 산더미같이 많이 있었지만, 인력 및 시간의 한계와 비즈니스적인 목적으로 인해 중간에서 끊고 데모와 배포를 실행하여야 하는 시점이 더러 있었다. 이 과정에서 어디서 개발 단위를 끊어야 할지에 대해 항상 고민하게 되었고 팀원 안에서도 답이 많이 달랐다. 이러한 상황은 앞으로도 계속해서 마주할 것이고, 어떤 선택을 내려야 할지가 개발자와 개발 팀의 중요한 역량이 될 것이라고 생각한다.&lt;/p&gt;
+&lt;p&gt;이번 달 주요 업무는 multiuser service로 전환하기 위해 우리의 서비스에 대해 구체적이고 정확한 수치로 실험 결과를 뽑아 사람들에게 정확한 지표를 알려주는 것이었다. 그렇기 때문에 일종의 실험 과정이 포함되었다. 회사에서의 실험은 답도 알려주는 사람이 없었고 내가 만든 기준이 객관적이고 정확한지 판단하기도 쉽지 않았다. 또한, 시간도 많이 주어지지 않았기 때문에 여유롭게 이것저것 다 시도해볼 수 없었다. 이렇게 깔끔하게 끝내지 못하는 것이 아쉬웠고 다음부터는 개발 및 실험 속도를 높여 같은 시간 내에 더 좋은 완성도를 보여야겠다는 다짐으로 이어졌다.&lt;/p&gt;
+&lt;p&gt;그래도 실험 과정에서 더 빠른 이터레이션을 위해 시도한 것이 몇 가지 있다. 우선 실험 데이터를 가져오는 방법을 스크립트로 작성하여 매번 손수 돌릴 필요 없이 명령어 한 줄로 업데이트가 가능하도록 만들었다. 그리고 업데이트 과정도 전체 데이터를 다시 다 가져오는 것이 아니라 증분되는 부분만 가져오도록 하여 효율성을 높였다. 실험 내부 과정에서도 이동 표준편차를 구해야 하는 부분이 있을 때, 매번 슬라이딩 윈도우에서 표준편차를 계산하는 것이 아니라 제곱의 이동 평균, 이동 평균을 동시에 메모리에 들고 있음으로서 표준편차의 다른 표현인 &lt;code&gt;sqrt(E(X^2) - {E(X)}^2)&lt;/code&gt; 라는 식을 최대한으로 이용하였다. 이는 매번 &lt;code&gt;O(슬라이딩 윈도우의 크기)&lt;/code&gt; 만큼 걸리던 작업을 &lt;code&gt;O(1)&lt;/code&gt; 로 줄였주었다. 이러한 사소한 부분부분에서의 노력과 고민이 같은 시간 내에 더 좋은 완성도를 가지는 프로그램을 만들 수 있는 밑거름이 될 것이라고 생각한다.&lt;/p&gt;
+</description>
+        </item>
+        <item>
+        <title>202106 | Standalone to multiuser service</title>
+        <link>https://hadooboo.github.io/post/mils/202106/</link>
+        <pubDate>Wed, 30 Jun 2021 00:00:00 +0000</pubDate>
+        
+        <guid>https://hadooboo.github.io/post/mils/202106/</guid>
+        <description>&lt;p&gt;어느 정도 go의 문법과 사용 사례를 익힌 뒤 처음으로 팀에서 참여하게 된 업무는 그 동안 standalone 모드에서 실행해 왔던 서비스를 multiuser 서비스로 확장시키는 작업이었다. Standalone 방식은 사용자마다 VM을 한 대씩 할당하여 전용 프로그램을 돌리는 것이었는데 사내 직원들을 대상으로 하는 서비스였기에 가능했다.&lt;/p&gt;
+&lt;p&gt;Standalone의 문제점은 두 가지가 있었다. 가장 큰 문제는 유지보수가 어렵다는 것이었다. 프로그램을 업데이트 하려고 할 때 모든 VM에 들어가서 새로 실행하고 빠져나오기를 반복해야 했다. 또한 로그 수집 과정도 복잡했으며, 새로 유저를 추가하려고 할 때도 VM 세팅부터 할 일이 많았다. 이런 유지보수에 들이는 시간은 발전적인 개발을 막는 요소가 되었다. 또한, 두 번째 문제는 컴퓨터에 대해 잘 모르는 사원들도 VM에 대해 잘 알아야 프로그램을 관리할 수 있다는 것이었다. 개인별 키가 VM 환경 변수에 직접 설정되어야 해서 사람들이 직접 터미널을 사용해야 했는데, 컴퓨터에 문외한인 사람들에게는 어려운 작업이었다.&lt;/p&gt;
+&lt;p&gt;이러한 문제점이 존재하였고, 또한 더 많은 사람들에게 우리가 만들고 있는 서비스를 제공하기 위해 standalone 모델에서 multiuser service 모델로 넘어가기로 결정하였다. 일반적으로 우리가 알고 있는 많은 웹 서비스 플랫폼과 같이 회원가입 및 로그인, 로그아웃 개념이 존재하고 중앙 서버에서 모든 것을 관리하는 방식이었다. 무조건적인 standalone에 대한 반대는 아니었다. Standalone의 장점은 서버가 각 사용자의 비밀키를 관리할 필요 없어 운영하는 입장에서 부담이 적다는 것이 있다. 그러나 결국에는 확장성 및 유지보수성을 고려하지 않을 수 없었기에 이와 같은 결정을 내린 것이었다.&lt;/p&gt;
+&lt;p&gt;내가 맡은 역할은 전체적인 프로그램의 구조를 만드는 것이었다. go에는 goroutine이라는 강력한 병렬 실행 도구가 있기 때문에 단순히 각 사용자마다 goroutine 하나씩 띄우는 것도 방법이 될 수 있지만, 결국에는 컴퓨팅 자원의 한계가 있기 때문에 중복되는 부분은 병합하고 필수적인 부분만 병렬 처리를 하는 방향이 맞았다. 또한, standalone 모드에서는 프로그램의 시작과 종료를 통해 프로그램의 실행 여부를 결정할 수 있었던 반면 이제부터는 하나의 죽지 않는 프로그램 위에서 동적으로 결정할 수 있어야 했다. 이러한 점들이 단순히 코드 수정이 아니라 코드의 구조 자체를 바꾸어야 하는 필요성을 설명한다.&lt;/p&gt;
+&lt;p&gt;내가 만들어 낸 새로운 프로그램의 구조는 VM을 추상화하여 클래스로 만들어버리고, 이를 관리하는 host 클래스도 하나 만들어 기존의 물리적인 구조를 소프트웨어로 옮겨 놓은 구조였다. VM 클래스 자체에 start, stop 메소드가 존재하여 프로그램의 시작과 종료를 따라하게 하였고, 각 VM 안에 원래 사용하던 로직이 들어가게 하였다.&lt;/p&gt;
+&lt;p&gt;지금 회고를 통해 되돌아보면 이러한 방식이 직관적이기는 하지만 최선의 방식이었다고는 생각하지 않는다. 코드를 만들 때 nested if else를 최대한 지양해야 한다는 중요한 코딩 스타일이 있다. 이것은 depth가 깊어질수록 일종의 공간지각력이 필요해지고 프로그래머들이 코드를 파악하는 것을 어렵게 하기 때문이라고 생각한다. 코드에서의 이러한 원리가 프로그램 구조에서도 동일하게 적용될 수 있다고 생각한다. 최대한 클래스 안의 클래스를 없앨 수 있었다면, 보기에 그리고 유지보수하기에 더 깔끔하지 않았을까 싶다.&lt;/p&gt;
+&lt;p&gt;비슷한 개념으로 데이터베이스 정규화가 있는 것 같다. 중복을 피하고 무결성을 지키는 데이터 관리를 위해서는 각 엔티티를 관계로 분리하는 정규화가 좋지만 성능 및 관리의 효율성 증가로 대표되는 반정규화의 장점도 무시할 수 없다. 모든 개발 스택에서 비슷한 개념이 등장한다는 것이 흥미롭다. 프로그램 구조를 설계하면서의 경험이 앞으로 나에게 어떤 도움을 줄 지 기대가 된다.&lt;/p&gt;
+</description>
+        </item>
+        <item>
+        <title>202105 | Spring 세계가 깨어지는 경험</title>
+        <link>https://hadooboo.github.io/post/mils/202105/</link>
+        <pubDate>Mon, 31 May 2021 00:00:00 +0000</pubDate>
+        
+        <guid>https://hadooboo.github.io/post/mils/202105/</guid>
+        <description>&lt;p&gt;아무 생각 없이 살아가다 보면 점점 새로운 것을 시도해보려고 하지 않게 되는 것이 인간의 습성이라고 생각한다. 마치 멈춰져 있는 바퀴를 굴리기 위해서는 더 많은 힘이 드는 것처럼. 내게도 spring이라는 세상이 그러하였고, 그게 마냥 답인 줄 알았다.&lt;/p&gt;
+&lt;p&gt;네이버에서 2번의 인턴 활동을 하며 백엔드 서버는 모두 spring boot으로 만들었다. 두 번에서 모두 기본적인 API 서비스 제공이 목표였고 실제 운영으로 이어지기 전 단계였으므로 spring boot에서 부족함을 느낄 수 없었다. 학교에서 수업을 들을 때에도 대부분 java 언어로 배워왔기에, 다른 언어로 다른 프레임워크로 서버를 만드는 것이 아직은 시기상조라는 생각을 막연히 가지게 되었다. 내가 하려고 했던 유일한 발전은 java 언어 대신 kotlin으로 spring을 사용하고자 하는 것이었다.&lt;/p&gt;
+&lt;p&gt;이런 생각을 가지고 입사한 회사에서 내가 가장 처음으로 마주한 코드는 go로 만들어진 테스트용 시뮬레이션 프로그램이었다. 단순히 이 프로그램 뿐만 아니라 회사에서 만드는 백엔드 서버를 항상 go로 만들고 있다고 했다. Go라는 언어는 빠르고 쉽다는 정도는 들어본 적이 있었지만 실제로 이렇게까지 널리 사용되고 있는 줄은 몰랐다.&lt;/p&gt;
+&lt;p&gt;더욱이 놀란 것은 매우 간단한 문법을 가지고 있으면서도 성능이 좋다는 것이었다. 시뮬레이션 프로그램은 채 200줄이 안되는 코드였지만 goroutine을 이용해 병렬 프로그래밍을 구현하고 있었고, 그 자체로 하나의 실행 파일이 빌드가 되어 쉽게 여러 대의 컴퓨터에서 돌릴 수 있었다. goroutine을 무한히 늘린다고 좋은 것은 아니기 때문에 channel이라는 문법을 사용하여 실행하는 goroutine의 개수를 조정하고 있었는데 이것도 흥미로운 점이었다.&lt;/p&gt;
+&lt;p&gt;그러나 goroutine의 장점에 눈이 멀어 쉽게 할 수 있는 최적화를 놓치지는 않아야겠다고 생각했다. 회사의 시뮬레이션 프로그램을 보니 원하는 작업이 &lt;code&gt;A -&amp;gt; B -&amp;gt; C&lt;/code&gt; 라면 이 모든 작업을 각각의 goroutine에서 반복하고 있었다. &lt;code&gt;A&lt;/code&gt; 는 데이터 파일을 읽어오는 부분이었는데 결국 자료구조에 저장해 놓고 읽기 전용으로 사용하고 있어 굳이 매번 그 엄청난 오버헤드를 가지는 파일 I/O를 할 필요가 없었다. 이를 수정하여 커밋하였고, 여러 컴퓨터에서 하루씩 걸리던 작업을 하나의 컴퓨터에서 1~2시간 안에 끝낼 수 있었다.&lt;/p&gt;
+&lt;p&gt;찾아보니 go라는 언어 자체가 c를 개발한 사람들이 c의 복잡함이 싫어서 개발하기 시작했다는데 사용하면 할수록 그 점을 여실히 알 수 있었다. 키워드 개수도 많지 않았고, 자체적으로 gc를 제공하기 때문에 메모리를 직접 관리할 필요도 없었다. 함수의 리턴 값으로 여러 개의 변수를 지정할 수 있는 것, exception 대신 error를 리턴하는 것, 그에 따라 무한히 많아지는 &lt;code&gt;if err != nil&lt;/code&gt; 코드도 go 언어만의 특징이라고 생각한다. 무엇보다도 앞에서도 언급한 쉬운 goroutine 사용도 큰 강점으로 보인다. 여러 언어들을 배워가며 그 언어를 만드는 사람들이 가지고 있는 철학을 되짚어가는 일은 참 재밌다.&lt;/p&gt;
+</description>
+        </item>
+        
+    </channel>
+</rss>

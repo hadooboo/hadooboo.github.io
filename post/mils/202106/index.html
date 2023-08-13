@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="ko-kr" dir="ltr">
+    <head><meta charset='utf-8'>
+<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content='어느 정도 go의 문법과 사용 사례를 익힌 뒤 처음으로 팀에서 참여하게 된 업무는 그 동안 standalone 모드에서 실행해 왔던 서비스를 multiuser 서비스로 확장시키는 작업이었다. Standalone 방식은'>
+<title>202106 | Standalone to multiuser service</title>
+
+<link rel='canonical' href='https://hadooboo.github.io/post/mils/202106/'>
+
+<link rel="stylesheet" href="/scss/style.min.fd84e57133f7e873d7b16bba3f165639533befb316512be183800fd65952f8fe.css"><meta property='og:title' content='202106 | Standalone to multiuser service'>
+<meta property='og:description' content='어느 정도 go의 문법과 사용 사례를 익힌 뒤 처음으로 팀에서 참여하게 된 업무는 그 동안 standalone 모드에서 실행해 왔던 서비스를 multiuser 서비스로 확장시키는 작업이었다. Standalone 방식은'>
+<meta property='og:url' content='https://hadooboo.github.io/post/mils/202106/'>
+<meta property='og:site_name' content='Hadooboo Dev Log'>
+<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:published_time' content='2021-06-30T00:00:00&#43;00:00'/><meta property='article:modified_time' content='2021-06-30T00:00:00&#43;00:00'/>
+<meta name="twitter:title" content="202106 | Standalone to multiuser service">
+<meta name="twitter:description" content="어느 정도 go의 문법과 사용 사례를 익힌 뒤 처음으로 팀에서 참여하게 된 업무는 그 동안 standalone 모드에서 실행해 왔던 서비스를 multiuser 서비스로 확장시키는 작업이었다. Standalone 방식은">
+    </head>
+    <body class="
+    article-page
+    ">
+    <script>
+        (function() {
+            const colorSchemeKey = 'StackColorScheme';
+            if(!localStorage.getItem(colorSchemeKey)){
+                localStorage.setItem(colorSchemeKey, "auto");
+            }
+        })();
+    </script><script>
+    (function() {
+        const colorSchemeKey = 'StackColorScheme';
+        const colorSchemeItem = localStorage.getItem(colorSchemeKey);
+        const supportDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches === true;
+
+        if (colorSchemeItem == 'dark' || colorSchemeItem === 'auto' && supportDarkMode) {
+            
+
+            document.documentElement.dataset.scheme = 'dark';
+        } else {
+            document.documentElement.dataset.scheme = 'light';
+        }
+    })();
+</script>
+<div class="container main-container flex on-phone--column extended"><aside class="sidebar left-sidebar sticky ">
+    <button class="hamburger hamburger--spin" type="button" id="toggle-menu" aria-label="Toggle Menu">
+        <span class="hamburger-box">
+            <span class="hamburger-inner"></span>
+        </span>
+    </button>
+
+    <header>
+        
+            
+            <figure class="site-avatar">
+                <a href="/">
+                
+                    
+                    
+                    
+                        
+                        <img src="/img/avatar_huda2458f72ce188392d75c5d51cd8e24e_373_300x0_resize_box_3.png" width="300"
+                            height="300" class="site-logo" loading="lazy" alt="Avatar">
+                    
+                
+                </a>
+                
+            </figure>
+            
+        
+        
+        <div class="site-meta">
+            <h1 class="site-name"><a href="/">Hadooboo Dev Log</a></h1>
+            <h2 class="site-description"></h2>
+        </div>
+    </header><ol class="menu" id="main-menu">
+        
+        
+
+        <div class="menu-bottom-section">
+            
+            
+                <li id="dark-mode-toggle">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="8" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-right" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="16" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                    <span>Dark Mode</span>
+                </li>
+            
+        </div>
+    </ol>
+</aside>
+
+    
+
+            <main class="main full-width">
+    <article class="main-article">
+    <header class="article-header">
+
+    <div class="article-details">
+    
+    <header class="article-category">
+        
+            <a href="/categories/mil/" style="background-color: #2a9d8f; color: #fff;">
+                MIL
+            </a>
+        
+    </header>
+    
+
+    <div class="article-title-wrapper">
+        <h2 class="article-title">
+            <a href="/post/mils/202106/">202106 | Standalone to multiuser service</a>
+        </h2>
+    
+        
+    </div>
+
+    
+    
+    
+    
+    <footer class="article-time">
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-calendar-time" width="56" height="56" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M11.795 21h-6.795a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v4" />
+  <circle cx="18" cy="18" r="4" />
+  <path d="M15 3v4" />
+  <path d="M7 3v4" />
+  <path d="M3 11h16" />
+  <path d="M18 16.496v1.504l1 1" />
+</svg>
+                <time class="article-time--published">Jun 30, 2021</time>
+            </div>
+        
+
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <polyline points="12 7 12 12 15 15" />
+</svg>
+
+
+
+                <time class="article-time--reading">
+                    3 minute read
+                </time>
+            </div>
+        
+    </footer>
+    
+
+    
+</div>
+
+</header>
+
+    <section class="article-content">
+    
+    
+    <p>어느 정도 go의 문법과 사용 사례를 익힌 뒤 처음으로 팀에서 참여하게 된 업무는 그 동안 standalone 모드에서 실행해 왔던 서비스를 multiuser 서비스로 확장시키는 작업이었다. Standalone 방식은 사용자마다 VM을 한 대씩 할당하여 전용 프로그램을 돌리는 것이었는데 사내 직원들을 대상으로 하는 서비스였기에 가능했다.</p>
+<p>Standalone의 문제점은 두 가지가 있었다. 가장 큰 문제는 유지보수가 어렵다는 것이었다. 프로그램을 업데이트 하려고 할 때 모든 VM에 들어가서 새로 실행하고 빠져나오기를 반복해야 했다. 또한 로그 수집 과정도 복잡했으며, 새로 유저를 추가하려고 할 때도 VM 세팅부터 할 일이 많았다. 이런 유지보수에 들이는 시간은 발전적인 개발을 막는 요소가 되었다. 또한, 두 번째 문제는 컴퓨터에 대해 잘 모르는 사원들도 VM에 대해 잘 알아야 프로그램을 관리할 수 있다는 것이었다. 개인별 키가 VM 환경 변수에 직접 설정되어야 해서 사람들이 직접 터미널을 사용해야 했는데, 컴퓨터에 문외한인 사람들에게는 어려운 작업이었다.</p>
+<p>이러한 문제점이 존재하였고, 또한 더 많은 사람들에게 우리가 만들고 있는 서비스를 제공하기 위해 standalone 모델에서 multiuser service 모델로 넘어가기로 결정하였다. 일반적으로 우리가 알고 있는 많은 웹 서비스 플랫폼과 같이 회원가입 및 로그인, 로그아웃 개념이 존재하고 중앙 서버에서 모든 것을 관리하는 방식이었다. 무조건적인 standalone에 대한 반대는 아니었다. Standalone의 장점은 서버가 각 사용자의 비밀키를 관리할 필요 없어 운영하는 입장에서 부담이 적다는 것이 있다. 그러나 결국에는 확장성 및 유지보수성을 고려하지 않을 수 없었기에 이와 같은 결정을 내린 것이었다.</p>
+<p>내가 맡은 역할은 전체적인 프로그램의 구조를 만드는 것이었다. go에는 goroutine이라는 강력한 병렬 실행 도구가 있기 때문에 단순히 각 사용자마다 goroutine 하나씩 띄우는 것도 방법이 될 수 있지만, 결국에는 컴퓨팅 자원의 한계가 있기 때문에 중복되는 부분은 병합하고 필수적인 부분만 병렬 처리를 하는 방향이 맞았다. 또한, standalone 모드에서는 프로그램의 시작과 종료를 통해 프로그램의 실행 여부를 결정할 수 있었던 반면 이제부터는 하나의 죽지 않는 프로그램 위에서 동적으로 결정할 수 있어야 했다. 이러한 점들이 단순히 코드 수정이 아니라 코드의 구조 자체를 바꾸어야 하는 필요성을 설명한다.</p>
+<p>내가 만들어 낸 새로운 프로그램의 구조는 VM을 추상화하여 클래스로 만들어버리고, 이를 관리하는 host 클래스도 하나 만들어 기존의 물리적인 구조를 소프트웨어로 옮겨 놓은 구조였다. VM 클래스 자체에 start, stop 메소드가 존재하여 프로그램의 시작과 종료를 따라하게 하였고, 각 VM 안에 원래 사용하던 로직이 들어가게 하였다.</p>
+<p>지금 회고를 통해 되돌아보면 이러한 방식이 직관적이기는 하지만 최선의 방식이었다고는 생각하지 않는다. 코드를 만들 때 nested if else를 최대한 지양해야 한다는 중요한 코딩 스타일이 있다. 이것은 depth가 깊어질수록 일종의 공간지각력이 필요해지고 프로그래머들이 코드를 파악하는 것을 어렵게 하기 때문이라고 생각한다. 코드에서의 이러한 원리가 프로그램 구조에서도 동일하게 적용될 수 있다고 생각한다. 최대한 클래스 안의 클래스를 없앨 수 있었다면, 보기에 그리고 유지보수하기에 더 깔끔하지 않았을까 싶다.</p>
+<p>비슷한 개념으로 데이터베이스 정규화가 있는 것 같다. 중복을 피하고 무결성을 지키는 데이터 관리를 위해서는 각 엔티티를 관계로 분리하는 정규화가 좋지만 성능 및 관리의 효율성 증가로 대표되는 반정규화의 장점도 무시할 수 없다. 모든 개발 스택에서 비슷한 개념이 등장한다는 것이 흥미롭다. 프로그램 구조를 설계하면서의 경험이 앞으로 나에게 어떤 도움을 줄 지 기대가 된다.</p>
+
+</section>
+
+
+    <footer class="article-footer">
+    
+
+    </footer>
+
+
+    
+</article>
+
+    
+
+    
+
+     
+    
+        
+    <script src="https://utteranc.es/client.js" 
+        repo="hadooboo/hadooboo.github.io"
+        issue-term="pathname"
+        
+        crossorigin="anonymous"
+        async
+        >
+</script>
+
+<style>
+    .utterances {
+        max-width: unset;
+    }
+</style>
+
+<script>
+    let utterancesLoaded = false;
+
+    function setUtterancesTheme(theme) {
+        let utterances = document.querySelector('.utterances iframe');
+        if (utterances) {
+            utterances.contentWindow.postMessage(
+                {
+                    type: 'set-theme',
+                    theme: `github-${theme}`
+                },
+                'https://utteranc.es'
+            );
+        }
+    }
+
+    addEventListener('message', event => {
+        if (event.origin !== 'https://utteranc.es') return;
+
+        
+        utterancesLoaded = true;
+        setUtterancesTheme(document.documentElement.dataset.scheme)
+    });
+
+    window.addEventListener('onColorSchemeChange', (e) => {
+        if (!utterancesLoaded) return;
+        setUtterancesTheme(e.detail)
+    })
+</script>
+
+
+    
+
+    <footer class="site-footer">
+    <section class="copyright">
+        &copy; 
+        
+        2023 Hadooboo Dev Log
+    </section>
+    
+    <section class="powerby">
+        Built with <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> <br />
+        Theme <b><a href="https://github.com/CaiJimmy/hugo-theme-stack" target="_blank" rel="noopener" data-version="3.17.0">Stack</a></b> designed by <a href="https://jimmycai.com" target="_blank" rel="noopener">Jimmy</a>
+    </section>
+</footer>
+
+
+    
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    
+    <div class="pswp__bg"></div>
+
+    
+    <div class="pswp__scroll-wrap">
+
+        
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                
+                
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"integrity="sha256-ePwmChbbvXbsO02lbM3HoHbSHTHFAeChekF1xKJdleo="crossorigin="anonymous"
+                defer
+                >
+            </script><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"integrity="sha256-UKkzOn/w1mBxRmLLGrSeyB4e1xbrp4xylgAWb3M42pU="crossorigin="anonymous"
+                defer
+                >
+            </script><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.min.css"crossorigin="anonymous"
+            ><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.css"crossorigin="anonymous"
+            >
+
+            </main>
+        </div>
+        <script 
+                src="https://cdn.jsdelivr.net/npm/node-vibrant@3.1.6/dist/vibrant.min.js"integrity="sha256-awcR2jno4kI5X0zL8ex0vi2z&#43;KMkF24hUW8WePSA9HM="crossorigin="anonymous"
+                
+                >
+            </script><script type="text/javascript" src="/ts/main.js" defer></script>
+<script>
+    (function () {
+        const customFont = document.createElement('link');
+        customFont.href = "https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap";
+
+        customFont.type = "text/css";
+        customFont.rel = "stylesheet";
+
+        document.head.appendChild(customFont);
+    }());
+</script>
+
+    </body>
+</html>

@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="ko-kr" dir="ltr">
+    <head><meta charset='utf-8'>
+<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content='이번 달 역시 새로운 프로토타입을 만드는 업무를 진행하였다. 그런데 이번에는 정말 게시판의 확장 버전이었다. 다른 복잡한 알고리즘이나 모델 없이 글을 올리고 그에 대'>
+<title>202204 | CRUD 작업에서 의미 찾기: DDD</title>
+
+<link rel='canonical' href='https://hadooboo.github.io/post/mils/202204/'>
+
+<link rel="stylesheet" href="/scss/style.min.fd84e57133f7e873d7b16bba3f165639533befb316512be183800fd65952f8fe.css"><meta property='og:title' content='202204 | CRUD 작업에서 의미 찾기: DDD'>
+<meta property='og:description' content='이번 달 역시 새로운 프로토타입을 만드는 업무를 진행하였다. 그런데 이번에는 정말 게시판의 확장 버전이었다. 다른 복잡한 알고리즘이나 모델 없이 글을 올리고 그에 대'>
+<meta property='og:url' content='https://hadooboo.github.io/post/mils/202204/'>
+<meta property='og:site_name' content='Hadooboo Dev Log'>
+<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:published_time' content='2022-04-30T00:00:00&#43;00:00'/><meta property='article:modified_time' content='2022-04-30T00:00:00&#43;00:00'/>
+<meta name="twitter:title" content="202204 | CRUD 작업에서 의미 찾기: DDD">
+<meta name="twitter:description" content="이번 달 역시 새로운 프로토타입을 만드는 업무를 진행하였다. 그런데 이번에는 정말 게시판의 확장 버전이었다. 다른 복잡한 알고리즘이나 모델 없이 글을 올리고 그에 대">
+    </head>
+    <body class="
+    article-page
+    ">
+    <script>
+        (function() {
+            const colorSchemeKey = 'StackColorScheme';
+            if(!localStorage.getItem(colorSchemeKey)){
+                localStorage.setItem(colorSchemeKey, "auto");
+            }
+        })();
+    </script><script>
+    (function() {
+        const colorSchemeKey = 'StackColorScheme';
+        const colorSchemeItem = localStorage.getItem(colorSchemeKey);
+        const supportDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches === true;
+
+        if (colorSchemeItem == 'dark' || colorSchemeItem === 'auto' && supportDarkMode) {
+            
+
+            document.documentElement.dataset.scheme = 'dark';
+        } else {
+            document.documentElement.dataset.scheme = 'light';
+        }
+    })();
+</script>
+<div class="container main-container flex on-phone--column extended"><aside class="sidebar left-sidebar sticky ">
+    <button class="hamburger hamburger--spin" type="button" id="toggle-menu" aria-label="Toggle Menu">
+        <span class="hamburger-box">
+            <span class="hamburger-inner"></span>
+        </span>
+    </button>
+
+    <header>
+        
+            
+            <figure class="site-avatar">
+                <a href="/">
+                
+                    
+                    
+                    
+                        
+                        <img src="/img/avatar_huda2458f72ce188392d75c5d51cd8e24e_373_300x0_resize_box_3.png" width="300"
+                            height="300" class="site-logo" loading="lazy" alt="Avatar">
+                    
+                
+                </a>
+                
+            </figure>
+            
+        
+        
+        <div class="site-meta">
+            <h1 class="site-name"><a href="/">Hadooboo Dev Log</a></h1>
+            <h2 class="site-description"></h2>
+        </div>
+    </header><ol class="menu" id="main-menu">
+        
+        
+
+        <div class="menu-bottom-section">
+            
+            
+                <li id="dark-mode-toggle">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="8" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-right" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="16" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                    <span>Dark Mode</span>
+                </li>
+            
+        </div>
+    </ol>
+</aside>
+
+    
+
+            <main class="main full-width">
+    <article class="main-article">
+    <header class="article-header">
+
+    <div class="article-details">
+    
+    <header class="article-category">
+        
+            <a href="/categories/mil/" style="background-color: #2a9d8f; color: #fff;">
+                MIL
+            </a>
+        
+    </header>
+    
+
+    <div class="article-title-wrapper">
+        <h2 class="article-title">
+            <a href="/post/mils/202204/">202204 | CRUD 작업에서 의미 찾기: DDD</a>
+        </h2>
+    
+        
+    </div>
+
+    
+    
+    
+    
+    <footer class="article-time">
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-calendar-time" width="56" height="56" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M11.795 21h-6.795a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v4" />
+  <circle cx="18" cy="18" r="4" />
+  <path d="M15 3v4" />
+  <path d="M7 3v4" />
+  <path d="M3 11h16" />
+  <path d="M18 16.496v1.504l1 1" />
+</svg>
+                <time class="article-time--published">Apr 30, 2022</time>
+            </div>
+        
+
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <polyline points="12 7 12 12 15 15" />
+</svg>
+
+
+
+                <time class="article-time--reading">
+                    3 minute read
+                </time>
+            </div>
+        
+    </footer>
+    
+
+    
+</div>
+
+</header>
+
+    <section class="article-content">
+    
+    
+    <p>이번 달 역시 새로운 프로토타입을 만드는 업무를 진행하였다. 그런데 이번에는 정말 게시판의 확장 버전이었다. 다른 복잡한 알고리즘이나 모델 없이 글을 올리고 그에 대한 몇 가지 기능만 있으면 되는 간단한 수준이었다. 이런 방향으로 프로토타입 개발 방향이 잡히자 이번 작업을 통해 배울 수 있는 점이 있을지 바로 고민이 시작되었다. 단순한 sql 명령어를 실행하는 데이터베이스 레이어와 데이터베이스 테이블 구조과 비슷하게 생긴 API 요청 및 응답을 처리하는 API 서버 레이어. 기존 작업들과 아이템만 다를 뿐 별반 차이점이 없을 뿐더러 복사 붙여넣기만 하게 되지 싶었다.</p>
+<p>그런데 대부분의 서비스 플랫폼을 생각했을 때 아이템이 다 다르고 부가적인 기능도 더러 있지만 결국에는 CRUD의 확장이라는 생각이 들었다. 반복적인 일이라고 생각할 수도 있지만 어떻게 하면 CRUD 자체를 잘할 수 있을지, 메소드와 구조체 단위에 집중할 것이 아니라 전체적인 구조와 패턴을 어떻게 잡으면 좋을지 고민해보아야 할 시간이라고 느꼈다.</p>
+<p>이 때, 얼마 전에 읽었던 &lt;만들면서 배우는 클린 아키텍처: 자바 코드로 구현하는 클린 웹 애플리케이션&gt; 책에서 등장하는 DDD를 적용해보면 어떨까라는 생각이 떠올랐다. 책을 읽었어도 막상 적용해 볼 경험이 없었어서 글자 뿐인 지식이 될 까봐 염려하던 참이었다. 책의 내용은 자바로 되어 있었지만 결국에는 아키텍처이기 때문에 go로도 못할 이유가 없다고 생각했다.</p>
+<p>다행히 마침 팀에서도 아키텍처 변화에 대한 얘기가 나와서 DDD 적용을 바로 시도해볼 수 있었다. 기존에는 데이터베이스 중심 설계를 하고 있어서 API 서버에서 데이터베이스를 직접 참조하는 구조에 중요한 로직들도 그냥 API 서버 패키지 안에서 모두 구현하고 있었다. 데이터베이스 레이어, API 서버 레이어를 정말 단순히 in, out 커넥터로 생각하여 모든 로직을 빼고 로직은 service 레이어에서 모두 처리할 수 있도록 하는 것이 이번 아키텍처 수정의 목표였다.</p>
+<p>구현하면 할수록 기존 구조보다 훨씬 낫다는 느낌을 받을 수 있었다. API 서버 레이어는 단순히 API 요청을 받아 필수 필드의 존재 여부만 검증하여 service 레이어로 요청을 전달하고, 그 결과를 적절한 형태로 인코딩하여 응답으로 보낸다. 데이터베이스 레이어도 service 레이어로부터 요청을 받아 sql을 처리하는 역할에 지나지 않는다. 모든 레이어간의 통신은 service/model 패키지에 정의된 구조체를 이용한다. 해당 패키지 안에는 service 레이어에서 사용하는 외부 패키지들이 지켜야 하는 인터페이스도 정의되어 있어 다른 데이터베이스 벤더를 사용하게 될 때와 같은 상황에서 수정이 용이하다.</p>
+<p>이런 아키텍처 수정 과정을 거치며 또 반복적인 업무가 될 것이라고 생각했던 CRUD 작업에서도 큰 흥미를 느낄 수 있었다. 물론 DDD가 다른 아키텍처들에 비해 무조건 낫다는 것은 아니지만 도메인 관점에서 응집성 있게 코드를 표현할 수 있는 좋은 방법 중에 하나라고 생각한다. 하루하루 더 나은 코드를 고민하는 성장하는 개발자가 되어야겠다.</p>
+
+</section>
+
+
+    <footer class="article-footer">
+    
+
+    </footer>
+
+
+    
+</article>
+
+    
+
+    
+
+     
+    
+        
+    <script src="https://utteranc.es/client.js" 
+        repo="hadooboo/hadooboo.github.io"
+        issue-term="pathname"
+        
+        crossorigin="anonymous"
+        async
+        >
+</script>
+
+<style>
+    .utterances {
+        max-width: unset;
+    }
+</style>
+
+<script>
+    let utterancesLoaded = false;
+
+    function setUtterancesTheme(theme) {
+        let utterances = document.querySelector('.utterances iframe');
+        if (utterances) {
+            utterances.contentWindow.postMessage(
+                {
+                    type: 'set-theme',
+                    theme: `github-${theme}`
+                },
+                'https://utteranc.es'
+            );
+        }
+    }
+
+    addEventListener('message', event => {
+        if (event.origin !== 'https://utteranc.es') return;
+
+        
+        utterancesLoaded = true;
+        setUtterancesTheme(document.documentElement.dataset.scheme)
+    });
+
+    window.addEventListener('onColorSchemeChange', (e) => {
+        if (!utterancesLoaded) return;
+        setUtterancesTheme(e.detail)
+    })
+</script>
+
+
+    
+
+    <footer class="site-footer">
+    <section class="copyright">
+        &copy; 
+        
+        2023 Hadooboo Dev Log
+    </section>
+    
+    <section class="powerby">
+        Built with <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> <br />
+        Theme <b><a href="https://github.com/CaiJimmy/hugo-theme-stack" target="_blank" rel="noopener" data-version="3.17.0">Stack</a></b> designed by <a href="https://jimmycai.com" target="_blank" rel="noopener">Jimmy</a>
+    </section>
+</footer>
+
+
+    
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    
+    <div class="pswp__bg"></div>
+
+    
+    <div class="pswp__scroll-wrap">
+
+        
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                
+                
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"integrity="sha256-ePwmChbbvXbsO02lbM3HoHbSHTHFAeChekF1xKJdleo="crossorigin="anonymous"
+                defer
+                >
+            </script><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"integrity="sha256-UKkzOn/w1mBxRmLLGrSeyB4e1xbrp4xylgAWb3M42pU="crossorigin="anonymous"
+                defer
+                >
+            </script><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.min.css"crossorigin="anonymous"
+            ><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.css"crossorigin="anonymous"
+            >
+
+            </main>
+        </div>
+        <script 
+                src="https://cdn.jsdelivr.net/npm/node-vibrant@3.1.6/dist/vibrant.min.js"integrity="sha256-awcR2jno4kI5X0zL8ex0vi2z&#43;KMkF24hUW8WePSA9HM="crossorigin="anonymous"
+                
+                >
+            </script><script type="text/javascript" src="/ts/main.js" defer></script>
+<script>
+    (function () {
+        const customFont = document.createElement('link');
+        customFont.href = "https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap";
+
+        customFont.type = "text/css";
+        customFont.rel = "stylesheet";
+
+        document.head.appendChild(customFont);
+    }());
+</script>
+
+    </body>
+</html>

@@ -1,0 +1,540 @@
+<!DOCTYPE html>
+<html lang="ko-kr" dir="ltr">
+    <head><meta charset='utf-8'>
+<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content='개발서버에서 방화벽을 제대로 관리해야겠다고 마음먹은 이유 개발서버에서는 여러 프로그램들이 실행되고 있고 네트워크를 통해 통신을 하는 프로그램도 다수 있다. 가'>
+<title>[팀 개발 문화 발전시키기] 방화벽 관리</title>
+
+<link rel='canonical' href='https://hadooboo.github.io/post/teams/%EB%B0%A9%ED%99%94%EB%B2%BD-%EA%B4%80%EB%A6%AC/'>
+
+<link rel="stylesheet" href="/scss/style.min.fd84e57133f7e873d7b16bba3f165639533befb316512be183800fd65952f8fe.css"><meta property='og:title' content='[팀 개발 문화 발전시키기] 방화벽 관리'>
+<meta property='og:description' content='개발서버에서 방화벽을 제대로 관리해야겠다고 마음먹은 이유 개발서버에서는 여러 프로그램들이 실행되고 있고 네트워크를 통해 통신을 하는 프로그램도 다수 있다. 가'>
+<meta property='og:url' content='https://hadooboo.github.io/post/teams/%EB%B0%A9%ED%99%94%EB%B2%BD-%EA%B4%80%EB%A6%AC/'>
+<meta property='og:site_name' content='Hadooboo Dev Log'>
+<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:published_time' content='2022-11-09T00:00:00&#43;00:00'/><meta property='article:modified_time' content='2022-11-09T00:00:00&#43;00:00'/>
+<meta name="twitter:title" content="[팀 개발 문화 발전시키기] 방화벽 관리">
+<meta name="twitter:description" content="개발서버에서 방화벽을 제대로 관리해야겠다고 마음먹은 이유 개발서버에서는 여러 프로그램들이 실행되고 있고 네트워크를 통해 통신을 하는 프로그램도 다수 있다. 가">
+    </head>
+    <body class="
+    article-page
+    ">
+    <script>
+        (function() {
+            const colorSchemeKey = 'StackColorScheme';
+            if(!localStorage.getItem(colorSchemeKey)){
+                localStorage.setItem(colorSchemeKey, "auto");
+            }
+        })();
+    </script><script>
+    (function() {
+        const colorSchemeKey = 'StackColorScheme';
+        const colorSchemeItem = localStorage.getItem(colorSchemeKey);
+        const supportDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches === true;
+
+        if (colorSchemeItem == 'dark' || colorSchemeItem === 'auto' && supportDarkMode) {
+            
+
+            document.documentElement.dataset.scheme = 'dark';
+        } else {
+            document.documentElement.dataset.scheme = 'light';
+        }
+    })();
+</script>
+<div class="container main-container flex on-phone--column extended"><aside class="sidebar left-sidebar sticky ">
+    <button class="hamburger hamburger--spin" type="button" id="toggle-menu" aria-label="Toggle Menu">
+        <span class="hamburger-box">
+            <span class="hamburger-inner"></span>
+        </span>
+    </button>
+
+    <header>
+        
+            
+            <figure class="site-avatar">
+                <a href="/">
+                
+                    
+                    
+                    
+                        
+                        <img src="/img/avatar_huda2458f72ce188392d75c5d51cd8e24e_373_300x0_resize_box_3.png" width="300"
+                            height="300" class="site-logo" loading="lazy" alt="Avatar">
+                    
+                
+                </a>
+                
+            </figure>
+            
+        
+        
+        <div class="site-meta">
+            <h1 class="site-name"><a href="/">Hadooboo Dev Log</a></h1>
+            <h2 class="site-description"></h2>
+        </div>
+    </header><ol class="menu" id="main-menu">
+        
+        
+
+        <div class="menu-bottom-section">
+            
+            
+                <li id="dark-mode-toggle">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="8" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-right" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="16" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                    <span>Dark Mode</span>
+                </li>
+            
+        </div>
+    </ol>
+</aside>
+
+    <aside class="sidebar right-sidebar sticky">
+        
+            
+                
+    <section class="widget archives">
+        <div class="widget-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-hash" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <line x1="5" y1="9" x2="19" y2="9" />
+  <line x1="5" y1="15" x2="19" y2="15" />
+  <line x1="11" y1="4" x2="7" y2="20" />
+  <line x1="17" y1="4" x2="13" y2="20" />
+</svg>
+
+
+
+        </div>
+        <h2 class="widget-title section-title">Table of contents</h2>
+        
+        <div class="widget--toc">
+            <nav id="TableOfContents">
+  <ul>
+    <li><a href="#개발서버에서-방화벽을-제대로-관리해야겠다고-마음먹은-이유">개발서버에서 방화벽을 제대로 관리해야겠다고 마음먹은 이유</a></li>
+    <li><a href="#개선한-방향">개선한 방향</a>
+      <ul>
+        <li><a href="#ufw를-이용하여-host에서-직접-실행되는-프로그램-관리">ufw를 이용하여 host에서 직접 실행되는 프로그램 관리</a></li>
+        <li><a href="#iptables를-이용하여-docker-container로-실행되는-서비스-관리">iptables를 이용하여 docker container로 실행되는 서비스 관리</a></li>
+      </ul>
+    </li>
+    <li><a href="#회고">회고</a></li>
+  </ul>
+</nav>
+        </div>
+    </section>
+
+            
+        
+    </aside>
+
+
+            <main class="main full-width">
+    <article class="main-article">
+    <header class="article-header">
+
+    <div class="article-details">
+    
+    <header class="article-category">
+        
+            <a href="/categories/team-dev-culture/" style="background-color: #2a9d8f; color: #fff;">
+                Team Dev Culture
+            </a>
+        
+    </header>
+    
+
+    <div class="article-title-wrapper">
+        <h2 class="article-title">
+            <a href="/post/teams/%EB%B0%A9%ED%99%94%EB%B2%BD-%EA%B4%80%EB%A6%AC/">[팀 개발 문화 발전시키기] 방화벽 관리</a>
+        </h2>
+    
+        
+    </div>
+
+    
+    
+    
+    
+    <footer class="article-time">
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-calendar-time" width="56" height="56" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M11.795 21h-6.795a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v4" />
+  <circle cx="18" cy="18" r="4" />
+  <path d="M15 3v4" />
+  <path d="M7 3v4" />
+  <path d="M3 11h16" />
+  <path d="M18 16.496v1.504l1 1" />
+</svg>
+                <time class="article-time--published">Nov 09, 2022</time>
+            </div>
+        
+
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <polyline points="12 7 12 12 15 15" />
+</svg>
+
+
+
+                <time class="article-time--reading">
+                    9 minute read
+                </time>
+            </div>
+        
+    </footer>
+    
+
+    
+</div>
+
+</header>
+
+    <section class="article-content">
+    
+    
+    <p><img src="https://velog.velcdn.com/images/hadooboo/post/a2e234f4-ad35-48de-8c5e-1780a82431ff/image.png"
+	
+	
+	
+	loading="lazy"
+	
+	
+></p>
+<h2 id="개발서버에서-방화벽을-제대로-관리해야겠다고-마음먹은-이유">개발서버에서 방화벽을 제대로 관리해야겠다고 마음먹은 이유</h2>
+<p>개발서버에서는 여러 프로그램들이 실행되고 있고 네트워크를 통해 통신을 하는 프로그램도 다수 있다. 가장 대표적인 예시로 SSH, 데이터베이스, API 서버, 웹 서버 등등이 있다.</p>
+<p>그렇다면 모든 네트워크가 정상적인 사용자로부터만 유입될까? 우선 개발서버는 public ip 주소를 가지고 있기 때문에 누구나 접근이 가능하다. 또한, 각 프로그램들은 일반적으로 기본 포트를 이용하여 실행된다. 예를 들어, ssh 22, mysql 3306 등. 그렇기 때문에 네트워크를 통한 접근 자체는 아무나 쉽게 할 수 있다.</p>
+<p>실제로 개발서버에 띄워둔 mongodb에 문제가 생긴 적이 있었다. 도커 컨테이너의 형태로, 기본 포트를 이용하여, 매우 쉬운 아이디와 비밀번호로 켜 둔 것이 문제의 원인이었다. 해커로 추정되는 누군가는 브루트포스 방법으로 각 ip마다 mongodb 기본 포트인 27017으로 로그인을 막 시도한 듯 하다. 도커 컨테이너의 로그를 보면 다음과 같이 쉽게 유추할 수 있는 아이디와 비밀번호 조합으로 로그인 시도를 한 흔적을 볼 수 있다.</p>
+<pre tabindex="0"><code>2022-10-13T05:56:58.294+0000 I  ACCESS   [conn25470] SASL SCRAM-SHA-1 authentication failed for admin on admin from client 220.235.190.244:56604 ; AuthenticationFailed: SCRAM authentication failed, storedKey mismatch
+2022-10-13T05:56:58.391+0000 I  ACCESS   [conn25472] SASL SCRAM-SHA-1 authentication failed for admin on admin from client 220.235.190.244:56620 ; AuthenticationFailed: SCRAM authentication failed, storedKey mismatch
+...
+2022-10-16T00:26:08.670+0000 I  ACCESS   [conn33439] SASL SCRAM-SHA-256 authentication failed for admin on admin from client 159.203.111.244:50404 ; AuthenticationFailed: SCRAM authentication failed, storedKey mismatch
+2022-10-16T00:26:09.899+0000 I  ACCESS   [conn33441] SASL SCRAM-SHA-256 authentication failed for admin on admin from client 159.203.111.244:50430 ; AuthenticationFailed: SCRAM authentication failed, storedKey mismatch
+...
+</code></pre><p>실서버에는 네트워크 유입에 대한 접근 권한 처리를 철저하게 하고 있지만 개발서버에는 소홀했던 면이 있었다. 다행히 mongodb에 중요한 정보가 들어있지도 않았고 해당 컨테이너를 통해 서버의 다른 자원에 접근할 수도 없었지만 mongodb의 데이터를 싹 다 날리게 되는 안타까운 일이 있었다. 그래서 개발 진행 과정에도 제동이 걸렸다.</p>
+<p>따라서 개발서버에서도 방화벽 기능을 이용하여 철저한 접근 제어를 해야겠다고 마음먹었다.</p>
+<h2 id="개선한-방향">개선한 방향</h2>
+<p>우분투 운영체제로 운영되고 있는 개발서버에 방화벽을 설정하기 위한 툴로는 크게 ufw와 iptables가 있다. ufw는 알고 보면 iptables의 frontend라서 모든 규칙이 결국에는 iptables에 존재하게 되지만 간단한 사용법 때문에 같이 이용하였다.</p>
+<h3 id="ufw를-이용하여-host에서-직접-실행되는-프로그램-관리">ufw를 이용하여 host에서 직접 실행되는 프로그램 관리</h3>
+<pre tabindex="0"><code>$ ufw allow from &lt;ip&gt; to any port &lt;port number&gt;
+</code></pre><p>사무실 밖에서 접근할 필요가 없는 프로그램의 포트에 대해서는 접근 가능한 ip를 제한하도록 했다. ssh는 2FA가 적용되어 있기도 하고, 가끔 집에서 접속할 때도 있기 때문에 접근 제한을 걸지 않았지만 대시보드 용으로 사무실에서만 접속하는 몇몇 프로그램의 경우 외부에 노출될 필요가 전혀 없었다.</p>
+<pre tabindex="0"><code>$ ufw &lt;some rule&gt; comment &lt;my comment&gt;
+</code></pre><p>추가적으로 ufw를 통해 어떤 규칙을 적용할 때 comment를 추가할 수 있는 기능이 있다는 것을 확인하였다. 이미 존재하는 규칙에도 위 명령어를 치면 알아서 comment만 추가해준다. 이를 이용하여 이제부터는 모든 규칙에 무조건 주석을 달도록 했다. 매번 <code>netstat -np</code> 를 통해 어떤 포트가 어떤 목적으로 쓰이고 있는지 확인하지 않아도 되어 중복 작업을 많이 막을 수 있었다.</p>
+<pre tabindex="0"><code>$ ufw status numbered
+$ ufw delete &lt;rule number&gt;
+</code></pre><p>또한, 더 이상 사용하지 않는 모든 규칙들도 삭제하였다. 입력했던 규칙을 그대로 입력하여 삭제하는 것도 한 방법이지만, 긴 규칙을 그대로 타이핑하는 것도 비효율적이기 때문에 rule number를 사용하는 방법을 병행하였다.</p>
+<h3 id="iptables를-이용하여-docker-container로-실행되는-서비스-관리">iptables를 이용하여 docker container로 실행되는 서비스 관리</h3>
+<h4 id="ufw만으로-규칙을-설정할-수-없는-이유">ufw만으로 규칙을 설정할 수 없는 이유</h4>
+<p>docker container로 실행되고 있는 서비스들에 대해서는 조금 더 고려해야 했다. 서비스가 1234포트를 사용한다고 할 때 <code>ufw deny 1234</code> 를 한다고 해서 1234포트로의 접근이 막아지지 않는다(!) 이를 이해하려면 iptables의 규칙을 자세히 확인해보아야 한다.</p>
+<p>docker bridge network로 연결되어 있는 컨테이너의 경우 먼저 iptables에서 PREROUTING을 거친다.</p>
+<pre tabindex="0"><code>$ iptables -L -t nat -v --line-number
+Chain PREROUTING (policy ACCEPT)
+num target     prot opt in     out     source               destination
+1   DOCKER     all  --  any    any     anywhere             anywhere
+...
+Chain DOCKER (3 references)
+num target     prot opt in       out     source               destination
+1   DNAT       tcp  --  !docker0 any     anywhere             anywhere             tcp dpt:1234 to:172.17.0.3:1234
+</code></pre><p>PREROUTING 에서 docker bridge network 내부적으로 사용하는 주소로 이동시키기 때문에 INPUT chain이 아니라 FORWARD chain을 타게 된다.</p>
+<pre tabindex="0"><code>$ iptables -L FORWARD -v --line-number
+Chain FORWARD (policy DROP 0 packets, 0 bytes)
+num target                      prot opt in      out       source               destination
+1   DOCKER-USER                 all  --  any     any       anywhere             anywhere
+2   DOCKER-ISOLATION-STAGE-1    all  --  any     any       anywhere             anywhere
+3   ACCEPT                      all  --  any     docker0   anywhere             anywhere             ctstate RELATED,ESTABLISHED
+4   DOCKER                      all  --  any     docker0   anywhere             anywhere
+5   ACCEPT                      all  --  docker0 !docker0  anywhere             anywhere
+6   ACCEPT                      all  --  docker0 docker0   anywhere             anywhere
+...
+39  ufw-before-logging-forward  all  --  any     any       anywhere             anywhere
+40  ufw-before-forward          all  --  any     any       anywhere             anywhere
+41  ufw-after-forward           all  --  any     any       anywhere             anywhere
+42  ufw-after-logging-forward   all  --  any     any       anywhere             anywhere
+43  ufw-reject-forward          all  --  any     any       anywhere             anywhere
+44  ufw-track-forward           all  --  any     any       anywhere             anywhere
+</code></pre><p>여기서 DOCKER-USER(1번 줄) 안에 아직 내용이 없고, DOCKER-ISOLATION-STAGE-1(2번 줄)은 docker network 간 격리를 위한 부분이기 때문에 다음 규칙으로 넘어간다. 목적지가 docker0 이고, 이제 새로운 연결을 맺는 상황이므로 ctstate가 <code>NEW</code> 이기 때문에 4번 줄에 따라 DOCKER chain으로 넘어간다.</p>
+<pre tabindex="0"><code>$ iptables -L DOCKER -v --line-number
+num target     prot opt in       out      source               destination
+1   ACCEPT     tcp  --  !docker0 docker0  anywhere             172.17.0.3           tcp dpt:1234
+...
+</code></pre><p>1번 줄을 보면 docker0가 아닌 곳에서 docker0의 172.17.0.3:1234(PREROUTING의 to-destination과 동일)로 들어오는 tcp 패킷을 ACCEPT 하기 때문에 결론적으로 방화벽에 막히지 않았다. docker 관련된 규칙들이 전부 끝나고 나서야 39번째 줄부터 ufw-* 로 표현되는 ufw 관련 규칙들이 검사를 하고 있기 때문에 ufw 설정만으로는 막을 수 없었던 것이다.</p>
+<h4 id="docker-user-체인-이용하여-방화벽-규칙-적용하기"><code>DOCKER-USER</code> 체인 이용하여 방화벽 규칙 적용하기</h4>
+<p>그래서 docker에서 제안하는 방법은 FORWARD chain 가장 상단에 있었던 DOCKER-USER chain에서 원하는 규칙을 추가하여 방화벽 관리를 하라는 것이다. 사무실에서만 1234포트로 접근 가능하도록 만들고 싶기 때문에 다음과 같은 명령들을 수행하였다.</p>
+<pre tabindex="0"><code>$ iptables -I DOCKER-USER -p tcp --dport 1234 -j DROP
+$ iptables -I DOCKER-USER -s &lt;ip&gt; -p tcp --dport 1234 -j ACCEPT
+</code></pre><p>첫번째 명령은 1234포트로 들어오는 tcp 패킷을 DROP하라는 규칙을 DOCKER-USER chain의 가장 첫번째 줄에 대입하라는 것이고, 두번째 명령은 ip 주소를 source로 하면서 1234포트로 들어오는 tcp 패킷은 ACCEPT하라는 규칙을 마찬가지로 DOCKER-USER chain의 가장 첫번째 줄에 대입하라는 것이다. 명령을 실행하는 순서도 중요한데, 만약 DROP 규칙이 먼저 있을 경우 ACCEPT 규칙을 보기도 전에 확인이 끝나기 때문이다.</p>
+<p>이에 따라 DOCKER-USER chain은 최종적으로 다음과 같다.</p>
+<pre tabindex="0"><code>$ iptables -L DOCKER-USER -v --line-number
+Chain DOCKER-USER
+num target     prot opt in     out     source               destination
+1   ACCEPT     tcp  --  any    any     &lt;ip&gt;                 anywhere             tcp dpt:1234
+2   DROP       tcp  --  any    any     anywhere             anywhere             tcp dpt:1234
+3   RETURN     all  --  any    any     anywhere             anywhere
+</code></pre><p>이렇게 해서 docker container로 실행되는 프로그램에 대해서도 원하는 ip에서 들어오는 패킷만 받을 수 있도록 세팅하였다.</p>
+<h4 id="conntrack-모듈-이용하여-포트-포워딩-적용된-컨테이너에도-방화벽-규칙-적용하기"><code>conntrack</code> 모듈 이용하여 포트 포워딩 적용된 컨테이너에도 방화벽 규칙 적용하기</h4>
+<p>위에서는 <code>--dport</code> 옵션을 사용하여 목적지 포트를 이용한 규칙을 정의했다. 그런데 목적지 포트라고 하면 호스트 머신의 것일까 아니면 컨테이너의 것일까? nat 설정에서 보았던 <code>DOCKER</code> 체인을 보면 감이 올 것이다.</p>
+<pre tabindex="0"><code>$ iptables -L DOCKER -t nat -v --line-number
+Chain DOCKER (3 references)
+num target     prot opt in       out     source               destination
+1   DNAT       tcp  --  !docker0 any     anywhere             anywhere             tcp dpt:1234 to:172.17.0.3:1234
+</code></pre><p>PREROUTING 과정에 들어오기 전 패킷의 목적지 포트는 호스트 머신의 것이었다. 그러나 PREROUTING을 거치며 목적지 포트는 컨테이너의 것으로 변경이 되었다.</p>
+<p>그렇다면, 포트 포워딩을 <code>-p 1234:80</code> 과 같이 적용한 경우 위에서 추가한 방화벽 규칙은 제대로 적용될까? 답은 그렇지 않다. 목적지 포트는 이미 80으로 포워딩 된 상황이지만 <code>DOCKER-USER</code> 체인에서는 1234 포트를 제한하고 있기 때문이다.</p>
+<p>그렇다고 80 포트를 <code>DOCKER-USER</code> 체인에서 막을 수는 없다. 다른 컨테이너들이 사용할 수도 있는 일반적인 포트를 미리 막아 놓을 수는 없다. 컨테이너의 ip 주소를 같이 이용하는 것도 컨테이너가 꺼지고 켜지는 상황에 따라 매번 방화벽을 수정하는 것이 말이 되지 않으니만큼 불가능한 방법이다. 규칙에서 사용할, 사용해야 할 정보는 호스트 머신에 처음으로 들어온 패킷의 source ip address, destination port 이다.</p>
+<p>PREROUTING을 거쳐 온 패킷에 대해 destination port 정보는 유실되는데 어떻게 해야 할까? 이 때 사용할 수 있는 것이 <code>conntrack</code> 모듈이다. 사용은 iptables 명령어를 입력할 때 <code>-m conntrack</code> 옵션을 추가하기만 하면 된다. <code>conntrack</code> 는 iptables를 개발한 netfilter의 유틸리티 프로그램으로 패킷을 추적하고 관리할 때 사용할 수 있는 모듈이기도 하다. 모듈을 추가하고 나면 각각이 source ip address, destination port를 의미하는 <code>ctorigsrc</code>, <code>ctorigdstport</code> 옵션을 규칙에 추가할 수 있다. 최종적으로 입력한 명령줄과 그 결과는 다음과 같다.</p>
+<pre tabindex="0"><code>$ iptables -I DOCKER-USER -m conntrack --ctorigdstport 1234 -p tcp -j DROP
+$ iptables -I DOCKER-USER -m conntrack --ctorigsrc &lt;ip&gt; --ctorigdstport 1234 -p tcp -j ACCEPT
+$ iptables -L DOCKER-USER -v --line-number
+Chain DOCKER-USER (1 references)
+num target     prot opt in     out     source               destination
+1   ACCEPT     tcp  --  *      *       anywhere             anywhere            ctorigsrc &lt;ip&gt; ctorigdstport 1234
+2   DROP       tcp  --  *      *       anywhere             anywhere            ctorigdstport 1234
+3   RETURN     all  --  *      *       anywhere             anywhere
+</code></pre><p>source가 anywhere로 바뀐 대신 <code>ctorigsrc</code> 내용이 마지막에 추가되었고, <code>dpt</code> 대신 <code>ctorigdstport</code> 를 확인할 수 있다. 이렇게 해서 서로 다른 포트로 포트 포워딩 적용된 컨테이너에도 방화벽 규칙을 적용할 수 있었다. 또한, 같은 포트로 포트 포워딩이 걸려 있다고 하더라도 일관성을 위해 <code>conntrack</code> 을 이용한 규칙을 사용하는 것이 좋다고 판단하여 전부 변경하였다.</p>
+<h4 id="conntrack-advanced"><code>conntrack</code> advanced</h4>
+<p><code>conntrack</code> 모듈을 사용해보며 여러 테스트를 하던 중 <code>--ctorigsrc</code> 옵션 대신 그냥 원래 사용하던 <code>-s</code> 옵션을 사용해도 문제가 없지 않을까라는 생각이 들었다. destination은 포워딩을 통해 변경되어도 source는 그대로 유지되기 때문이다.</p>
+<p>언뜻 보기에는(?) 같아보이는 규칙을 입력할 수 있는 명령줄은 다음과 같다.</p>
+<pre tabindex="0"><code>$ iptables -I DOCKER-USER -s &lt;ip&gt; -m conntrack --ctorigdstport 1234 -p tcp -j ACCEPT
+</code></pre><p>그런데 결론적으로 위 방법은 작동하지 않았다. connection timeout이 발생하는 것을 확인할 수 있었다. 그래서 watch 명령어를 이용하여 어떤 룰에 걸리는지 확인해 보았다. <code>-d</code> 옵션과 함께 사용하여 변화가 일어나는 부분을 하이라이트 하도록 했다.</p>
+<pre tabindex="0"><code>$ watch -d iptables -L DOCKER-USER -v --line-number
+</code></pre><p><img src="https://velog.velcdn.com/images/hadooboo/post/90070337-c830-4f26-8502-3b3ede841862/image.gif"
+	
+	
+	
+	loading="lazy"
+	
+	
+></p>
+<p>어떤 패킷은 ACCEPT 되고 있지만, 어떤 패킷이 계속해서 DROP 되고 있는 상황임을 확인하였다.</p>
+<p>문제 상황을 이해하려면 <code>conntrack</code> 모듈의 <code>ORIGINAL</code>, <code>REPLY</code> 타입을 알아야 한다. 그 이전에 패킷 개념만 생각해도 된다. 패킷은 클라이언트와 서버 간에 데이터를 전달하기 위한 데이터 조각이다. 그렇다면 클라이언트에서 서버로 오는 방향의 패킷 뿐만 아니라 서버에서 클라이언트로 가는 패킷도 존재한다는 것은 자명하다. 이 방향을 나타내는 것이 <code>ORIGINAL</code>(클라이언트 -&gt; 서버), <code>REPLY</code>(서버 -&gt; 클라이언트) 이다.</p>
+<p>예를 들어, 위 상황에서 <code>ORIGINAL</code>, <code>REPLY</code> 패킷 정보는 각각 다음과 같다.</p>
+<div class="table-wrapper"><table>
+<thead>
+<tr>
+<th>direction</th>
+<th>src ip address</th>
+<th>src port</th>
+<th>dst ip address</th>
+<th>dst port</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>ORIGINAL</code></td>
+<td>클라이언트 ip</td>
+<td>random port</td>
+<td>서버 ip</td>
+<td>1234</td>
+</tr>
+<tr>
+<td><code>REPLY</code></td>
+<td>도커 컨테이너 ip</td>
+<td>80</td>
+<td>클라이언트 ip</td>
+<td>random port</td>
+</tr>
+</tbody>
+</table></div>
+<p>iptables 규칙에서 <code>ORIGINAL</code> 은 확실히 ACCEPT 되고 있는 상황이므로 <code>REPLY</code> 패킷이 DROP 되어 연결이 맺어지지 않는 것이라는 것을 알아내었다.</p>
+<p>그럼 왜 <code>REPLY</code> 패킷도 forwarding 규칙에 걸리는 것일까? 지금까지 PREROUTING 규칙을 보며 확인한 것은 <code>DNAT</code>(destination nat)의 일종이었다. 그런데 반대로 POSTROUTING 규칙도 존재한다. 도커 네트워크를 거치는 패킷들은 <code>SNAT</code>(source nat)의 인터페이스 버전이라고 할 수 있는 <code>MASQUERADE</code> 가 적용된다. 따라서 forwarding 규칙에 의해 검사를 받게 되는 것이다.</p>
+<p>이 때, src ip address는 도커 컨테이너의 것이 되며 <code>-s</code> 옵션으로 클라이언트 ip를 직접 지정했을 경우 도커 컨테이너의 ip는 어디서도 ACCEPT 하고 있지 않기 때문에 DROP이 발생한다.</p>
+<p><code>conntrack</code> 은 <code>ORIGINAL</code>, <code>REPLY</code> 방향의 패킷들을 하나의 connection 개념으로 관리한다. 따라서 <code>--ctorigsrc</code> 옵션을 사용하는 것으로 해당 연결에서 양방향으로 전달되는 패킷 모두가 ACCEPT 규칙을 타게 할 수 있었다.</p>
+<h2 id="회고">회고</h2>
+<p>방화벽은 프로그램 내부의 인증 시스템 앞에서 1차적으로 필터링할 수 있다는 점에서 필수적이면서 효과적인 기능이다. source ip 주소를 바꾸는 식으로 방화벽을 피해갈 수 있기 때문에 프로그램 내부적으로도 철저한 인증이 필요하기는 하지만 사무실의 source ip를 누구나 알 수 없기 때문에 대부분의 공격을 차단할 수 있을 것이다. 개발 서버에서도 실전처럼 잘 운영하는 것이 실서버에서의 휴먼 에러를 줄일 수 있는 가장 큰 연습이 될 것이라고 생각한다.</p>
+
+</section>
+
+
+    <footer class="article-footer">
+    
+
+    </footer>
+
+
+    
+</article>
+
+    
+
+    
+
+     
+    
+        
+    <script src="https://utteranc.es/client.js" 
+        repo="hadooboo/hadooboo.github.io"
+        issue-term="pathname"
+        
+        crossorigin="anonymous"
+        async
+        >
+</script>
+
+<style>
+    .utterances {
+        max-width: unset;
+    }
+</style>
+
+<script>
+    let utterancesLoaded = false;
+
+    function setUtterancesTheme(theme) {
+        let utterances = document.querySelector('.utterances iframe');
+        if (utterances) {
+            utterances.contentWindow.postMessage(
+                {
+                    type: 'set-theme',
+                    theme: `github-${theme}`
+                },
+                'https://utteranc.es'
+            );
+        }
+    }
+
+    addEventListener('message', event => {
+        if (event.origin !== 'https://utteranc.es') return;
+
+        
+        utterancesLoaded = true;
+        setUtterancesTheme(document.documentElement.dataset.scheme)
+    });
+
+    window.addEventListener('onColorSchemeChange', (e) => {
+        if (!utterancesLoaded) return;
+        setUtterancesTheme(e.detail)
+    })
+</script>
+
+
+    
+
+    <footer class="site-footer">
+    <section class="copyright">
+        &copy; 
+        
+        2023 Hadooboo Dev Log
+    </section>
+    
+    <section class="powerby">
+        Built with <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> <br />
+        Theme <b><a href="https://github.com/CaiJimmy/hugo-theme-stack" target="_blank" rel="noopener" data-version="3.17.0">Stack</a></b> designed by <a href="https://jimmycai.com" target="_blank" rel="noopener">Jimmy</a>
+    </section>
+</footer>
+
+
+    
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    
+    <div class="pswp__bg"></div>
+
+    
+    <div class="pswp__scroll-wrap">
+
+        
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                
+                
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"integrity="sha256-ePwmChbbvXbsO02lbM3HoHbSHTHFAeChekF1xKJdleo="crossorigin="anonymous"
+                defer
+                >
+            </script><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"integrity="sha256-UKkzOn/w1mBxRmLLGrSeyB4e1xbrp4xylgAWb3M42pU="crossorigin="anonymous"
+                defer
+                >
+            </script><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.min.css"crossorigin="anonymous"
+            ><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.css"crossorigin="anonymous"
+            >
+
+            </main>
+        </div>
+        <script 
+                src="https://cdn.jsdelivr.net/npm/node-vibrant@3.1.6/dist/vibrant.min.js"integrity="sha256-awcR2jno4kI5X0zL8ex0vi2z&#43;KMkF24hUW8WePSA9HM="crossorigin="anonymous"
+                
+                >
+            </script><script type="text/javascript" src="/ts/main.js" defer></script>
+<script>
+    (function () {
+        const customFont = document.createElement('link');
+        customFont.href = "https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap";
+
+        customFont.type = "text/css";
+        customFont.rel = "stylesheet";
+
+        document.head.appendChild(customFont);
+    }());
+</script>
+
+    </body>
+</html>

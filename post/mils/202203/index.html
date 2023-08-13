@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="ko-kr" dir="ltr">
+    <head><meta charset='utf-8'>
+<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content='이번 달 주 업무는 녹음 기능을 메인으로 하는 안드로이드 네이티브 앱을 만드는 작업이었다. 기존까지는 프로토타입 앱 클라이언트를 만들어야 할 때 flutter를 사'>
+<title>202203 | 안드로이드 SDK</title>
+
+<link rel='canonical' href='https://hadooboo.github.io/post/mils/202203/'>
+
+<link rel="stylesheet" href="/scss/style.min.fd84e57133f7e873d7b16bba3f165639533befb316512be183800fd65952f8fe.css"><meta property='og:title' content='202203 | 안드로이드 SDK'>
+<meta property='og:description' content='이번 달 주 업무는 녹음 기능을 메인으로 하는 안드로이드 네이티브 앱을 만드는 작업이었다. 기존까지는 프로토타입 앱 클라이언트를 만들어야 할 때 flutter를 사'>
+<meta property='og:url' content='https://hadooboo.github.io/post/mils/202203/'>
+<meta property='og:site_name' content='Hadooboo Dev Log'>
+<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:published_time' content='2022-03-31T00:00:00&#43;00:00'/><meta property='article:modified_time' content='2022-03-31T00:00:00&#43;00:00'/>
+<meta name="twitter:title" content="202203 | 안드로이드 SDK">
+<meta name="twitter:description" content="이번 달 주 업무는 녹음 기능을 메인으로 하는 안드로이드 네이티브 앱을 만드는 작업이었다. 기존까지는 프로토타입 앱 클라이언트를 만들어야 할 때 flutter를 사">
+    </head>
+    <body class="
+    article-page
+    ">
+    <script>
+        (function() {
+            const colorSchemeKey = 'StackColorScheme';
+            if(!localStorage.getItem(colorSchemeKey)){
+                localStorage.setItem(colorSchemeKey, "auto");
+            }
+        })();
+    </script><script>
+    (function() {
+        const colorSchemeKey = 'StackColorScheme';
+        const colorSchemeItem = localStorage.getItem(colorSchemeKey);
+        const supportDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches === true;
+
+        if (colorSchemeItem == 'dark' || colorSchemeItem === 'auto' && supportDarkMode) {
+            
+
+            document.documentElement.dataset.scheme = 'dark';
+        } else {
+            document.documentElement.dataset.scheme = 'light';
+        }
+    })();
+</script>
+<div class="container main-container flex on-phone--column extended"><aside class="sidebar left-sidebar sticky ">
+    <button class="hamburger hamburger--spin" type="button" id="toggle-menu" aria-label="Toggle Menu">
+        <span class="hamburger-box">
+            <span class="hamburger-inner"></span>
+        </span>
+    </button>
+
+    <header>
+        
+            
+            <figure class="site-avatar">
+                <a href="/">
+                
+                    
+                    
+                    
+                        
+                        <img src="/img/avatar_huda2458f72ce188392d75c5d51cd8e24e_373_300x0_resize_box_3.png" width="300"
+                            height="300" class="site-logo" loading="lazy" alt="Avatar">
+                    
+                
+                </a>
+                
+            </figure>
+            
+        
+        
+        <div class="site-meta">
+            <h1 class="site-name"><a href="/">Hadooboo Dev Log</a></h1>
+            <h2 class="site-description"></h2>
+        </div>
+    </header><ol class="menu" id="main-menu">
+        
+        
+
+        <div class="menu-bottom-section">
+            
+            
+                <li id="dark-mode-toggle">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="8" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-right" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="16" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                    <span>Dark Mode</span>
+                </li>
+            
+        </div>
+    </ol>
+</aside>
+
+    
+
+            <main class="main full-width">
+    <article class="main-article">
+    <header class="article-header">
+
+    <div class="article-details">
+    
+    <header class="article-category">
+        
+            <a href="/categories/mil/" style="background-color: #2a9d8f; color: #fff;">
+                MIL
+            </a>
+        
+    </header>
+    
+
+    <div class="article-title-wrapper">
+        <h2 class="article-title">
+            <a href="/post/mils/202203/">202203 | 안드로이드 SDK</a>
+        </h2>
+    
+        
+    </div>
+
+    
+    
+    
+    
+    <footer class="article-time">
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-calendar-time" width="56" height="56" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M11.795 21h-6.795a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v4" />
+  <circle cx="18" cy="18" r="4" />
+  <path d="M15 3v4" />
+  <path d="M7 3v4" />
+  <path d="M3 11h16" />
+  <path d="M18 16.496v1.504l1 1" />
+</svg>
+                <time class="article-time--published">Mar 31, 2022</time>
+            </div>
+        
+
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <polyline points="12 7 12 12 15 15" />
+</svg>
+
+
+
+                <time class="article-time--reading">
+                    3 minute read
+                </time>
+            </div>
+        
+    </footer>
+    
+
+    
+</div>
+
+</header>
+
+    <section class="article-content">
+    
+    
+    <p>이번 달 주 업무는 녹음 기능을 메인으로 하는 안드로이드 네이티브 앱을 만드는 작업이었다. 기존까지는 프로토타입 앱 클라이언트를 만들어야 할 때 flutter를 사용하여 안드로이드와 iOS 멀티플랫폼 빌드가 가능하도록 했었다. 그러나 녹음과 같이 하드웨어와 밀접하게 연관된 기능을 갖는 경우에는 flutter의 한계가 명확했고 결국에는 안드로이드 SDK를 직접 익혀서 할 수밖에 없었다.</p>
+<p>하드웨어와 연관된 작업이다 보니 테스트 과정이 많이 힘들었다. 기능이 동작하는 것을 확인하려면 에뮬레이터에서 해 보는 것이 불가능하고 실제 앱을 테스트 기기에서 빌드해서 동작하는지 확인해보아야 했다. 테스트를 위해 매번 빌드를 기다려야 하니 답답할 때가 종종 있었다. 또 다른 어려웠던 점은 프로세스가 강제로 종료되고 나서 다시 앱을 시작해도 정상 작동하는지 확인할 때였는데, 프로세스가 종료되면 안드로이드 스튜디오와의 연결이 끊어져 더 이상 로그가 찍히지 않아 문제를 분석하는 데 많은 시간이 들었다. 브라우저라는 샌드박스 위에서의 웹 클라이언트를 만드는 것과는 다르게 고려해야 할 요소가 더 많다고 느꼈다.</p>
+<p>안드로이드 SDK가 지원하는 경우 안에서만 앱을 만들어야 한다는 것도 큰 어려움이었다. 경험은 없지만 제약은 iOS가 더 심하다고는 하긴 하는데 안드로이드의 경험만으로도 충분히 느낄 수 있었다. 예를 들어, 녹음이 다른 오디오 세션 사용 앱을 사용할 때에도 진행이 가능한지 알아봤는데 어떤 옵션에서는 불가능했고 어떤 옵션에서는 소리 없이 무음으로만 녹음이 진행되었다. 주어진 옵션 안에서만 기능 구현이 가능하다는 한계를 느낄 수 있었다.</p>
+<p>안드로이드 SDK 버전에 따른 제약도 상당히 강했다. 웹 클라이언트는 결국에는 정적인 파일로 빌드하기 때문에 vue 프레임워크 버전에 대해 고민할 필요가 없었지만 안드로이드 SDK는 버전 하나하나에 따라서도 내용이 많이 바뀌어서 타겟 버전, 미니멈 버전 등에 따라서 구현할 수 있는 기능이 매번 달라졌다. 안드로이드 SDK 버전에 따른 기기 시장 점유율도 고려해서 타겟 버전, 미니멈 버전을 정해야 하는 비즈니스 문제와 겹쳐 복잡했다.</p>
+<p>마지막으로 기종 문제 또한 생각해야 했다. 안드로이드는 iOS와 다르게 많은 기기 위에서 사용되기 때문에 갤럭시 기종에서는 잘 돌아간다고 해서 화웨이 기종에서 잘 돌아갈 것이라는 것을 보장할 수 없었다. 특히나 하드웨어 영역과 겹쳐 있기 때문에 더 신경을 써야 했다. 결국에는 팀에 갤럭시 기기밖에 없어 다른 기종에 대한 테스트는 베타 테스트 단계로 넘겨버리긴 했지만 말이다.</p>
+<p>안드로이드 앱을 개발하면서 지금까지 겪지 못했던 다양한 상황을 마주하며 하나하나 허들을 넘어가는 듯한 느낌을 받았다. 힘든 면도 분명 있었지만 재미도 있었다. 내가 구현한 기능이 내 손 안에서 동작한다는 것은 또 새로운 경험이었다. 그리고 MVVM 모델은 결국에는 MVC와 다를 것도 없어 보였다. 단지 controller의 output이 데이터가 아니라 small view snippet으로 바뀐 정도라고 느꼈다. 점차 컴퓨터보다는 모바일에 익숙해지는 세대가 찾아온다는데 이런 앱 개발 경험도 해볼 수 있어서 되돌아보면 또 알찬 한달이었다.</p>
+
+</section>
+
+
+    <footer class="article-footer">
+    
+
+    </footer>
+
+
+    
+</article>
+
+    
+
+    
+
+     
+    
+        
+    <script src="https://utteranc.es/client.js" 
+        repo="hadooboo/hadooboo.github.io"
+        issue-term="pathname"
+        
+        crossorigin="anonymous"
+        async
+        >
+</script>
+
+<style>
+    .utterances {
+        max-width: unset;
+    }
+</style>
+
+<script>
+    let utterancesLoaded = false;
+
+    function setUtterancesTheme(theme) {
+        let utterances = document.querySelector('.utterances iframe');
+        if (utterances) {
+            utterances.contentWindow.postMessage(
+                {
+                    type: 'set-theme',
+                    theme: `github-${theme}`
+                },
+                'https://utteranc.es'
+            );
+        }
+    }
+
+    addEventListener('message', event => {
+        if (event.origin !== 'https://utteranc.es') return;
+
+        
+        utterancesLoaded = true;
+        setUtterancesTheme(document.documentElement.dataset.scheme)
+    });
+
+    window.addEventListener('onColorSchemeChange', (e) => {
+        if (!utterancesLoaded) return;
+        setUtterancesTheme(e.detail)
+    })
+</script>
+
+
+    
+
+    <footer class="site-footer">
+    <section class="copyright">
+        &copy; 
+        
+        2023 Hadooboo Dev Log
+    </section>
+    
+    <section class="powerby">
+        Built with <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> <br />
+        Theme <b><a href="https://github.com/CaiJimmy/hugo-theme-stack" target="_blank" rel="noopener" data-version="3.17.0">Stack</a></b> designed by <a href="https://jimmycai.com" target="_blank" rel="noopener">Jimmy</a>
+    </section>
+</footer>
+
+
+    
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    
+    <div class="pswp__bg"></div>
+
+    
+    <div class="pswp__scroll-wrap">
+
+        
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                
+                
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"integrity="sha256-ePwmChbbvXbsO02lbM3HoHbSHTHFAeChekF1xKJdleo="crossorigin="anonymous"
+                defer
+                >
+            </script><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"integrity="sha256-UKkzOn/w1mBxRmLLGrSeyB4e1xbrp4xylgAWb3M42pU="crossorigin="anonymous"
+                defer
+                >
+            </script><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.min.css"crossorigin="anonymous"
+            ><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.css"crossorigin="anonymous"
+            >
+
+            </main>
+        </div>
+        <script 
+                src="https://cdn.jsdelivr.net/npm/node-vibrant@3.1.6/dist/vibrant.min.js"integrity="sha256-awcR2jno4kI5X0zL8ex0vi2z&#43;KMkF24hUW8WePSA9HM="crossorigin="anonymous"
+                
+                >
+            </script><script type="text/javascript" src="/ts/main.js" defer></script>
+<script>
+    (function () {
+        const customFont = document.createElement('link');
+        customFont.href = "https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap";
+
+        customFont.type = "text/css";
+        customFont.rel = "stylesheet";
+
+        document.head.appendChild(customFont);
+    }());
+</script>
+
+    </body>
+</html>
