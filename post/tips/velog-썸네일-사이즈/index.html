@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+<html lang="ko-kr" dir="ltr">
+    <head><meta charset='utf-8'>
+<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content='Velog 썸네일 사이즈를 알아본 이유 이번에 새로운 글을 작성하면서 지금까지 작성한 글을 포함하여 모두 썸네일을 만들었다. 평소에 어떤 블로그에 들어가서 글을 읽을 때 썸네'>
+<title>[TIP] Velog 썸네일 사이즈</title>
+
+<link rel='canonical' href='https://hadooboo.github.io/post/tips/velog-%EC%8D%B8%EB%84%A4%EC%9D%BC-%EC%82%AC%EC%9D%B4%EC%A6%88/'>
+
+<link rel="stylesheet" href="/scss/style.min.fd84e57133f7e873d7b16bba3f165639533befb316512be183800fd65952f8fe.css"><meta property='og:title' content='[TIP] Velog 썸네일 사이즈'>
+<meta property='og:description' content='Velog 썸네일 사이즈를 알아본 이유 이번에 새로운 글을 작성하면서 지금까지 작성한 글을 포함하여 모두 썸네일을 만들었다. 평소에 어떤 블로그에 들어가서 글을 읽을 때 썸네'>
+<meta property='og:url' content='https://hadooboo.github.io/post/tips/velog-%EC%8D%B8%EB%84%A4%EC%9D%BC-%EC%82%AC%EC%9D%B4%EC%A6%88/'>
+<meta property='og:site_name' content='Hadooboo Dev Log'>
+<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:tag' content='tip' /><meta property='article:tag' content='velog' /><meta property='article:published_time' content='2023-07-25T00:00:00&#43;00:00'/><meta property='article:modified_time' content='2023-07-25T00:00:00&#43;00:00'/>
+<meta name="twitter:title" content="[TIP] Velog 썸네일 사이즈">
+<meta name="twitter:description" content="Velog 썸네일 사이즈를 알아본 이유 이번에 새로운 글을 작성하면서 지금까지 작성한 글을 포함하여 모두 썸네일을 만들었다. 평소에 어떤 블로그에 들어가서 글을 읽을 때 썸네">
+    </head>
+    <body class="
+    article-page
+    ">
+    <script>
+        (function() {
+            const colorSchemeKey = 'StackColorScheme';
+            if(!localStorage.getItem(colorSchemeKey)){
+                localStorage.setItem(colorSchemeKey, "auto");
+            }
+        })();
+    </script><script>
+    (function() {
+        const colorSchemeKey = 'StackColorScheme';
+        const colorSchemeItem = localStorage.getItem(colorSchemeKey);
+        const supportDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches === true;
+
+        if (colorSchemeItem == 'dark' || colorSchemeItem === 'auto' && supportDarkMode) {
+            
+
+            document.documentElement.dataset.scheme = 'dark';
+        } else {
+            document.documentElement.dataset.scheme = 'light';
+        }
+    })();
+</script>
+<div class="container main-container flex on-phone--column extended"><aside class="sidebar left-sidebar sticky ">
+    <button class="hamburger hamburger--spin" type="button" id="toggle-menu" aria-label="Toggle Menu">
+        <span class="hamburger-box">
+            <span class="hamburger-inner"></span>
+        </span>
+    </button>
+
+    <header>
+        
+            
+            <figure class="site-avatar">
+                <a href="/">
+                
+                    
+                    
+                    
+                        
+                        <img src="/img/avatar_huda2458f72ce188392d75c5d51cd8e24e_373_300x0_resize_box_3.png" width="300"
+                            height="300" class="site-logo" loading="lazy" alt="Avatar">
+                    
+                
+                </a>
+                
+            </figure>
+            
+        
+        
+        <div class="site-meta">
+            <h1 class="site-name"><a href="/">Hadooboo Dev Log</a></h1>
+            <h2 class="site-description"></h2>
+        </div>
+    </header><ol class="menu" id="main-menu">
+        
+        
+
+        <div class="menu-bottom-section">
+            
+            
+                <li id="dark-mode-toggle">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="8" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-right" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="16" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                    <span>Dark Mode</span>
+                </li>
+            
+        </div>
+    </ol>
+</aside>
+
+    <aside class="sidebar right-sidebar sticky">
+        
+            
+                
+    <section class="widget archives">
+        <div class="widget-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-hash" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <line x1="5" y1="9" x2="19" y2="9" />
+  <line x1="5" y1="15" x2="19" y2="15" />
+  <line x1="11" y1="4" x2="7" y2="20" />
+  <line x1="17" y1="4" x2="13" y2="20" />
+</svg>
+
+
+
+        </div>
+        <h2 class="widget-title section-title">Table of contents</h2>
+        
+        <div class="widget--toc">
+            <nav id="TableOfContents">
+  <ul>
+    <li><a href="#velog-썸네일-사이즈를-알아본-이유">Velog 썸네일 사이즈를 알아본 이유</a></li>
+    <li><a href="#썸네일-사이즈를-찾은-방법">썸네일 사이즈를 찾은 방법</a></li>
+    <li><a href="#회고">회고</a></li>
+  </ul>
+</nav>
+        </div>
+    </section>
+
+            
+        
+    </aside>
+
+
+            <main class="main full-width">
+    <article class="main-article">
+    <header class="article-header">
+
+    <div class="article-details">
+    
+    <header class="article-category">
+        
+            <a href="/categories/tip/" style="background-color: #64a9f8; color: #fff;">
+                TIP
+            </a>
+        
+    </header>
+    
+
+    <div class="article-title-wrapper">
+        <h2 class="article-title">
+            <a href="/post/tips/velog-%EC%8D%B8%EB%84%A4%EC%9D%BC-%EC%82%AC%EC%9D%B4%EC%A6%88/">[TIP] Velog 썸네일 사이즈</a>
+        </h2>
+    
+        
+    </div>
+
+    
+    
+    
+    
+    <footer class="article-time">
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-calendar-time" width="56" height="56" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M11.795 21h-6.795a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v4" />
+  <circle cx="18" cy="18" r="4" />
+  <path d="M15 3v4" />
+  <path d="M7 3v4" />
+  <path d="M3 11h16" />
+  <path d="M18 16.496v1.504l1 1" />
+</svg>
+                <time class="article-time--published">Jul 25, 2023</time>
+            </div>
+        
+
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <polyline points="12 7 12 12 15 15" />
+</svg>
+
+
+
+                <time class="article-time--reading">
+                    2 minute read
+                </time>
+            </div>
+        
+    </footer>
+    
+
+    
+</div>
+
+</header>
+
+    <section class="article-content">
+    
+    
+    <h2 id="velog-썸네일-사이즈를-알아본-이유">Velog 썸네일 사이즈를 알아본 이유</h2>
+<p>이번에 새로운 글을 작성하면서 지금까지 작성한 글을 포함하여 모두 썸네일을 만들었다. 평소에 어떤 블로그에 들어가서 글을 읽을 때 썸네일이 첫인상의 역할을 하기 때문에 없으면 정성이 없는 것처럼 느겨지고 내용으로 손이 잘 안가는 효과도 있었다. 그래서 이번 글부터는 썸네일을 추가하고자 했다.</p>
+<p>그러나 검색을 해보아도 적절한 Velog 썸네일 사이즈를 찾을 수 없었다.</p>
+<h2 id="썸네일-사이즈를-찾은-방법">썸네일 사이즈를 찾은 방법</h2>
+<p><img src="/post/tips/velog-%EC%8D%B8%EB%84%A4%EC%9D%BC-%EC%82%AC%EC%9D%B4%EC%A6%88/82d788ba-5295-48f3-9444-8bcf56b76860.png"
+	width="2560"
+	height="2398"
+	srcset="/post/tips/velog-%EC%8D%B8%EB%84%A4%EC%9D%BC-%EC%82%AC%EC%9D%B4%EC%A6%88/82d788ba-5295-48f3-9444-8bcf56b76860_hubf50dd79d2039a68577ef8ab8061745b_2434247_480x0_resize_box_3.png 480w, /post/tips/velog-%EC%8D%B8%EB%84%A4%EC%9D%BC-%EC%82%AC%EC%9D%B4%EC%A6%88/82d788ba-5295-48f3-9444-8bcf56b76860_hubf50dd79d2039a68577ef8ab8061745b_2434247_1024x0_resize_box_3.png 1024w"
+	loading="lazy"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="106"
+		data-flex-basis="256px"
+	
+></p>
+<p>우리는 <strong>개발자 도구</strong> 라는 툴이 있다. 컴퓨터공학을 모르던 시절에는 F12키를 누르면 화들짝 놀라 꺼버렸지만, 이제는 종종 웹사이트가 어떤 구조로 되어 있는지, 어떤 네트워크를 주고받고 어떤 캐시가 로컬에 저장되는지 궁금할 때 개발자 도구로 들어와 탐색해보곤 한다.</p>
+<p>파이어폭스 기준, 개발자 도구 상단 가장 좌측에 존재하는 마우스 포인터 모양의 버튼을 누르면 화면에서 html 요소를 선택할 수 있고, 요소를 선택하면 html 트리에서 그 요소에 해당하는 위치로 이동해서 강조해준다.</p>
+<p>썸네일이 올라갈 위치를 선택했더니 img 태그가 나왔고, 오른쪽을 보면 레이아웃을 확인할 수 있었다. Velog에서 썸네일이 표시될 영역의 크기는 <strong>768 X 402.083</strong> 인 것이다.</p>
+<p>다시 말하면, <strong>너비가 높이의 1.91배 정도 되어야 한다.</strong></p>
+<blockquote>
+<p>예를 들어, 나는 width를 1080px로 이미지를 만들고 있었기 때문에 height를 <code>1080px / 1.91 ~= 565px</code> 로 조정하였다.</p>
+</blockquote>
+<p>이미지를 만들 때 해상도에 상관없이 해당 비율로 이미지를 만들면 영역에 꽉 차게 보여줄 수 있다.</p>
+<p><img src="/post/tips/velog-%EC%8D%B8%EB%84%A4%EC%9D%BC-%EC%82%AC%EC%9D%B4%EC%A6%88/f66a2c03-4e22-45bd-aa75-43e822acc0ea.png"
+	width="1652"
+	height="1050"
+	srcset="/post/tips/velog-%EC%8D%B8%EB%84%A4%EC%9D%BC-%EC%82%AC%EC%9D%B4%EC%A6%88/f66a2c03-4e22-45bd-aa75-43e822acc0ea_huc4cb0d850de28ad0c5e896410b44f4ee_686165_480x0_resize_box_3.png 480w, /post/tips/velog-%EC%8D%B8%EB%84%A4%EC%9D%BC-%EC%82%AC%EC%9D%B4%EC%A6%88/f66a2c03-4e22-45bd-aa75-43e822acc0ea_huc4cb0d850de28ad0c5e896410b44f4ee_686165_1024x0_resize_box_3.png 1024w"
+	loading="lazy"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="157"
+		data-flex-basis="377px"
+	
+></p>
+<p>그러나 이상하게 포스트 미리보기에서는 좌우가 약간 짤려 보인다. 나는 그냥 무시하고 진행하였다.</p>
+<p>지금은 비록 썸네일은 이미 만들어서 올린 상황이지만, 위 글을 쓰기 전까지만 해도 썸네일이 없었다. 썸네일이 없어서 img 태그 영역을 확인할 수 없는 경우 임의의 이미지 하나만 올려서 img 태그 영역의 크기를 파악한 후 다시 이미지를 올려서 수정하면 된다.</p>
+<h2 id="회고">회고</h2>
+<p>앞으로 간단한 내용이더라도 내가 구글링해서 찾지 못한 내용을 블로그 글로 올려보고자 한다. 내가 성장한 것은 이런 글들 하나하나 덕분이었기 때문이다.</p>
+
+</section>
+
+
+    <footer class="article-footer">
+    
+    <section class="article-tags">
+        
+            <a href="/tags/tip/">tip</a>
+        
+            <a href="/tags/velog/">velog</a>
+        
+    </section>
+
+
+    </footer>
+
+
+    
+</article>
+
+    
+
+    
+
+     
+    
+        
+    <script src="https://utteranc.es/client.js" 
+        repo="hadooboo/hadooboo.github.io"
+        issue-term="pathname"
+        
+        crossorigin="anonymous"
+        async
+        >
+</script>
+
+<style>
+    .utterances {
+        max-width: unset;
+    }
+</style>
+
+<script>
+    let utterancesLoaded = false;
+
+    function setUtterancesTheme(theme) {
+        let utterances = document.querySelector('.utterances iframe');
+        if (utterances) {
+            utterances.contentWindow.postMessage(
+                {
+                    type: 'set-theme',
+                    theme: `github-${theme}`
+                },
+                'https://utteranc.es'
+            );
+        }
+    }
+
+    addEventListener('message', event => {
+        if (event.origin !== 'https://utteranc.es') return;
+
+        
+        utterancesLoaded = true;
+        setUtterancesTheme(document.documentElement.dataset.scheme)
+    });
+
+    window.addEventListener('onColorSchemeChange', (e) => {
+        if (!utterancesLoaded) return;
+        setUtterancesTheme(e.detail)
+    })
+</script>
+
+
+    
+
+    <footer class="site-footer">
+    <section class="copyright">
+        &copy; 
+        
+        2023 Hadooboo Dev Log
+    </section>
+    
+    <section class="powerby">
+        Built with <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> <br />
+        Theme <b><a href="https://github.com/CaiJimmy/hugo-theme-stack" target="_blank" rel="noopener" data-version="3.17.0">Stack</a></b> designed by <a href="https://jimmycai.com" target="_blank" rel="noopener">Jimmy</a>
+    </section>
+</footer>
+
+
+    
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    
+    <div class="pswp__bg"></div>
+
+    
+    <div class="pswp__scroll-wrap">
+
+        
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                
+                
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"integrity="sha256-ePwmChbbvXbsO02lbM3HoHbSHTHFAeChekF1xKJdleo="crossorigin="anonymous"
+                defer
+                >
+            </script><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"integrity="sha256-UKkzOn/w1mBxRmLLGrSeyB4e1xbrp4xylgAWb3M42pU="crossorigin="anonymous"
+                defer
+                >
+            </script><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.min.css"crossorigin="anonymous"
+            ><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.css"crossorigin="anonymous"
+            >
+
+            </main>
+        </div>
+        <script 
+                src="https://cdn.jsdelivr.net/npm/node-vibrant@3.1.6/dist/vibrant.min.js"integrity="sha256-awcR2jno4kI5X0zL8ex0vi2z&#43;KMkF24hUW8WePSA9HM="crossorigin="anonymous"
+                
+                >
+            </script><script type="text/javascript" src="/ts/main.js" defer></script>
+<script>
+    (function () {
+        const customFont = document.createElement('link');
+        customFont.href = "https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap";
+
+        customFont.type = "text/css";
+        customFont.rel = "stylesheet";
+
+        document.head.appendChild(customFont);
+    }());
+</script>
+
+    </body>
+</html>

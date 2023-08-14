@@ -1,0 +1,438 @@
+<!DOCTYPE html>
+<html lang="ko-kr" dir="ltr">
+    <head><meta charset='utf-8'>
+<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content='읽게 된 계기 이제는 정말 머신러닝이라는 분야에 대해 알아가야 할 때가 온 것 같다. 정말 많은 자동화 기술들이 나오고 있고 copilot이라는 도구가 내 코드까지도 대'>
+<title>[개발 서적 공부] Go를 활용한 머신 러닝을 읽고</title>
+
+<link rel='canonical' href='https://hadooboo.github.io/post/books/go%EB%A5%BC-%ED%99%9C%EC%9A%A9%ED%95%9C-%EB%A8%B8%EC%8B%A0-%EB%9F%AC%EB%8B%9D%EC%9D%84-%EC%9D%BD%EA%B3%A0/'>
+
+<link rel="stylesheet" href="/scss/style.min.fd84e57133f7e873d7b16bba3f165639533befb316512be183800fd65952f8fe.css"><meta property='og:title' content='[개발 서적 공부] Go를 활용한 머신 러닝을 읽고'>
+<meta property='og:description' content='읽게 된 계기 이제는 정말 머신러닝이라는 분야에 대해 알아가야 할 때가 온 것 같다. 정말 많은 자동화 기술들이 나오고 있고 copilot이라는 도구가 내 코드까지도 대'>
+<meta property='og:url' content='https://hadooboo.github.io/post/books/go%EB%A5%BC-%ED%99%9C%EC%9A%A9%ED%95%9C-%EB%A8%B8%EC%8B%A0-%EB%9F%AC%EB%8B%9D%EC%9D%84-%EC%9D%BD%EA%B3%A0/'>
+<meta property='og:site_name' content='Hadooboo Dev Log'>
+<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:tag' content='books' /><meta property='article:published_time' content='2023-06-16T00:00:00&#43;00:00'/><meta property='article:modified_time' content='2023-06-16T00:00:00&#43;00:00'/>
+<meta name="twitter:title" content="[개발 서적 공부] Go를 활용한 머신 러닝을 읽고">
+<meta name="twitter:description" content="읽게 된 계기 이제는 정말 머신러닝이라는 분야에 대해 알아가야 할 때가 온 것 같다. 정말 많은 자동화 기술들이 나오고 있고 copilot이라는 도구가 내 코드까지도 대">
+    </head>
+    <body class="
+    article-page
+    ">
+    <script>
+        (function() {
+            const colorSchemeKey = 'StackColorScheme';
+            if(!localStorage.getItem(colorSchemeKey)){
+                localStorage.setItem(colorSchemeKey, "auto");
+            }
+        })();
+    </script><script>
+    (function() {
+        const colorSchemeKey = 'StackColorScheme';
+        const colorSchemeItem = localStorage.getItem(colorSchemeKey);
+        const supportDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches === true;
+
+        if (colorSchemeItem == 'dark' || colorSchemeItem === 'auto' && supportDarkMode) {
+            
+
+            document.documentElement.dataset.scheme = 'dark';
+        } else {
+            document.documentElement.dataset.scheme = 'light';
+        }
+    })();
+</script>
+<div class="container main-container flex on-phone--column extended"><aside class="sidebar left-sidebar sticky ">
+    <button class="hamburger hamburger--spin" type="button" id="toggle-menu" aria-label="Toggle Menu">
+        <span class="hamburger-box">
+            <span class="hamburger-inner"></span>
+        </span>
+    </button>
+
+    <header>
+        
+            
+            <figure class="site-avatar">
+                <a href="/">
+                
+                    
+                    
+                    
+                        
+                        <img src="/img/avatar_huda2458f72ce188392d75c5d51cd8e24e_373_300x0_resize_box_3.png" width="300"
+                            height="300" class="site-logo" loading="lazy" alt="Avatar">
+                    
+                
+                </a>
+                
+            </figure>
+            
+        
+        
+        <div class="site-meta">
+            <h1 class="site-name"><a href="/">Hadooboo Dev Log</a></h1>
+            <h2 class="site-description"></h2>
+        </div>
+    </header><ol class="menu" id="main-menu">
+        
+        
+
+        <div class="menu-bottom-section">
+            
+            
+                <li id="dark-mode-toggle">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="8" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-right" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="16" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                    <span>Dark Mode</span>
+                </li>
+            
+        </div>
+    </ol>
+</aside>
+
+    <aside class="sidebar right-sidebar sticky">
+        
+            
+                
+    <section class="widget archives">
+        <div class="widget-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-hash" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <line x1="5" y1="9" x2="19" y2="9" />
+  <line x1="5" y1="15" x2="19" y2="15" />
+  <line x1="11" y1="4" x2="7" y2="20" />
+  <line x1="17" y1="4" x2="13" y2="20" />
+</svg>
+
+
+
+        </div>
+        <h2 class="widget-title section-title">Table of contents</h2>
+        
+        <div class="widget--toc">
+            <nav id="TableOfContents">
+  <ul>
+    <li><a href="#읽게-된-계기">읽게 된 계기</a></li>
+    <li><a href="#코드로써의-기록">코드로써의 기록</a></li>
+    <li><a href="#기억에-남는-점">기억에 남는 점</a></li>
+    <li><a href="#책-정보">책 정보</a></li>
+  </ul>
+</nav>
+        </div>
+    </section>
+
+            
+        
+    </aside>
+
+
+            <main class="main full-width">
+    <article class="main-article">
+    <header class="article-header">
+
+    <div class="article-details">
+    
+    <header class="article-category">
+        
+            <a href="/categories/dev-book-review/" style="background-color: #52bf81; color: #fff;">
+                Dev Book Review
+            </a>
+        
+    </header>
+    
+
+    <div class="article-title-wrapper">
+        <h2 class="article-title">
+            <a href="/post/books/go%EB%A5%BC-%ED%99%9C%EC%9A%A9%ED%95%9C-%EB%A8%B8%EC%8B%A0-%EB%9F%AC%EB%8B%9D%EC%9D%84-%EC%9D%BD%EA%B3%A0/">[개발 서적 공부] Go를 활용한 머신 러닝을 읽고</a>
+        </h2>
+    
+        
+    </div>
+
+    
+    
+    
+    
+    <footer class="article-time">
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-calendar-time" width="56" height="56" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M11.795 21h-6.795a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v4" />
+  <circle cx="18" cy="18" r="4" />
+  <path d="M15 3v4" />
+  <path d="M7 3v4" />
+  <path d="M3 11h16" />
+  <path d="M18 16.496v1.504l1 1" />
+</svg>
+                <time class="article-time--published">Jun 16, 2023</time>
+            </div>
+        
+
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <polyline points="12 7 12 12 15 15" />
+</svg>
+
+
+
+                <time class="article-time--reading">
+                    4 minute read
+                </time>
+            </div>
+        
+    </footer>
+    
+
+    
+</div>
+
+</header>
+
+    <section class="article-content">
+    
+    
+    <h2 id="읽게-된-계기">읽게 된 계기</h2>
+<p>이제는 정말 머신러닝이라는 분야에 대해 알아가야 할 때가 온 것 같다. 정말 많은 자동화 기술들이 나오고 있고 copilot이라는 도구가 내 코드까지도 대신 짜 주는 현상을 보면 copilot이 어떻게 돌아가는지 아는 개발자만이 앞으로의 시대에서 살아남을 수 있을 것이다.</p>
+<p>이 책은 원래부터 golang으로 머신러닝을 해보고 싶어서 구매한 것은 아니고 서점을 둘러보던 중 발견하여 신기함에 사 본 책이다. 머신러닝 분야는 전부 파이썬이 메인스트림으로 되어 있기 때문에 golang으로 하는 것은 본 적도 없고 들은 적도 없었다. 다만 내가 golang에 익숙하기 때문에 그 장점을 살려 머신러닝의 다른 측면을 볼 수 있지 않을까 하는 기대감에 공부하기 시작하였다.</p>
+<h2 id="코드로써의-기록">코드로써의 기록</h2>
+<p><a class="link" href="https://github.com/hadooboo/ml-go"  target="_blank" rel="noopener"
+    >https://github.com/hadooboo/ml-go</a></p>
+<h2 id="기억에-남는-점">기억에 남는 점</h2>
+<ol>
+<li>그냥 파이썬 쓰자</li>
+</ol>
+<p>golang으로 머신러닝을 할 수 있는 것처럼 책을 호기롭게 시작했지만 결국에는 교과서에 나올 만한 몇 개의 기초적인 모델을 구현해보는 수준에 그쳤고, 더 발전된 모델이나 커스터마이징은 불가능한 수준이었다. 19년에 나온 책이라서 단순히 오래되었기 때문이라고 생각할 수도 있지만, pkg.go.dev 에서 최신 패키지들을 살펴보아도 그 동안 많은 진전이 있었던 것 같지는 않다. 그에는 다양한 이유가 있을 것이다.</p>
+<p>golang이 머신러닝에 적합하지 않다고 느낀 가장 큰 지점은 인터랙티브한 사용의 불가능이다. 이번 프로젝트를 하면서는 gophernotes, gonb 패키지를 이용하여 최대한 jupyter notebook을 사용해보기는 했지만 어디까지나 안정적인 지원이 되지 않는 써드파티 라이브러리일 뿐이다. golang이 인터프리터 언어가 아닌 것이 근본적인 원인이다. 코드를 블록 단위로 실행하면서 결과를 확인하며 점진적으로 진행하는 것이 모델을 만드는 데 있어 빠르고 편리하다. 컴파일을 매번 하면서 결과를 어딘가에 기록해두며 진행하는 것은 비효율적이다. 이 점이 가장 발목을 잡는다.</p>
+<p>또한, golang은 강타입 언어이다. 이 책에서는 강타입으로 제한을 주는 것이 오히려 발생할 수 있는 여러 타입 문제들을 사전에 차단해준다고 한다. 그러나 나는 이 지점이 자유롭게 모델을 만들어보고 커스터마이징하는 데에 방해가 된다고 느꼈다. 뭔가를 다시 시도해보려면 그 동안 만들었던 변수와 메소드 인자 등의 타입을 다시 다 조정해야 한다. 자유로운 모델 로딩도 힘들다. 타입 문제를 해결하는 것은 모델을 다 만들고 서비스에 붙여 안정적인 서빙을 해야 할 때 고려하면 될 것이다. 일단 모델이라도 여러 번 실험하면서 빠르게 결과를 찾아가려면 파이썬으로 하는 것이 훨씬 마음이 편할 것 같다.</p>
+<p>마지막으로 사람들이 많이 쓰는 언어를 그냥 따라가는 것이 좋아 보인다. 당연히 새로 나오는 모델들이나 여러 레퍼런스들이 그 언어와 그 라이브러리 안에서 만들어지고 소비되기 때문이다. 파이썬은 머신러닝에 있어 강력한 생태계를 가지고 있다. golang이 갑자기 발전하여 머신러닝에 언어적 특성이 적합해진다 한들 이미 커뮤니티는 다 파이썬으로 모델을 만들고 실험하고 있다. 그것을 따라가는 것은 불가능할 것이다. golang은 golang에 맞는 다른 역할이 있다.</p>
+<ol start="2">
+<li>학습에는 의미가 없지 않았다.</li>
+</ol>
+<p>지금까지는 golang을 머신러닝을 할 때 사용하지 않아야 할 이유들에 대해서만 설명했다. 그러나 이 책을 읽고 따라해보며 배운 것도 없지 않다. 그렇지 않았다면 책을 중간에 내려놓았을 것이다.</p>
+<p>중요한 것은 내가 실제 서비스를 위한 모델을 만드는 것이 아니라 배우는 과정이었다는 점이다. 파이썬 라이브러리들에서는 여러 abstraction method를 제공하여 어떻게 동작하는지도 모르고 acf, pacf 값을 사용하거나 신경망을 사용하거나 할 것이다. 그러나 이번 공부를 하는 목적은 단순히 라이브러리 API 문서를 보고 따라하는 것이 아니라 최소한의 원리라도 이해하는 것이었다. 그 목적을 달성하기에는 오히려 아직 구현체가 많이 없어서, 하나하나 타입과 절차를 생각하면서 코드를 만들어야 하는 언어의 특성 때문에 좋은 점이 있었다.</p>
+<h2 id="책-정보">책 정보</h2>
+<p>Daniel Whitenack. Go를 활용한 머신 러닝 - Go 프로그래밍 언어를 사용해 회귀분석, 분류, 클러스터링, 시계열 모델, 신경망 및 딥러닝 구현하기. 장세윤 옮김. 에이콘출판, 2019.</p>
+
+</section>
+
+
+    <footer class="article-footer">
+    
+    <section class="article-tags">
+        
+            <a href="/tags/books/">books</a>
+        
+    </section>
+
+
+    </footer>
+
+
+    
+</article>
+
+    
+
+    
+
+<aside class="related-content--wrapper">
+    <h2 class="section-title">Related content</h2>
+    <div class="related-content">
+        <div class="flex article-list--tile">
+            
+                
+<article class="">
+    <a href="/post/books/%EB%B0%91%EB%B0%94%EB%8B%A5%EB%B6%80%ED%84%B0-%EB%A7%8C%EB%93%9C%EB%8A%94-%EC%BB%B4%ED%93%A8%ED%8C%85-%EC%8B%9C%EC%8A%A4%ED%85%9C%EC%9D%84-%EC%9D%BD%EA%B3%A0/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">[개발 서적 공부] 밑바닥부터 만드는 컴퓨팅 시스템을 읽고</h2>
+        </div>
+    </a>
+</article>
+
+            
+        </div>
+    </div>
+</aside>
+
+     
+    
+        
+    <script src="https://utteranc.es/client.js" 
+        repo="hadooboo/hadooboo.github.io"
+        issue-term="pathname"
+        
+        crossorigin="anonymous"
+        async
+        >
+</script>
+
+<style>
+    .utterances {
+        max-width: unset;
+    }
+</style>
+
+<script>
+    let utterancesLoaded = false;
+
+    function setUtterancesTheme(theme) {
+        let utterances = document.querySelector('.utterances iframe');
+        if (utterances) {
+            utterances.contentWindow.postMessage(
+                {
+                    type: 'set-theme',
+                    theme: `github-${theme}`
+                },
+                'https://utteranc.es'
+            );
+        }
+    }
+
+    addEventListener('message', event => {
+        if (event.origin !== 'https://utteranc.es') return;
+
+        
+        utterancesLoaded = true;
+        setUtterancesTheme(document.documentElement.dataset.scheme)
+    });
+
+    window.addEventListener('onColorSchemeChange', (e) => {
+        if (!utterancesLoaded) return;
+        setUtterancesTheme(e.detail)
+    })
+</script>
+
+
+    
+
+    <footer class="site-footer">
+    <section class="copyright">
+        &copy; 
+        
+        2023 Hadooboo Dev Log
+    </section>
+    
+    <section class="powerby">
+        Built with <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> <br />
+        Theme <b><a href="https://github.com/CaiJimmy/hugo-theme-stack" target="_blank" rel="noopener" data-version="3.17.0">Stack</a></b> designed by <a href="https://jimmycai.com" target="_blank" rel="noopener">Jimmy</a>
+    </section>
+</footer>
+
+
+    
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    
+    <div class="pswp__bg"></div>
+
+    
+    <div class="pswp__scroll-wrap">
+
+        
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                
+                
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"integrity="sha256-ePwmChbbvXbsO02lbM3HoHbSHTHFAeChekF1xKJdleo="crossorigin="anonymous"
+                defer
+                >
+            </script><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"integrity="sha256-UKkzOn/w1mBxRmLLGrSeyB4e1xbrp4xylgAWb3M42pU="crossorigin="anonymous"
+                defer
+                >
+            </script><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.min.css"crossorigin="anonymous"
+            ><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.css"crossorigin="anonymous"
+            >
+
+            </main>
+        </div>
+        <script 
+                src="https://cdn.jsdelivr.net/npm/node-vibrant@3.1.6/dist/vibrant.min.js"integrity="sha256-awcR2jno4kI5X0zL8ex0vi2z&#43;KMkF24hUW8WePSA9HM="crossorigin="anonymous"
+                
+                >
+            </script><script type="text/javascript" src="/ts/main.js" defer></script>
+<script>
+    (function () {
+        const customFont = document.createElement('link');
+        customFont.href = "https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap";
+
+        customFont.type = "text/css";
+        customFont.rel = "stylesheet";
+
+        document.head.appendChild(customFont);
+    }());
+</script>
+
+    </body>
+</html>

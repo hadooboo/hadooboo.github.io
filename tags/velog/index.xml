@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+    <channel>
+        <title>velog on Hadooboo Dev Log</title>
+        <link>https://hadooboo.github.io/tags/velog/</link>
+        <description>Recent content in velog on Hadooboo Dev Log</description>
+        <generator>Hugo -- gohugo.io</generator>
+        <language>ko-kr</language>
+        <lastBuildDate>Tue, 25 Jul 2023 00:00:00 +0000</lastBuildDate><atom:link href="https://hadooboo.github.io/tags/velog/index.xml" rel="self" type="application/rss+xml" /><item>
+        <title>[TIP] Velog 썸네일 사이즈</title>
+        <link>https://hadooboo.github.io/post/tips/velog-%EC%8D%B8%EB%84%A4%EC%9D%BC-%EC%82%AC%EC%9D%B4%EC%A6%88/</link>
+        <pubDate>Tue, 25 Jul 2023 00:00:00 +0000</pubDate>
+        
+        <guid>https://hadooboo.github.io/post/tips/velog-%EC%8D%B8%EB%84%A4%EC%9D%BC-%EC%82%AC%EC%9D%B4%EC%A6%88/</guid>
+        <description>&lt;h2 id=&#34;velog-썸네일-사이즈를-알아본-이유&#34;&gt;Velog 썸네일 사이즈를 알아본 이유&lt;/h2&gt;
+&lt;p&gt;이번에 새로운 글을 작성하면서 지금까지 작성한 글을 포함하여 모두 썸네일을 만들었다. 평소에 어떤 블로그에 들어가서 글을 읽을 때 썸네일이 첫인상의 역할을 하기 때문에 없으면 정성이 없는 것처럼 느겨지고 내용으로 손이 잘 안가는 효과도 있었다. 그래서 이번 글부터는 썸네일을 추가하고자 했다.&lt;/p&gt;
+&lt;p&gt;그러나 검색을 해보아도 적절한 Velog 썸네일 사이즈를 찾을 수 없었다.&lt;/p&gt;
+&lt;h2 id=&#34;썸네일-사이즈를-찾은-방법&#34;&gt;썸네일 사이즈를 찾은 방법&lt;/h2&gt;
+&lt;p&gt;&lt;img src=&#34;https://hadooboo.github.io/post/tips/velog-%EC%8D%B8%EB%84%A4%EC%9D%BC-%EC%82%AC%EC%9D%B4%EC%A6%88/82d788ba-5295-48f3-9444-8bcf56b76860.png&#34;
+	width=&#34;2560&#34;
+	height=&#34;2398&#34;
+	srcset=&#34;https://hadooboo.github.io/post/tips/velog-%EC%8D%B8%EB%84%A4%EC%9D%BC-%EC%82%AC%EC%9D%B4%EC%A6%88/82d788ba-5295-48f3-9444-8bcf56b76860_hubf50dd79d2039a68577ef8ab8061745b_2434247_480x0_resize_box_3.png 480w, https://hadooboo.github.io/post/tips/velog-%EC%8D%B8%EB%84%A4%EC%9D%BC-%EC%82%AC%EC%9D%B4%EC%A6%88/82d788ba-5295-48f3-9444-8bcf56b76860_hubf50dd79d2039a68577ef8ab8061745b_2434247_1024x0_resize_box_3.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;106&#34;
+		data-flex-basis=&#34;256px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;우리는 &lt;strong&gt;개발자 도구&lt;/strong&gt; 라는 툴이 있다. 컴퓨터공학을 모르던 시절에는 F12키를 누르면 화들짝 놀라 꺼버렸지만, 이제는 종종 웹사이트가 어떤 구조로 되어 있는지, 어떤 네트워크를 주고받고 어떤 캐시가 로컬에 저장되는지 궁금할 때 개발자 도구로 들어와 탐색해보곤 한다.&lt;/p&gt;
+&lt;p&gt;파이어폭스 기준, 개발자 도구 상단 가장 좌측에 존재하는 마우스 포인터 모양의 버튼을 누르면 화면에서 html 요소를 선택할 수 있고, 요소를 선택하면 html 트리에서 그 요소에 해당하는 위치로 이동해서 강조해준다.&lt;/p&gt;
+&lt;p&gt;썸네일이 올라갈 위치를 선택했더니 img 태그가 나왔고, 오른쪽을 보면 레이아웃을 확인할 수 있었다. Velog에서 썸네일이 표시될 영역의 크기는 &lt;strong&gt;768 X 402.083&lt;/strong&gt; 인 것이다.&lt;/p&gt;
+&lt;p&gt;다시 말하면, &lt;strong&gt;너비가 높이의 1.91배 정도 되어야 한다.&lt;/strong&gt;&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;예를 들어, 나는 width를 1080px로 이미지를 만들고 있었기 때문에 height를 &lt;code&gt;1080px / 1.91 ~= 565px&lt;/code&gt; 로 조정하였다.&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;이미지를 만들 때 해상도에 상관없이 해당 비율로 이미지를 만들면 영역에 꽉 차게 보여줄 수 있다.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://hadooboo.github.io/post/tips/velog-%EC%8D%B8%EB%84%A4%EC%9D%BC-%EC%82%AC%EC%9D%B4%EC%A6%88/f66a2c03-4e22-45bd-aa75-43e822acc0ea.png&#34;
+	width=&#34;1652&#34;
+	height=&#34;1050&#34;
+	srcset=&#34;https://hadooboo.github.io/post/tips/velog-%EC%8D%B8%EB%84%A4%EC%9D%BC-%EC%82%AC%EC%9D%B4%EC%A6%88/f66a2c03-4e22-45bd-aa75-43e822acc0ea_huc4cb0d850de28ad0c5e896410b44f4ee_686165_480x0_resize_box_3.png 480w, https://hadooboo.github.io/post/tips/velog-%EC%8D%B8%EB%84%A4%EC%9D%BC-%EC%82%AC%EC%9D%B4%EC%A6%88/f66a2c03-4e22-45bd-aa75-43e822acc0ea_huc4cb0d850de28ad0c5e896410b44f4ee_686165_1024x0_resize_box_3.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;157&#34;
+		data-flex-basis=&#34;377px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;그러나 이상하게 포스트 미리보기에서는 좌우가 약간 짤려 보인다. 나는 그냥 무시하고 진행하였다.&lt;/p&gt;
+&lt;p&gt;지금은 비록 썸네일은 이미 만들어서 올린 상황이지만, 위 글을 쓰기 전까지만 해도 썸네일이 없었다. 썸네일이 없어서 img 태그 영역을 확인할 수 없는 경우 임의의 이미지 하나만 올려서 img 태그 영역의 크기를 파악한 후 다시 이미지를 올려서 수정하면 된다.&lt;/p&gt;
+&lt;h2 id=&#34;회고&#34;&gt;회고&lt;/h2&gt;
+&lt;p&gt;앞으로 간단한 내용이더라도 내가 구글링해서 찾지 못한 내용을 블로그 글로 올려보고자 한다. 내가 성장한 것은 이런 글들 하나하나 덕분이었기 때문이다.&lt;/p&gt;
+</description>
+        </item>
+        
+    </channel>
+</rss>

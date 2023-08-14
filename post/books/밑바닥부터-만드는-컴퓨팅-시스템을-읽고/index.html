@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+<html lang="ko-kr" dir="ltr">
+    <head><meta charset='utf-8'>
+<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content='읽게 된 계기 2023년은 chatgpt의 등장으로 코더는 사라질 것이라는 전망이 대두되기 시작한 해이다. 컴퓨터공학을 전공한 사람으로서 단순 반복 작업이나 간'>
+<title>[개발 서적 공부] 밑바닥부터 만드는 컴퓨팅 시스템을 읽고</title>
+
+<link rel='canonical' href='https://hadooboo.github.io/post/books/%EB%B0%91%EB%B0%94%EB%8B%A5%EB%B6%80%ED%84%B0-%EB%A7%8C%EB%93%9C%EB%8A%94-%EC%BB%B4%ED%93%A8%ED%8C%85-%EC%8B%9C%EC%8A%A4%ED%85%9C%EC%9D%84-%EC%9D%BD%EA%B3%A0/'>
+
+<link rel="stylesheet" href="/scss/style.min.fd84e57133f7e873d7b16bba3f165639533befb316512be183800fd65952f8fe.css"><meta property='og:title' content='[개발 서적 공부] 밑바닥부터 만드는 컴퓨팅 시스템을 읽고'>
+<meta property='og:description' content='읽게 된 계기 2023년은 chatgpt의 등장으로 코더는 사라질 것이라는 전망이 대두되기 시작한 해이다. 컴퓨터공학을 전공한 사람으로서 단순 반복 작업이나 간'>
+<meta property='og:url' content='https://hadooboo.github.io/post/books/%EB%B0%91%EB%B0%94%EB%8B%A5%EB%B6%80%ED%84%B0-%EB%A7%8C%EB%93%9C%EB%8A%94-%EC%BB%B4%ED%93%A8%ED%8C%85-%EC%8B%9C%EC%8A%A4%ED%85%9C%EC%9D%84-%EC%9D%BD%EA%B3%A0/'>
+<meta property='og:site_name' content='Hadooboo Dev Log'>
+<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:tag' content='books' /><meta property='article:published_time' content='2023-05-25T00:00:00&#43;00:00'/><meta property='article:modified_time' content='2023-05-25T00:00:00&#43;00:00'/>
+<meta name="twitter:title" content="[개발 서적 공부] 밑바닥부터 만드는 컴퓨팅 시스템을 읽고">
+<meta name="twitter:description" content="읽게 된 계기 2023년은 chatgpt의 등장으로 코더는 사라질 것이라는 전망이 대두되기 시작한 해이다. 컴퓨터공학을 전공한 사람으로서 단순 반복 작업이나 간">
+    </head>
+    <body class="
+    article-page
+    ">
+    <script>
+        (function() {
+            const colorSchemeKey = 'StackColorScheme';
+            if(!localStorage.getItem(colorSchemeKey)){
+                localStorage.setItem(colorSchemeKey, "auto");
+            }
+        })();
+    </script><script>
+    (function() {
+        const colorSchemeKey = 'StackColorScheme';
+        const colorSchemeItem = localStorage.getItem(colorSchemeKey);
+        const supportDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches === true;
+
+        if (colorSchemeItem == 'dark' || colorSchemeItem === 'auto' && supportDarkMode) {
+            
+
+            document.documentElement.dataset.scheme = 'dark';
+        } else {
+            document.documentElement.dataset.scheme = 'light';
+        }
+    })();
+</script>
+<div class="container main-container flex on-phone--column extended"><aside class="sidebar left-sidebar sticky ">
+    <button class="hamburger hamburger--spin" type="button" id="toggle-menu" aria-label="Toggle Menu">
+        <span class="hamburger-box">
+            <span class="hamburger-inner"></span>
+        </span>
+    </button>
+
+    <header>
+        
+            
+            <figure class="site-avatar">
+                <a href="/">
+                
+                    
+                    
+                    
+                        
+                        <img src="/img/avatar_huda2458f72ce188392d75c5d51cd8e24e_373_300x0_resize_box_3.png" width="300"
+                            height="300" class="site-logo" loading="lazy" alt="Avatar">
+                    
+                
+                </a>
+                
+            </figure>
+            
+        
+        
+        <div class="site-meta">
+            <h1 class="site-name"><a href="/">Hadooboo Dev Log</a></h1>
+            <h2 class="site-description"></h2>
+        </div>
+    </header><ol class="menu" id="main-menu">
+        
+        
+
+        <div class="menu-bottom-section">
+            
+            
+                <li id="dark-mode-toggle">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="8" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-right" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="16" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                    <span>Dark Mode</span>
+                </li>
+            
+        </div>
+    </ol>
+</aside>
+
+    <aside class="sidebar right-sidebar sticky">
+        
+            
+                
+    <section class="widget archives">
+        <div class="widget-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-hash" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <line x1="5" y1="9" x2="19" y2="9" />
+  <line x1="5" y1="15" x2="19" y2="15" />
+  <line x1="11" y1="4" x2="7" y2="20" />
+  <line x1="17" y1="4" x2="13" y2="20" />
+</svg>
+
+
+
+        </div>
+        <h2 class="widget-title section-title">Table of contents</h2>
+        
+        <div class="widget--toc">
+            <nav id="TableOfContents">
+  <ul>
+    <li><a href="#읽게-된-계기">읽게 된 계기</a></li>
+    <li><a href="#코드로써의-기록">코드로써의 기록</a></li>
+    <li><a href="#기억에-남는-점">기억에 남는 점</a></li>
+    <li><a href="#책-정보">책 정보</a></li>
+  </ul>
+</nav>
+        </div>
+    </section>
+
+            
+        
+    </aside>
+
+
+            <main class="main full-width">
+    <article class="main-article">
+    <header class="article-header">
+
+    <div class="article-details">
+    
+    <header class="article-category">
+        
+            <a href="/categories/dev-book-review/" style="background-color: #52bf81; color: #fff;">
+                Dev Book Review
+            </a>
+        
+    </header>
+    
+
+    <div class="article-title-wrapper">
+        <h2 class="article-title">
+            <a href="/post/books/%EB%B0%91%EB%B0%94%EB%8B%A5%EB%B6%80%ED%84%B0-%EB%A7%8C%EB%93%9C%EB%8A%94-%EC%BB%B4%ED%93%A8%ED%8C%85-%EC%8B%9C%EC%8A%A4%ED%85%9C%EC%9D%84-%EC%9D%BD%EA%B3%A0/">[개발 서적 공부] 밑바닥부터 만드는 컴퓨팅 시스템을 읽고</a>
+        </h2>
+    
+        
+    </div>
+
+    
+    
+    
+    
+    <footer class="article-time">
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-calendar-time" width="56" height="56" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M11.795 21h-6.795a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v4" />
+  <circle cx="18" cy="18" r="4" />
+  <path d="M15 3v4" />
+  <path d="M7 3v4" />
+  <path d="M3 11h16" />
+  <path d="M18 16.496v1.504l1 1" />
+</svg>
+                <time class="article-time--published">May 25, 2023</time>
+            </div>
+        
+
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <polyline points="12 7 12 12 15 15" />
+</svg>
+
+
+
+                <time class="article-time--reading">
+                    3 minute read
+                </time>
+            </div>
+        
+    </footer>
+    
+
+    
+</div>
+
+</header>
+
+    <section class="article-content">
+    
+    
+    <h2 id="읽게-된-계기">읽게 된 계기</h2>
+<p>2023년은 chatgpt의 등장으로 코더는 사라질 것이라는 전망이 대두되기 시작한 해이다. 컴퓨터공학을 전공한 사람으로서 단순 반복 작업이나 간단한 문제 풀기는 정말로 AI에게 맞기는 것이 더 낫다는 생각이 들 정도였다.</p>
+<p>이런 상황에서 오히려 쓸모없어보일 수도 있는 기초로 돌아가야겠다고 생각했다. 하드웨어 게이트 설계, 어셈블러, 컴파일러를 한 번 만들어보면서 컴퓨터에 대해 전체적으로 이해할 수 있는 시각을 기르는 것이 오히려 근본으로써 변함이 없지 않을까 생각하였다.</p>
+<h2 id="코드로써의-기록">코드로써의 기록</h2>
+<p><a class="link" href="https://github.com/hadooboo/nand2tetris"  target="_blank" rel="noopener"
+    >https://github.com/hadooboo/nand2tetris</a></p>
+<h2 id="기억에-남는-점">기억에 남는 점</h2>
+<ol>
+<li>모듈화 및 인터페이스화의 중요성</li>
+</ol>
+<p>이 책에는 프로젝트가 12가지 있었다. 간단한 프로젝트도 있었지만 복잡하고 문제 사이즈가 큰 경우도 있었다. 그런데 책에서는 친절하게도 어떤 모듈들로 구성하면 좋을지, 각 모듈은 어떤 동작을 하기를 기대하는지, 그 기능에 맞춘 메소드의 형태가 어떻게 될 것인지 모두 기술해주었다.</p>
+<p>이렇게 모듈로 나누는 것은 문제를 작게 만들어준다. 인간은 뇌의 한계가 있기 때문에 큰 문제를 한번에 풀려고 하면 풀기 어려워진다. 문제를 작게 나누었을 때 각각의 문제를 풀어가면서 하나의 큰 문제를 해결해나가는 것이 효율적이라고 생각한다.</p>
+<p>symbol table, vm writer, parser 등등 모듈 하나하나의 인터페이스를 먼저 정의한 뒤 unimplemented 상태의 기능들을 구현하면서 소소한 성취감을 느낄 수 있었다. 또한, 헬퍼 모듈들이 모두 만들어지면 코어 로직을 작성하는 것은 상대적으로 많이 쉬운 일이었다.</p>
+<ol start="2">
+<li>컴파일 과정의 2단계 분리</li>
+</ol>
+<p>본 책의 후반부 내용은 high-level 객체 지향 언어를 기계어로 번역하는 컴파일러를 만드는 것이다. 7~11장까지 이 내용이 나온다. 그런데 재미있는 점은 10~11장에서 high-level 언어를 중간 단계 코드로, 7~8장에서 중간 단계 코드를 기계어로 번역한다. 똑같은 일을 2번 하는 것이 아닌가.</p>
+<p>어떻게 보면 1번이랑 같은 말을 하게 될지도 모르겠다. 문제를 작게 나누는 것이 중요하다. 문제를 사람이 쉽게 풀게 하기 위해서도 필요하다. 책에 나와 있는 설명처럼 code transportability의 관점에서도 문제를 작게 나누는 것이 좋다. high-level 언어를 macos용 컴파일러, windows용 컴파일러 등등 하나하나 다 만들 수는 없는 노릇이다. 적당한 수준의 low-level 까지 번역해주는 컴파일러를 하나 만든 뒤 그 중간 단계 코드를 각각의 os에 맞게 번역해 주면 문제가 쉬워진다.</p>
+<p>본 프로젝트에서는 어차피 jack이라는 언어와 hack이라는 os만 존재하여 그 효용을 크게 누리지는 못하였다. 그러나 연습용 프로젝트라고 현실과 다른 방향으로 구성하기보다는 최대한 현실에서의 용례를 반영하려고 했다는 점이 마음에 들었다.</p>
+<ol start="3">
+<li>컴파일러 그 자체</li>
+</ol>
+<p>책의 내용을 회고해보면 1~6장은 상대적으로 쉬운 내용이었으나 7~12장은 어려웠다. 컴파일러라는 것을 만들어보지 않았던 것 때문일 수도 있겠고, 당연히 책 후반부로 갈수록 어려워지는 것은 당연할 수도 있다. 그러나 어려웠던 만큼 기억에는 더 남고 배운 점도 더 많았던 것 같다.</p>
+<ol start="4">
+<li>low-level에서의 효율성</li>
+</ol>
+<p>12장의 OS 만들기 프로젝트를 하면서 곱셉, 나눗셈까지도 어떻게 하면 더 효율적으로 할 수 있을지 고민하면서, 알고리즘을 찾아가면서 기능을 구현하였다. 이것은 OS의 메소드들이 다른 어떤 프로그램들에서도 호출되고, 자주 사용되기 때문에 그렇다. 예를 들어, multiply 메소드도 n을 m번 더하는 나이브한 방식으로 만들지 않고 bit shift 개념을 이용하여 비트 수에 비례한 시간 복잡도를 가지도록 만들어야 한다. 또한, 2와 3 같이 작은 수를 곱하는 상황에서도 최대한 덧셈을 대신 사용하려고 하였다. 이렇게 low-level에서 하나의 명령어라도 줄여보고자 하는 것이 재미있었다.</p>
+<h2 id="책-정보">책 정보</h2>
+<p>Noam Nisan, Shimon Schocken. 밑바닥부터 만드는 컴퓨팅 시스템 - 불 논리부터 컴퓨터 아키텍처, 운영체제까지. 김진홍 옮김. 인사이트, 2019.</p>
+
+</section>
+
+
+    <footer class="article-footer">
+    
+    <section class="article-tags">
+        
+            <a href="/tags/books/">books</a>
+        
+    </section>
+
+
+    </footer>
+
+
+    
+</article>
+
+    
+
+    
+
+     
+    
+        
+    <script src="https://utteranc.es/client.js" 
+        repo="hadooboo/hadooboo.github.io"
+        issue-term="pathname"
+        
+        crossorigin="anonymous"
+        async
+        >
+</script>
+
+<style>
+    .utterances {
+        max-width: unset;
+    }
+</style>
+
+<script>
+    let utterancesLoaded = false;
+
+    function setUtterancesTheme(theme) {
+        let utterances = document.querySelector('.utterances iframe');
+        if (utterances) {
+            utterances.contentWindow.postMessage(
+                {
+                    type: 'set-theme',
+                    theme: `github-${theme}`
+                },
+                'https://utteranc.es'
+            );
+        }
+    }
+
+    addEventListener('message', event => {
+        if (event.origin !== 'https://utteranc.es') return;
+
+        
+        utterancesLoaded = true;
+        setUtterancesTheme(document.documentElement.dataset.scheme)
+    });
+
+    window.addEventListener('onColorSchemeChange', (e) => {
+        if (!utterancesLoaded) return;
+        setUtterancesTheme(e.detail)
+    })
+</script>
+
+
+    
+
+    <footer class="site-footer">
+    <section class="copyright">
+        &copy; 
+        
+        2023 Hadooboo Dev Log
+    </section>
+    
+    <section class="powerby">
+        Built with <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> <br />
+        Theme <b><a href="https://github.com/CaiJimmy/hugo-theme-stack" target="_blank" rel="noopener" data-version="3.17.0">Stack</a></b> designed by <a href="https://jimmycai.com" target="_blank" rel="noopener">Jimmy</a>
+    </section>
+</footer>
+
+
+    
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    
+    <div class="pswp__bg"></div>
+
+    
+    <div class="pswp__scroll-wrap">
+
+        
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                
+                
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"integrity="sha256-ePwmChbbvXbsO02lbM3HoHbSHTHFAeChekF1xKJdleo="crossorigin="anonymous"
+                defer
+                >
+            </script><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"integrity="sha256-UKkzOn/w1mBxRmLLGrSeyB4e1xbrp4xylgAWb3M42pU="crossorigin="anonymous"
+                defer
+                >
+            </script><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.min.css"crossorigin="anonymous"
+            ><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.css"crossorigin="anonymous"
+            >
+
+            </main>
+        </div>
+        <script 
+                src="https://cdn.jsdelivr.net/npm/node-vibrant@3.1.6/dist/vibrant.min.js"integrity="sha256-awcR2jno4kI5X0zL8ex0vi2z&#43;KMkF24hUW8WePSA9HM="crossorigin="anonymous"
+                
+                >
+            </script><script type="text/javascript" src="/ts/main.js" defer></script>
+<script>
+    (function () {
+        const customFont = document.createElement('link');
+        customFont.href = "https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap";
+
+        customFont.type = "text/css";
+        customFont.rel = "stylesheet";
+
+        document.head.appendChild(customFont);
+    }());
+</script>
+
+    </body>
+</html>

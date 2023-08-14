@@ -2,16 +2,31 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
-    <loc>https://hadooboo.github.io/post/teams/rss-%ED%94%BC%EB%93%9C%EB%A5%BC-%ED%86%B5%ED%95%9C-it-%EB%A7%A4%EC%B2%B4-%EA%B5%AC%EB%8F%85-slack-app-%EC%97%B0%EB%8F%99/</loc>
-    <lastmod>2023-07-25T00:00:00+00:00</lastmod>
+    <loc>https://hadooboo.github.io/post/books/%EA%B0%9D%EC%B2%B4%EC%A7%80%ED%96%A5%EC%9D%98-%EC%82%AC%EC%8B%A4%EA%B3%BC-%EC%98%A4%ED%95%B4%EB%A5%BC-%EC%9D%BD%EA%B3%A0/</loc>
+    <lastmod>2023-08-04T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://hadooboo.github.io/tags/books/</loc>
+    <lastmod>2023-08-04T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://hadooboo.github.io/categories/</loc>
-    <lastmod>2023-07-25T00:00:00+00:00</lastmod>
+    <lastmod>2023-08-04T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://hadooboo.github.io/categories/dev-book-review/</loc>
+    <lastmod>2023-08-04T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://hadooboo.github.io/</loc>
-    <lastmod>2023-07-25T00:00:00+00:00</lastmod>
+    <lastmod>2023-08-04T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://hadooboo.github.io/post/</loc>
+    <lastmod>2023-08-04T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://hadooboo.github.io/tags/</loc>
+    <lastmod>2023-08-04T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://hadooboo.github.io/post/tips/velog-%EC%8D%B8%EB%84%A4%EC%9D%BC-%EC%82%AC%EC%9D%B4%EC%A6%88/</loc>
+    <lastmod>2023-07-25T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://hadooboo.github.io/post/teams/rss-%ED%94%BC%EB%93%9C%EB%A5%BC-%ED%86%B5%ED%95%9C-it-%EB%A7%A4%EC%B2%B4-%EA%B5%AC%EB%8F%85-slack-app-%EC%97%B0%EB%8F%99/</loc>
     <lastmod>2023-07-25T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://hadooboo.github.io/tags/rss/</loc>
@@ -20,11 +35,23 @@
     <loc>https://hadooboo.github.io/tags/slack/</loc>
     <lastmod>2023-07-25T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>https://hadooboo.github.io/tags/</loc>
-    <lastmod>2023-07-25T00:00:00+00:00</lastmod>
-  </url><url>
     <loc>https://hadooboo.github.io/categories/team-dev-culture/</loc>
     <lastmod>2023-07-25T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://hadooboo.github.io/tags/tip/</loc>
+    <lastmod>2023-07-25T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://hadooboo.github.io/categories/tip/</loc>
+    <lastmod>2023-07-25T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://hadooboo.github.io/tags/velog/</loc>
+    <lastmod>2023-07-25T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://hadooboo.github.io/post/books/go%EB%A5%BC-%ED%99%9C%EC%9A%A9%ED%95%9C-%EB%A8%B8%EC%8B%A0-%EB%9F%AC%EB%8B%9D%EC%9D%84-%EC%9D%BD%EA%B3%A0/</loc>
+    <lastmod>2023-06-16T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://hadooboo.github.io/post/books/%EB%B0%91%EB%B0%94%EB%8B%A5%EB%B6%80%ED%84%B0-%EB%A7%8C%EB%93%9C%EB%8A%94-%EC%BB%B4%ED%93%A8%ED%8C%85-%EC%8B%9C%EC%8A%A4%ED%85%9C%EC%9D%84-%EC%9D%BD%EA%B3%A0/</loc>
+    <lastmod>2023-05-25T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://hadooboo.github.io/post/teams/%EB%8F%84%EC%BB%A4-%EC%BB%A8%ED%85%8C%EC%9D%B4%EB%84%88-%EA%B4%80%EB%A6%AC/</loc>
     <lastmod>2022-12-11T00:00:00+00:00</lastmod>
@@ -102,9 +129,5 @@
     <lastmod>2021-05-31T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://hadooboo.github.io/about/</loc>
-  </url><url>
-    <loc>https://hadooboo.github.io/categories/dev-book-review/</loc>
-  </url><url>
-    <loc>https://hadooboo.github.io/categories/tip/</loc>
   </url>
 </urlset>
