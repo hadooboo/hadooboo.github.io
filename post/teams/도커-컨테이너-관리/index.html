@@ -1,0 +1,502 @@
+<!DOCTYPE html>
+<html lang="ko-kr" dir="ltr">
+    <head><meta charset='utf-8'>
+<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content='도커 컨테이너 관리를 해야겠다고 마음먹은 이유 sudo docker network inspect &amp;hellip; sudo docker container exec &amp;hellip; 도커 명령어를 매번 직접 입력하여 어떻게 운영되고 있는지 확인하는 것은 상당히 지루하고 복잡한'>
+<title>[팀 개발 문화 발전시키기] 도커 컨테이너 관리</title>
+
+<link rel='canonical' href='https://hadooboo.github.io/post/teams/%EB%8F%84%EC%BB%A4-%EC%BB%A8%ED%85%8C%EC%9D%B4%EB%84%88-%EA%B4%80%EB%A6%AC/'>
+
+<link rel="stylesheet" href="/scss/style.min.fd84e57133f7e873d7b16bba3f165639533befb316512be183800fd65952f8fe.css"><meta property='og:title' content='[팀 개발 문화 발전시키기] 도커 컨테이너 관리'>
+<meta property='og:description' content='도커 컨테이너 관리를 해야겠다고 마음먹은 이유 sudo docker network inspect &amp;hellip; sudo docker container exec &amp;hellip; 도커 명령어를 매번 직접 입력하여 어떻게 운영되고 있는지 확인하는 것은 상당히 지루하고 복잡한'>
+<meta property='og:url' content='https://hadooboo.github.io/post/teams/%EB%8F%84%EC%BB%A4-%EC%BB%A8%ED%85%8C%EC%9D%B4%EB%84%88-%EA%B4%80%EB%A6%AC/'>
+<meta property='og:site_name' content='Hadooboo Dev Log'>
+<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:tag' content='docker' /><meta property='article:tag' content='portainer' /><meta property='article:published_time' content='2022-12-11T00:00:00&#43;00:00'/><meta property='article:modified_time' content='2022-12-11T00:00:00&#43;00:00'/>
+<meta name="twitter:title" content="[팀 개발 문화 발전시키기] 도커 컨테이너 관리">
+<meta name="twitter:description" content="도커 컨테이너 관리를 해야겠다고 마음먹은 이유 sudo docker network inspect &amp;hellip; sudo docker container exec &amp;hellip; 도커 명령어를 매번 직접 입력하여 어떻게 운영되고 있는지 확인하는 것은 상당히 지루하고 복잡한">
+    </head>
+    <body class="
+    article-page
+    ">
+    <script>
+        (function() {
+            const colorSchemeKey = 'StackColorScheme';
+            if(!localStorage.getItem(colorSchemeKey)){
+                localStorage.setItem(colorSchemeKey, "auto");
+            }
+        })();
+    </script><script>
+    (function() {
+        const colorSchemeKey = 'StackColorScheme';
+        const colorSchemeItem = localStorage.getItem(colorSchemeKey);
+        const supportDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches === true;
+
+        if (colorSchemeItem == 'dark' || colorSchemeItem === 'auto' && supportDarkMode) {
+            
+
+            document.documentElement.dataset.scheme = 'dark';
+        } else {
+            document.documentElement.dataset.scheme = 'light';
+        }
+    })();
+</script>
+<div class="container main-container flex on-phone--column extended"><aside class="sidebar left-sidebar sticky ">
+    <button class="hamburger hamburger--spin" type="button" id="toggle-menu" aria-label="Toggle Menu">
+        <span class="hamburger-box">
+            <span class="hamburger-inner"></span>
+        </span>
+    </button>
+
+    <header>
+        
+            
+            <figure class="site-avatar">
+                <a href="/">
+                
+                    
+                    
+                    
+                        
+                        <img src="/img/avatar_huda2458f72ce188392d75c5d51cd8e24e_373_300x0_resize_box_3.png" width="300"
+                            height="300" class="site-logo" loading="lazy" alt="Avatar">
+                    
+                
+                </a>
+                
+            </figure>
+            
+        
+        
+        <div class="site-meta">
+            <h1 class="site-name"><a href="/">Hadooboo Dev Log</a></h1>
+            <h2 class="site-description"></h2>
+        </div>
+    </header><ol class="menu" id="main-menu">
+        
+        
+
+        <div class="menu-bottom-section">
+            
+            
+                <li id="dark-mode-toggle">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="8" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-right" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="16" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                    <span>Dark Mode</span>
+                </li>
+            
+        </div>
+    </ol>
+</aside>
+
+    <aside class="sidebar right-sidebar sticky">
+        
+            
+                
+    <section class="widget archives">
+        <div class="widget-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-hash" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <line x1="5" y1="9" x2="19" y2="9" />
+  <line x1="5" y1="15" x2="19" y2="15" />
+  <line x1="11" y1="4" x2="7" y2="20" />
+  <line x1="17" y1="4" x2="13" y2="20" />
+</svg>
+
+
+
+        </div>
+        <h2 class="widget-title section-title">Table of contents</h2>
+        
+        <div class="widget--toc">
+            <nav id="TableOfContents">
+  <ul>
+    <li><a href="#도커-컨테이너-관리를-해야겠다고-마음먹은-이유">도커 컨테이너 관리를 해야겠다고 마음먹은 이유</a></li>
+    <li><a href="#개선한-방향">개선한 방향</a>
+      <ul>
+        <li><a href="#portainer-설치">Portainer 설치</a></li>
+        <li><a href="#create-admin-user">create admin user</a></li>
+        <li><a href="#choose-docker-environment">choose docker environment</a></li>
+        <li><a href="#dockersock-이란">docker.sock 이란?</a></li>
+      </ul>
+    </li>
+    <li><a href="#회고">회고</a></li>
+  </ul>
+</nav>
+        </div>
+    </section>
+
+            
+        
+    </aside>
+
+
+            <main class="main full-width">
+    <article class="main-article">
+    <header class="article-header">
+
+    <div class="article-details">
+    
+    <header class="article-category">
+        
+            <a href="/categories/team-dev-culture/" style="background-color: #9966c3; color: #fff;">
+                Team Dev Culture
+            </a>
+        
+    </header>
+    
+
+    <div class="article-title-wrapper">
+        <h2 class="article-title">
+            <a href="/post/teams/%EB%8F%84%EC%BB%A4-%EC%BB%A8%ED%85%8C%EC%9D%B4%EB%84%88-%EA%B4%80%EB%A6%AC/">[팀 개발 문화 발전시키기] 도커 컨테이너 관리</a>
+        </h2>
+    
+        
+    </div>
+
+    
+    
+    
+    
+    <footer class="article-time">
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-calendar-time" width="56" height="56" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M11.795 21h-6.795a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v4" />
+  <circle cx="18" cy="18" r="4" />
+  <path d="M15 3v4" />
+  <path d="M7 3v4" />
+  <path d="M3 11h16" />
+  <path d="M18 16.496v1.504l1 1" />
+</svg>
+                <time class="article-time--published">Dec 11, 2022</time>
+            </div>
+        
+
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <polyline points="12 7 12 12 15 15" />
+</svg>
+
+
+
+                <time class="article-time--reading">
+                    3 minute read
+                </time>
+            </div>
+        
+    </footer>
+    
+
+    
+</div>
+
+</header>
+
+    <section class="article-content">
+    
+    
+    <h2 id="도커-컨테이너-관리를-해야겠다고-마음먹은-이유">도커 컨테이너 관리를 해야겠다고 마음먹은 이유</h2>
+<p>sudo docker network inspect &hellip; sudo docker container exec &hellip;</p>
+<p>도커 명령어를 매번 직접 입력하여 어떻게 운영되고 있는지 확인하는 것은 상당히 지루하고 복잡한 일이다. alias를 지정해 명령어의 길이를 조금 줄여볼 수는 있겠지만 터미널에서 보이는 문자들로만 운영 상황을 확인하는 것은 한계가 있다. 그래서 간단히 사용 가능한 시각화 툴이 있다면 사용해보고 싶다는 마음이 들었고, portainer라는 툴을 발견하여 적용해보게 되었다.</p>
+<h2 id="개선한-방향">개선한 방향</h2>
+<h3 id="portainer-설치">Portainer 설치</h3>
+<p>도커 컨테이너를 관리하기 위한 Portainer 툴도 도커를 이용하여 설치할 수 있다.</p>
+<p>linux에 설치하는 방법은 <a class="link" href="https://docs.portainer.io/start/install/server/docker/linux"  target="_blank" rel="noopener"
+    >링크</a>에서 더 자세히 살펴볼 수 있다.</p>
+<pre tabindex="0"><code>$ docker volume create portainer_data
+$ docker run -d -p 9443:9443 --name portainer --restart=always -v /var/run/docker.sock:/var/run/docker.sock -v portainer_data:/data portainer/portainer-ce:latest
+</code></pre><p>우선 컨테이너가 삭제되는 상황에서도 데이터를 보존하기 위한 docker volume을 생성하여 이후에 <code>/data</code> 디렉터리와 마운트한다.</p>
+<p>다음으로 실제 컨테이너를 실행한다. Portainer web UI를 접근하기 위해서 9443번 포트를 열어 두었다. 8000번은 http 접속을 위한 포트이고, 9000번 포트는 legacy를 위한 포트라서 열어두지 않았다.</p>
+<p>또한, local 도커에 연결하기 위해 socket 파일을 볼륨 마운팅으로 연결하여 컨테이너 내부에서도 접근할 수 있게 하였다. 이는 portainer 구동을 위해 필수적이다.</p>
+<p><code>https://&lt;ip&gt;:9443</code> 으로 접속하면 기본적으로는 portainer가 자체적으로 생성한 ssl 인증서를 사용하기 때문에 보안 관련 경고가 뜰 수 있다. 무시하고 진행할 수도 있고, 컨테이너를 생성할 때 ca로부터 인증받은 인증서를 연결할 수 있다.</p>
+<h3 id="create-admin-user">create admin user</h3>
+<p>설치 후 가장 처음으로 할 일은 admin 계정을 세팅하는 것이다.</p>
+<p><img src="/post/teams/%EB%8F%84%EC%BB%A4-%EC%BB%A8%ED%85%8C%EC%9D%B4%EB%84%88-%EA%B4%80%EB%A6%AC/ca0b15e2-b21c-4038-b959-10bed37ef1f5.png"
+	width="3000"
+	height="1520"
+	srcset="/post/teams/%EB%8F%84%EC%BB%A4-%EC%BB%A8%ED%85%8C%EC%9D%B4%EB%84%88-%EA%B4%80%EB%A6%AC/ca0b15e2-b21c-4038-b959-10bed37ef1f5_hu23f3c17d67fe074e370ea588dc00536b_823446_480x0_resize_box_3.png 480w, /post/teams/%EB%8F%84%EC%BB%A4-%EC%BB%A8%ED%85%8C%EC%9D%B4%EB%84%88-%EA%B4%80%EB%A6%AC/ca0b15e2-b21c-4038-b959-10bed37ef1f5_hu23f3c17d67fe074e370ea588dc00536b_823446_1024x0_resize_box_3.png 1024w"
+	loading="lazy"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="197"
+		data-flex-basis="473px"
+	
+></p>
+<p>admin 유저에 할당할 비밀번호를 2번 입력하면 생성이 완료된다.</p>
+<h3 id="choose-docker-environment">choose docker environment</h3>
+<p><img src="/post/teams/%EB%8F%84%EC%BB%A4-%EC%BB%A8%ED%85%8C%EC%9D%B4%EB%84%88-%EA%B4%80%EB%A6%AC/11b99ffd-d835-4d62-96d6-ed1d7aed08cb.png"
+	width="3000"
+	height="1284"
+	srcset="/post/teams/%EB%8F%84%EC%BB%A4-%EC%BB%A8%ED%85%8C%EC%9D%B4%EB%84%88-%EA%B4%80%EB%A6%AC/11b99ffd-d835-4d62-96d6-ed1d7aed08cb_hu151db8b846a38358e76001c5ebf6f5bd_1155495_480x0_resize_box_3.png 480w, /post/teams/%EB%8F%84%EC%BB%A4-%EC%BB%A8%ED%85%8C%EC%9D%B4%EB%84%88-%EA%B4%80%EB%A6%AC/11b99ffd-d835-4d62-96d6-ed1d7aed08cb_hu151db8b846a38358e76001c5ebf6f5bd_1155495_1024x0_resize_box_3.png 1024w"
+	loading="lazy"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="233"
+		data-flex-basis="560px"
+	
+></p>
+<p>처음 환경을 셋업하는 상황이므로 Get Started로 진행한다.</p>
+<p><img src="/post/teams/%EB%8F%84%EC%BB%A4-%EC%BB%A8%ED%85%8C%EC%9D%B4%EB%84%88-%EA%B4%80%EB%A6%AC/f6ce9b76-6aa4-4464-b46d-29010466f16e.png"
+	width="3000"
+	height="1466"
+	srcset="/post/teams/%EB%8F%84%EC%BB%A4-%EC%BB%A8%ED%85%8C%EC%9D%B4%EB%84%88-%EA%B4%80%EB%A6%AC/f6ce9b76-6aa4-4464-b46d-29010466f16e_hueed4c410e39f95bb6543697e4cf0fb0c_1473586_480x0_resize_box_3.png 480w, /post/teams/%EB%8F%84%EC%BB%A4-%EC%BB%A8%ED%85%8C%EC%9D%B4%EB%84%88-%EA%B4%80%EB%A6%AC/f6ce9b76-6aa4-4464-b46d-29010466f16e_hueed4c410e39f95bb6543697e4cf0fb0c_1473586_1024x0_resize_box_3.png 1024w"
+	loading="lazy"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="204"
+		data-flex-basis="491px"
+	
+></p>
+<p>다음 화면에서 바로 local environment를 확인할 수 있다.</p>
+<p><img src="/post/teams/%EB%8F%84%EC%BB%A4-%EC%BB%A8%ED%85%8C%EC%9D%B4%EB%84%88-%EA%B4%80%EB%A6%AC/029c6046-8db9-4ae1-869a-06c1ea6395c3.png"
+	width="3000"
+	height="1402"
+	srcset="/post/teams/%EB%8F%84%EC%BB%A4-%EC%BB%A8%ED%85%8C%EC%9D%B4%EB%84%88-%EA%B4%80%EB%A6%AC/029c6046-8db9-4ae1-869a-06c1ea6395c3_hu57f227cc508550fa5be9e0e8c604b209_1048655_480x0_resize_box_3.png 480w, /post/teams/%EB%8F%84%EC%BB%A4-%EC%BB%A8%ED%85%8C%EC%9D%B4%EB%84%88-%EA%B4%80%EB%A6%AC/029c6046-8db9-4ae1-869a-06c1ea6395c3_hu57f227cc508550fa5be9e0e8c604b209_1048655_1024x0_resize_box_3.png 1024w"
+	loading="lazy"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="213"
+		data-flex-basis="513px"
+	
+></p>
+<p>local environment로 들어가면 container, image 등의 개수를 확인할 수 있고, 각각을 누르면 더 자세한 정보를 확인할 수 있다.</p>
+<p>container, image, volume, network는 docker 명령어 뒤에 붙이기도 하는 docker 구성 요소이기 때문에 무엇인지 바로 알 수 있었다. 그러나 stack이 무엇인지는 생소했는데, docker compose를 이용하여 실행한 컨테이너 모음을 말하는 것이라고 확인할 수 있었다.</p>
+<h3 id="dockersock-이란">docker.sock 이란?</h3>
+<p>portainer에서는 <code>/var/run/docker.sock</code> 파일의 볼륨 마운트만으로 도커의 운영 상황을 모두 확인할 수 있었다. 따라서 이 docker.sock 파일이 무엇인지 잠시만 짚어보고 넘어가기로 한다.</p>
+<p>우선 .sock 이라는 확장자에서 알 수 있듯 socket 파일이다. 보안을 위해 기본적으로 unix socket으로 만들어지지만 tcp, fd socket으로 만들 수도 있다. 해당 파일에 접근하기 위해서는 root 권한 또는 docker group 권한을 필요로 한다.</p>
+<p>docker daemon은 docker.sock 파일로 오는 요청들을 listening 하고 있다. 그래서 docker cli를 사용하든, 외부에서 docker API를 이용하든 결국 docker.sock 파일을 거쳐가게 된다. 따라서 portainer도 마찬가지로 docker daemon과 직접 통신을 하기 위해서 docker.sock 파일이 필요했던 것이다.</p>
+<p>이런 상황을 나타내는 개념이 DInD(docker in docker)이다. 도커 컨테이너로 실행하는 서비스들 중에서도 도커 서비스를 조작해야 하는 요구가 있을 수 있다. 일반적으로 도커 컨테이너 안에서는 호스트 머신의 어떤 것도 접근할 수 없다. 따라서 docker.sock 파일을 볼륨 마운팅하여 컨테이너 안에서도 접근할 수 있게 해 두고 docker API를 이용하면 된다.</p>
+<h2 id="회고">회고</h2>
+<p>아직까지 portainer의 다양한 기능을 써 볼 기회는 없었다. 물론 정교하게 도커 명령어를 실행하고 관리하는 것에는 cli가 여전히 좋을 것이다. 그러나 어떤 컨테이너들이 실행 중인지를 시각적으로 한 눈에 확인할 수 있게 된 점 등은 유지보수에 큰 도움이 되리라 생각한다.</p>
+
+</section>
+
+
+    <footer class="article-footer">
+    
+    <section class="article-tags">
+        
+            <a href="/tags/docker/">docker</a>
+        
+            <a href="/tags/portainer/">portainer</a>
+        
+    </section>
+
+
+    </footer>
+
+
+    
+</article>
+
+    
+
+    
+
+<aside class="related-content--wrapper">
+    <h2 class="section-title">Related content</h2>
+    <div class="related-content">
+        <div class="flex article-list--tile">
+            
+                
+<article class="">
+    <a href="/post/teams/%EB%B0%A9%ED%99%94%EB%B2%BD-%EA%B4%80%EB%A6%AC/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">[팀 개발 문화 발전시키기] 방화벽 관리</h2>
+        </div>
+    </a>
+</article>
+
+            
+        </div>
+    </div>
+</aside>
+
+     
+    
+        
+    <script src="https://utteranc.es/client.js" 
+        repo="hadooboo/hadooboo.github.io"
+        issue-term="pathname"
+        
+        crossorigin="anonymous"
+        async
+        >
+</script>
+
+<style>
+    .utterances {
+        max-width: unset;
+    }
+</style>
+
+<script>
+    let utterancesLoaded = false;
+
+    function setUtterancesTheme(theme) {
+        let utterances = document.querySelector('.utterances iframe');
+        if (utterances) {
+            utterances.contentWindow.postMessage(
+                {
+                    type: 'set-theme',
+                    theme: `github-${theme}`
+                },
+                'https://utteranc.es'
+            );
+        }
+    }
+
+    addEventListener('message', event => {
+        if (event.origin !== 'https://utteranc.es') return;
+
+        
+        utterancesLoaded = true;
+        setUtterancesTheme(document.documentElement.dataset.scheme)
+    });
+
+    window.addEventListener('onColorSchemeChange', (e) => {
+        if (!utterancesLoaded) return;
+        setUtterancesTheme(e.detail)
+    })
+</script>
+
+
+    
+
+    <footer class="site-footer">
+    <section class="copyright">
+        &copy; 
+        
+        2023 Hadooboo Dev Log
+    </section>
+    
+    <section class="powerby">
+        Built with <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> <br />
+        Theme <b><a href="https://github.com/CaiJimmy/hugo-theme-stack" target="_blank" rel="noopener" data-version="3.17.0">Stack</a></b> designed by <a href="https://jimmycai.com" target="_blank" rel="noopener">Jimmy</a>
+    </section>
+</footer>
+
+
+    
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    
+    <div class="pswp__bg"></div>
+
+    
+    <div class="pswp__scroll-wrap">
+
+        
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                
+                
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"integrity="sha256-ePwmChbbvXbsO02lbM3HoHbSHTHFAeChekF1xKJdleo="crossorigin="anonymous"
+                defer
+                >
+            </script><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"integrity="sha256-UKkzOn/w1mBxRmLLGrSeyB4e1xbrp4xylgAWb3M42pU="crossorigin="anonymous"
+                defer
+                >
+            </script><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.min.css"crossorigin="anonymous"
+            ><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.css"crossorigin="anonymous"
+            >
+
+            </main>
+        </div>
+        <script 
+                src="https://cdn.jsdelivr.net/npm/node-vibrant@3.1.6/dist/vibrant.min.js"integrity="sha256-awcR2jno4kI5X0zL8ex0vi2z&#43;KMkF24hUW8WePSA9HM="crossorigin="anonymous"
+                
+                >
+            </script><script type="text/javascript" src="/ts/main.js" defer></script>
+<script>
+    (function () {
+        const customFont = document.createElement('link');
+        customFont.href = "https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap";
+
+        customFont.type = "text/css";
+        customFont.rel = "stylesheet";
+
+        document.head.appendChild(customFont);
+    }());
+</script>
+
+    </body>
+</html>
