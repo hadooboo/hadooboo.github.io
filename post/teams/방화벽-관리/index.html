@@ -149,7 +149,7 @@
     
     <header class="article-category">
         
-            <a href="/categories/team-dev-culture/" style="background-color: #2a9d8f; color: #fff;">
+            <a href="/categories/team-dev-culture/" style="background-color: #9966c3; color: #fff;">
                 Team Dev Culture
             </a>
         
@@ -210,15 +210,7 @@
     <section class="article-content">
     
     
-    <p><img src="https://velog.velcdn.com/images/hadooboo/post/a2e234f4-ad35-48de-8c5e-1780a82431ff/image.png"
-	
-	
-	
-	loading="lazy"
-	
-	
-></p>
-<h2 id="개발서버에서-방화벽을-제대로-관리해야겠다고-마음먹은-이유">개발서버에서 방화벽을 제대로 관리해야겠다고 마음먹은 이유</h2>
+    <h2 id="개발서버에서-방화벽을-제대로-관리해야겠다고-마음먹은-이유">개발서버에서 방화벽을 제대로 관리해야겠다고 마음먹은 이유</h2>
 <p>개발서버에서는 여러 프로그램들이 실행되고 있고 네트워크를 통해 통신을 하는 프로그램도 다수 있다. 가장 대표적인 예시로 SSH, 데이터베이스, API 서버, 웹 서버 등등이 있다.</p>
 <p>그렇다면 모든 네트워크가 정상적인 사용자로부터만 유입될까? 우선 개발서버는 public ip 주소를 가지고 있기 때문에 누구나 접근이 가능하다. 또한, 각 프로그램들은 일반적으로 기본 포트를 이용하여 실행된다. 예를 들어, ssh 22, mysql 3306 등. 그렇기 때문에 네트워크를 통한 접근 자체는 아무나 쉽게 할 수 있다.</p>
 <p>실제로 개발서버에 띄워둔 mongodb에 문제가 생긴 적이 있었다. 도커 컨테이너의 형태로, 기본 포트를 이용하여, 매우 쉬운 아이디와 비밀번호로 켜 둔 것이 문제의 원인이었다. 해커로 추정되는 누군가는 브루트포스 방법으로 각 ip마다 mongodb 기본 포트인 27017으로 로그인을 막 시도한 듯 하다. 도커 컨테이너의 로그를 보면 다음과 같이 쉽게 유추할 수 있는 아이디와 비밀번호 조합으로 로그인 시도를 한 흔적을 볼 수 있다.</p>
@@ -313,12 +305,16 @@ num target     prot opt in     out     source               destination
 <pre tabindex="0"><code>$ iptables -I DOCKER-USER -s &lt;ip&gt; -m conntrack --ctorigdstport 1234 -p tcp -j ACCEPT
 </code></pre><p>그런데 결론적으로 위 방법은 작동하지 않았다. connection timeout이 발생하는 것을 확인할 수 있었다. 그래서 watch 명령어를 이용하여 어떤 룰에 걸리는지 확인해 보았다. <code>-d</code> 옵션과 함께 사용하여 변화가 일어나는 부분을 하이라이트 하도록 했다.</p>
 <pre tabindex="0"><code>$ watch -d iptables -L DOCKER-USER -v --line-number
-</code></pre><p><img src="https://velog.velcdn.com/images/hadooboo/post/90070337-c830-4f26-8502-3b3ede841862/image.gif"
-	
-	
-	
+</code></pre><p><img src="/post/teams/%EB%B0%A9%ED%99%94%EB%B2%BD-%EA%B4%80%EB%A6%AC/90070337-c830-4f26-8502-3b3ede841862.gif"
+	width="422"
+	height="260"
+	srcset="/post/teams/%EB%B0%A9%ED%99%94%EB%B2%BD-%EA%B4%80%EB%A6%AC/90070337-c830-4f26-8502-3b3ede841862_hua9bf03a05abe8148f6a66463038c0cad_48492_480x0_resize_box.gif 480w, /post/teams/%EB%B0%A9%ED%99%94%EB%B2%BD-%EA%B4%80%EB%A6%AC/90070337-c830-4f26-8502-3b3ede841862_hua9bf03a05abe8148f6a66463038c0cad_48492_1024x0_resize_box.gif 1024w"
 	loading="lazy"
 	
+	
+		class="gallery-image" 
+		data-flex-grow="162"
+		data-flex-basis="389px"
 	
 ></p>
 <p>어떤 패킷은 ACCEPT 되고 있지만, 어떤 패킷이 계속해서 DROP 되고 있는 상황임을 확인하였다.</p>
