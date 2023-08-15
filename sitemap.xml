@@ -2,25 +2,37 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
+    <loc>https://hadooboo.github.io/post/teams/git-%EB%B0%8F-gitlab-%EC%84%9C%EB%B2%84-%EC%9A%B4%EC%98%81/</loc>
+    <lastmod>2023-08-15T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://hadooboo.github.io/categories/</loc>
+    <lastmod>2023-08-15T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://hadooboo.github.io/tags/git/</loc>
+    <lastmod>2023-08-15T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://hadooboo.github.io/tags/gitlab/</loc>
+    <lastmod>2023-08-15T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://hadooboo.github.io/</loc>
+    <lastmod>2023-08-15T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://hadooboo.github.io/post/</loc>
+    <lastmod>2023-08-15T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://hadooboo.github.io/tags/</loc>
+    <lastmod>2023-08-15T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://hadooboo.github.io/categories/team-dev-culture/</loc>
+    <lastmod>2023-08-15T00:00:00+00:00</lastmod>
+  </url><url>
     <loc>https://hadooboo.github.io/post/books/%EA%B0%9D%EC%B2%B4%EC%A7%80%ED%96%A5%EC%9D%98-%EC%82%AC%EC%8B%A4%EA%B3%BC-%EC%98%A4%ED%95%B4%EB%A5%BC-%EC%9D%BD%EA%B3%A0/</loc>
     <lastmod>2023-08-04T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://hadooboo.github.io/tags/books/</loc>
     <lastmod>2023-08-04T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>https://hadooboo.github.io/categories/</loc>
-    <lastmod>2023-08-04T00:00:00+00:00</lastmod>
-  </url><url>
     <loc>https://hadooboo.github.io/categories/dev-book-review/</loc>
-    <lastmod>2023-08-04T00:00:00+00:00</lastmod>
-  </url><url>
-    <loc>https://hadooboo.github.io/</loc>
-    <lastmod>2023-08-04T00:00:00+00:00</lastmod>
-  </url><url>
-    <loc>https://hadooboo.github.io/post/</loc>
-    <lastmod>2023-08-04T00:00:00+00:00</lastmod>
-  </url><url>
-    <loc>https://hadooboo.github.io/tags/</loc>
     <lastmod>2023-08-04T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://hadooboo.github.io/post/tips/velog-%EC%8D%B8%EB%84%A4%EC%9D%BC-%EC%82%AC%EC%9D%B4%EC%A6%88/</loc>
@@ -33,9 +45,6 @@
     <lastmod>2023-07-25T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://hadooboo.github.io/tags/slack/</loc>
-    <lastmod>2023-07-25T00:00:00+00:00</lastmod>
-  </url><url>
-    <loc>https://hadooboo.github.io/categories/team-dev-culture/</loc>
     <lastmod>2023-07-25T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://hadooboo.github.io/tags/tip/</loc>

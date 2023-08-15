@@ -6,7 +6,23 @@
         <description>Recent content in Tags on Hadooboo Dev Log</description>
         <generator>Hugo -- gohugo.io</generator>
         <language>ko-kr</language>
-        <lastBuildDate>Fri, 04 Aug 2023 00:00:00 +0000</lastBuildDate><atom:link href="https://hadooboo.github.io/tags/index.xml" rel="self" type="application/rss+xml" /><item>
+        <lastBuildDate>Tue, 15 Aug 2023 00:00:00 +0000</lastBuildDate><atom:link href="https://hadooboo.github.io/tags/index.xml" rel="self" type="application/rss+xml" /><item>
+        <title>git</title>
+        <link>https://hadooboo.github.io/tags/git/</link>
+        <pubDate>Tue, 15 Aug 2023 00:00:00 +0000</pubDate>
+        
+        <guid>https://hadooboo.github.io/tags/git/</guid>
+        <description></description>
+        </item>
+        <item>
+        <title>gitlab</title>
+        <link>https://hadooboo.github.io/tags/gitlab/</link>
+        <pubDate>Tue, 15 Aug 2023 00:00:00 +0000</pubDate>
+        
+        <guid>https://hadooboo.github.io/tags/gitlab/</guid>
+        <description></description>
+        </item>
+        <item>
         <title>books</title>
         <link>https://hadooboo.github.io/tags/books/</link>
         <pubDate>Fri, 04 Aug 2023 00:00:00 +0000</pubDate>
